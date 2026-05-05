@@ -133,7 +133,7 @@ flowchart LR
     Pay1 -->|tap Pay| OTP[Scanner / OTP ×4]
     OTP -->|valid| Receipt[Scanner / Receipt ×3]
     Receipt -->|tap row| Det[Receipt / Details]
-    OTP -->|valid (alt)| Final[QR Payment final ×8]
+    OTP -->|valid alt| Final[QR Payment final ×8]
 ```
 
 ### Step ledger — hospitality QR with tip
