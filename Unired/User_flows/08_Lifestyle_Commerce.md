@@ -146,7 +146,7 @@ The actual *purchase* flow lives in
 flowchart LR
     Steam[F.4 Steam Payment cheque] -->|tap Buy skins| Cat[Steam skins catalog<br/>46 weapon tiles]
     Cat -->|tap a skin| BuyFlow[Skin-purchase flow<br/>not documented separately]
-    BuyFlow --> Cheque[Cheque<br/>(reuses Steam cheque)]
+    BuyFlow --> Cheque["Cheque<br/>(reuses Steam cheque)"]
 ```
 
 ---
