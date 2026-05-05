@@ -40,17 +40,30 @@ Every pillar file follows the same shape:
 
 1. **Header table** — sections / page / node IDs / frames / Final-or-WIP
    status.
-2. **Mermaid diagrams** — `flowchart LR` (or `stateDiagram-v2`) per named
-   flow. Errors branch with labelled edges.
-3. **Step lists** — frame name + node ID per step.
-4. **State tables** — for screens with ≥3 explicit states.
-5. **Cross-pillar callouts** — italic links to other pillar files or to
+2. **Per-flow context** — every named flow opens with **Entry**, **Exit**,
+   and **Goal** so the reader can understand what triggers it and where
+   it lands.
+3. **Mermaid diagrams** — `flowchart LR` (or `stateDiagram-v2`) per named
+   flow. Edges are labelled with the **user action** ("tap Send code",
+   "type 9 digits", "swipe down") or the **system event** ("server: ok",
+   "timer expires") that causes the transition. Errors branch with
+   labelled edges.
+4. **Step ledgers** — numbered tables: `# | User action | Screen | Frame |
+   What's emitted`. Each step names the frame and (where given) the node
+   ID, so a reader can jump straight to it in Figma.
+5. **Sub-flow breakdowns** — flows with multiple branches (e.g. add-card,
+   change-PIN) are split into sub-flows (`B.3.a`, `B.3.b`, …) with their
+   own state table and recovery paths.
+6. **State tables** — for screens with multiple explicit states, columns
+   include the state name, the user action that triggers it, screen
+   content callouts, and the frame name.
+7. **Cross-pillar callouts** — italic links to other pillar files or to
    `00_Shared_flows.md`.
-6. **WIP / Working files** section — only if the pillar has WIP coverage.
-7. **Open questions** — pillar-specific unresolved decisions from the
+8. **WIP / Working files** section — only if the pillar has WIP coverage.
+9. **Open questions** — pillar-specific unresolved decisions from the
    global plan.
-8. **Reusable components** — primitive / asset list pulled from the
-   library audit.
+10. **Reusable components** — primitive / asset list pulled from the
+    library audit, with usage hints per primitive.
 
 ---
 
