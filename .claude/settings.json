@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"d:/UI Projects/Unired/User_flows\" && ls \"d:/UI Projects/Unired/User_flows\")"
+    ],
+    "additionalDirectories": [
+      "d:\\UI Projects\\Unired"
+    ]
+  },
+  "enabledPlugins": {
+    "paper-desktop@paper": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_paper-desktop_paper__write_html",
+      "mcp__plugin_paper-desktop_paper__get_screenshot",
+      "mcp__plugin_paper-desktop_paper__update_styles",
+      "mcp__plugin_paper-desktop_paper__finish_working_on_nodes",
+      "mcp__plugin_paper-desktop_paper__create_artboard",
+      "mcp__plugin_paper-desktop_paper__duplicate_nodes",
+      "mcp__plugin_paper-desktop_paper__set_text_content",
+      "mcp__plugin_paper-desktop_paper__get_guide",
+      "mcp__plugin_figma_figma__use_figma",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(grep -E \"inventory|\\\\.md$\")",
+      "Bash(curl -s -o \"D:/UI Projects/AsiaSend/cjm_example.png\" \"https://www.figma.com/api/mcp/asset/85c41f9b-5acc-4ade-af0f-08f7ae68e741\")",
+      "Bash(curl -s -o \"D:/UI Projects/AsiaSend/cjm_image58.png\" \"https://www.figma.com/api/mcp/asset/6584fc29-d528-4de2-a3a5-ea3dedc49af3\")",
+      "Bash(curl *)",
+      "mcp__plugin_figma_figma__get_figjam"
+    ]
+  }
+}
