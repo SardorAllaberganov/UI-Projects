@@ -26,34 +26,34 @@ flowchart LR
     Entry[Account / My Cards / Main → Exchange] --> Empty1[Visa Exchange / Empty 1<br/>source-card field empty]
     Empty1 --> Empty2[Empty 2<br/>rate fetched]
     Empty2 -->|user has source card?| HasCard{Source card?}
-    HasCard -->|no| NC1[No Card 1<br/>"Add a card to exchange"]
+    HasCard -->|no| NC1[No Card 1<br/>Add a card to exchange]
     NC1 --> NC2[No Card 2<br/>add-card prompt]
-    NC2 -->|tap "Add card"| AddCard[→ B.2 Add card]
-    HasCard -->|yes, tap "From currency"| Curr[Currencies picker<br/>UZS / USD / RUB / EUR…]
+    NC2 -->|tap Add card| AddCard[→ B.2 Add card]
+    HasCard -->|yes, tap From currency| Curr[Currencies picker<br/>UZS / USD / RUB / EUR…]
     Curr -->|tap a currency| Filled[Filled<br/>FX rate displayed, amount input enabled]
     Filled -->|type amount| Amt[Filled / amount typed]
     Amt -->|sufficient funds| OTP[OTP — see 00_Shared_flows]
-    Amt -->|insufficient| InsufErr[Insufficient Funds Error<br/>FX rate visible, "adjust amount" CTA]
-    InsufErr -->|tap "Edit"| Filled
+    Amt -->|insufficient| InsufErr[Insufficient Funds Error<br/>FX rate visible, adjust amount CTA]
+    InsufErr -->|tap Edit| Filled
     OTP -->|valid| Cheque[Cheque ×5<br/>success / variant / error]
-    Cheque -->|tap "Done"| Card[Source card with new balance]
+    Cheque -->|tap Done| Card[Source card with new balance]
 ```
 
 ### Step ledger
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Visa exchange" entry | Empty (rate fetching) | Visa Exchange / Empty (1) |
+| 1 | Tap Visa exchange entry | Empty (rate fetching) | Visa Exchange / Empty (1) |
 | 2 | (rate loaded) | Empty 2 | Visa Exchange / Empty (2) |
 | 3a | (user has no Visa card) | No Card | Visa Exchange / No Card (1..2) |
-| 3b | (user has card) Tap "From currency" | Currencies picker | Visa Exchange / Currencies |
+| 3b | (user has card) Tap From currency | Currencies picker | Visa Exchange / Currencies |
 | 4 | Tap a currency | Filled (rate shown) | Visa Exchange / Filled |
 | 5 | Type amount | (variant) | (variant) |
 | 5a | (insufficient) | Insufficient error | Visa Exchange / Insufficient Funds Error |
-| 6 | Tap "Convert" | OTP | (cross-ref Auth / OTP / Empty State) |
+| 6 | Tap Convert | OTP | (cross-ref Auth / OTP / Empty State) |
 | 7 | Type code | OTP Filled | (cross-ref) |
 | 8 | (server: ok) | Cheque | Visa Exchange / Cheque (1..5) |
-| 9 | Tap "Done" | → source card | — |
+| 9 | Tap Done | → source card | — |
 
 ### Cluster
 
@@ -91,7 +91,7 @@ home screen — does **not** trigger a real conversion, just a UI preference.
 flowchart LR
     Main[I.1 Main / Authorized] -->|tap currency chip / balance| Sel[Select Currency<br/>UZS / USD / RUB / EUR list]
     Sel -->|tap currency| Main
-    Sel -->|tap "Convert real money"| G1[→ G.1 Visa exchange]
+    Sel -->|tap Convert real money| G1[→ G.1 Visa exchange]
 ```
 
 ### Step ledger

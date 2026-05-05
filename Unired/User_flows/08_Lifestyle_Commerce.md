@@ -30,21 +30,21 @@ passengers, baggage, fare class, then pay from a Unired card.
 
 ```mermaid
 flowchart LR
-    Main[Main] -->|tap "Avia tickets"| Search[Search<br/>origin · destination · dates · passenger count]
+    Main[Main] -->|tap Avia tickets| Search[Search<br/>origin · destination · dates · passenger count]
     Search -->|tap origin/destination| Cities[City picker<br/>filterable list]
     Search -->|tap date| Cal[Calendar picker]
     Search -->|tap passengers| Pax0[Passenger count]
-    Search -->|tap "Search flights"| Filter[Filter<br/>airline · stops · time · price sliders]
-    Filter -->|tap "Apply"| Results[Results list<br/>flights with price + duration]
+    Search -->|tap Search flights| Filter[Filter<br/>airline · stops · time · price sliders]
+    Filter -->|tap Apply| Results[Results list<br/>flights with price + duration]
     Results -->|tap a flight| Detail[Flight detail<br/>segments · airline · class]
-    Detail -->|tap "Select fare"| FareClass[Fare class picker<br/>Economy · Business]
+    Detail -->|tap Select fare| FareClass[Fare class picker<br/>Economy · Business]
     FareClass -->|tap fare| Pax1[Passengers form<br/>name · DOB · doc per pax]
     Pax1 --> Bag[Baggage<br/>extra-bag picker per pax]
     Bag --> Pay[Payment<br/>card picker + total]
     Pay -->|tap Pay| OTP[OTP — see 00_Shared_flows]
     OTP -->|valid| Cheque[Cheque / e-ticket<br/>booking ref + share]
-    Cheque -->|tap "Share"| ShareSheet[OS share sheet / PDF]
-    Cheque -->|tap "Track"| Mon[→ I.2 Monitoring]
+    Cheque -->|tap Share| ShareSheet[OS share sheet / PDF]
+    Cheque -->|tap Track| Mon[→ I.2 Monitoring]
     OTP -.invalid.-> ErrorPath[Cheque / Error<br/>retry CTA]
 ```
 
@@ -52,27 +52,27 @@ flowchart LR
 
 | # | User action | Screen | Notes |
 |---|---|---|---|
-| 1 | Tap "Avia tickets" | Search root | Origin / dest empty |
+| 1 | Tap Avia tickets | Search root | Origin / dest empty |
 | 2 | Tap origin field | City picker | Filterable list of airports |
 | 3 | Type / pick origin | (variant) | Origin set |
 | 4 | Tap destination | City picker | (variant) |
 | 5 | Pick dates (one-way / round-trip) | Calendar picker | (variant) |
 | 6 | Tap passenger count | Passenger config | Adults / children / infants |
-| 7 | Tap "Search flights" | Loading → results | (variant) |
-| 8 | Tap "Filter" | Filter modal | Airline / stops / price sliders |
-| 9 | Tap "Apply" | Results filtered | (variant) |
+| 7 | Tap Search flights | Loading → results | (variant) |
+| 8 | Tap Filter | Filter modal | Airline / stops / price sliders |
+| 9 | Tap Apply | Results filtered | (variant) |
 | 10 | Tap a flight row | Flight detail | Segments breakdown |
-| 11 | Tap "Select fare" | Fare class | Economy / Business |
+| 11 | Tap Select fare | Fare class | Economy / Business |
 | 12 | Tap fare | Passengers form | Per-pax fields |
 | 13 | Fill names / DOBs / passport | Filled | (variant) |
-| 14 | Tap "Continue" | Baggage | Per-pax extra-bag picker |
+| 14 | Tap Continue | Baggage | Per-pax extra-bag picker |
 | 15 | Pick baggage | Filled | (variant) |
-| 16 | Tap "Continue" | Payment | Card picker + total |
+| 16 | Tap Continue | Payment | Card picker + total |
 | 17 | Tap card | Card-picked | (variant) |
-| 18 | Tap "Pay" | OTP | (cross-ref) |
+| 18 | Tap Pay | OTP | (cross-ref) |
 | 19 | Type code | OTP filled | (cross-ref) |
 | 20 | (server: ok) | Cheque / e-ticket | Booking ref visible |
-| 21 | Tap "Share" | OS share / PDF | E-ticket exported |
+| 21 | Tap Share | OS share / PDF | E-ticket exported |
 
 **Note on per-frame depth:** the audit file names `Light / Avia tickets`
 as a 67-frame section in the global plan §"Pillar H · Lifestyle &
@@ -107,15 +107,15 @@ The **physical-card-order** is the lifestyle aspect:
 
 ```mermaid
 flowchart LR
-    Acct[Account] -->|tap "Order card"| Order[Order card 9-step form<br/>type · currency · design · name on card · etc.]
-    Order -->|tap "Custom number"| Custom[Custom card number 11-state form<br/>vanity-number entry]
+    Acct[Account] -->|tap Order card| Order[Order card 9-step form<br/>type · currency · design · name on card · etc.]
+    Order -->|tap Custom number| Custom[Custom card number 11-state form<br/>vanity-number entry]
     Order -->|skip vanity number| Apps[Applications]
     Custom --> Apps
-    Apps -->|tap "Pick address"| Addr[Address ×3 base states]
-    Addr -->|tap "Pick on map"| Map[Address / Map<br/>pin-drop interaction]
+    Apps -->|tap Pick address| Addr[Address ×3 base states]
+    Addr -->|tap Pick on map| Map[Address / Map<br/>pin-drop interaction]
     Map -->|drag pin / tap on map| MapMoved[(pin moved)]
-    MapMoved -->|tap "Confirm"| Filled[Address / Filled<br/>formatted address]
-    Filled -->|tap "Submit application"| Mine[My applications<br/>track status]
+    MapMoved -->|tap Confirm| Filled[Address / Filled<br/>formatted address]
+    Filled -->|tap Submit application| Mine[My applications<br/>track status]
 ```
 
 The map-pin-drop sub-flow is unique to this lifestyle pillar — used to
@@ -144,7 +144,7 @@ The actual *purchase* flow lives in
 
 ```mermaid
 flowchart LR
-    Steam[F.4 Steam Payment cheque] -->|tap "Buy skins"| Cat[Steam skins catalog<br/>46 weapon tiles]
+    Steam[F.4 Steam Payment cheque] -->|tap Buy skins| Cat[Steam skins catalog<br/>46 weapon tiles]
     Cat -->|tap a skin| BuyFlow[Skin-purchase flow<br/>not documented separately]
     BuyFlow --> Cheque[Cheque<br/>(reuses Steam cheque)]
 ```

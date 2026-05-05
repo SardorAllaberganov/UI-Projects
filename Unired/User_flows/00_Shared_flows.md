@@ -41,11 +41,11 @@ lives inside `Light / Auth` at `9730:125982`.
 
 | State | Frame name | Screen content | Triggered by |
 |---|---|---|---|
-| Empty | Auth / OTP / Empty State | 4–6 empty digit slots, "Code sent to +998…" caption, hidden timer | Host flow advances after `Phone Filled` / `Pre Cheque` |
-| Code didn't come | Auth / OTP / Code Didn't Come | "Resend code" CTA active (timer expired) | Resend timer reaches 0 with no code typed |
+| Empty | Auth / OTP / Empty State | 4–6 empty digit slots, Code sent to +998… caption, hidden timer | Host flow advances after `Phone Filled` / `Pre Cheque` |
+| Code didn't come | Auth / OTP / Code Didn't Come | Resend code CTA active (timer expired) | Resend timer reaches 0 with no code typed |
 | Prediction | Auth / OTP / Code in Prediction | iOS / Android keyboard autofill suggestion attached above keypad | OS detects SMS code matching app's domain |
 | Filled | Auth / OTP / Filled | All digits entered, submit enabled, validation pending | User finishes typing or taps autofill |
-| Error | Auth / OTP / OTP Error | Red border on field, "Invalid or expired code" message, retry CTA | Server returns invalid-code response |
+| Error | Auth / OTP / OTP Error | Red border on field, Invalid or expired code message, retry CTA | Server returns invalid-code response |
 
 The Working-files **Authorization 1st Session** (`21534:127428`) extends this
 with **Time Out** and **Loading** OTP states (see
@@ -62,9 +62,9 @@ stateDiagram-v2
     Filled --> [*]: server returns 200 → host's success
     Filled --> Error: server returns 4xx (bad code)
     Empty --> CodeDidntCome: 60s timer expires, no code typed
-    CodeDidntCome --> Empty: user taps "Resend code"
+    CodeDidntCome --> Empty: user taps Resend code
     Error --> Empty: user taps clear / re-enter
-    Error --> CodeDidntCome: user taps "Resend code"
+    Error --> CodeDidntCome: user taps Resend code
 ```
 
 ### Step ledger
@@ -77,7 +77,7 @@ stateDiagram-v2
 | 4a | (server: valid) | → host success | — | `code_verified=true` |
 | 4b | (server: invalid) | Error | (variant) | Show retry CTA |
 | 4c | (timer: 60s expired with no code) | Code Didn't Come | (variant) | Show resend CTA |
-| 5 | Tap "Resend" | → Empty (timer resets) | — | New OTP request |
+| 5 | Tap Resend | → Empty (timer resets) | — | New OTP request |
 
 ---
 
@@ -90,9 +90,9 @@ variants. The richest taxonomy lives in `P2P Russia ↔ Uzbekistan`
 
 | Variant | Count in RU↔UZ | When shown | Screen content |
 |---|---|---|---|
-| Success | 3 | Server confirms transaction completed | Big ✓ stamp, amount + recipient, fee, timestamp, "Share / Save / New transfer" CTAs |
-| Error | 3 | Server rejects (insufficient funds, blocked recipient, network) | ✗ stamp, error reason, "Try again" / "Contact support" CTAs |
-| Hold | 6 | Transaction pending (compliance, manual review) | ⏳ stamp, "Under review" message, expected resolution time, "Track in Monitoring" CTA |
+| Success | 3 | Server confirms transaction completed | Big ✓ stamp, amount + recipient, fee, timestamp, Share / Save / New transfer CTAs |
+| Error | 3 | Server rejects (insufficient funds, blocked recipient, network) | ✗ stamp, error reason, Try again / Contact support CTAs |
+| Hold | 6 | Transaction pending (compliance, manual review) | ⏳ stamp, Under review message, expected resolution time, Track in Monitoring CTA |
 
 Other sections embed shorter cuts:
 
@@ -140,7 +140,7 @@ they reinforce the cheque's text status.
 | ✓ green | Cheque / Success |
 | ✗ red | Cheque / Error |
 | ⏳ amber | Cheque / Hold |
-| (3 more variants — likely "Cancelled", "Refunded", "Test" per audit) | — |
+| (3 more variants — likely Cancelled, Refunded, Test per audit) | — |
 
 ### Canonical user journey
 
@@ -164,14 +164,14 @@ flowchart LR
 | # | User action | Screen state | Frame ID (e.g. RU↔UZ) | What's emitted |
 |---|---|---|---|---|
 | 1 | (host hands over with amount + recipient) | Pre Cheque | `RU - UZ / By Card number / Pre Cheque` | Read-only summary |
-| 2 | Tap "Confirm" | → OTP Empty | (cross-ref to OTP master) | OTP request fired |
+| 2 | Tap Confirm | → OTP Empty | (cross-ref to OTP master) | OTP request fired |
 | 3 | Complete OTP (see § OTP) | — | — | `code_verified=true/false` |
 | 4a | (server: success) | Cheque / Success | `RU - UZ / Cheque / Success` (×3) | Transaction posted |
 | 4b | (server: error) | Cheque / Error | `RU - UZ / Cheque / Error` (×3) | Transaction rejected |
 | 4c | (server: pending) | Cheque / Hold | `RU - UZ / Cheque / Hold` (×6) | Transaction queued for review |
-| 5a | Tap "Share" | A4 cheque sheet | `11421:47153` etc. | PDF / share sheet |
-| 5b | Tap "New transfer" | → host flow entry | — | Reset host state |
-| 5c | Tap "Track" (Hold only) | → Monitoring | (cross-pillar) | Open transaction detail |
+| 5a | Tap Share | A4 cheque sheet | `11421:47153` etc. | PDF / share sheet |
+| 5b | Tap New transfer | → host flow entry | — | Reset host state |
+| 5c | Tap Track (Hold only) | → Monitoring | (cross-pillar) | Open transaction detail |
 
 ---
 
@@ -286,10 +286,10 @@ flowchart LR
 | # | User action | Screen | Result |
 |---|---|---|---|
 | 1 | Tap pillar entry on Main | Recipient picker (per pillar — phone / card / requisites / scan) | Recipient identified |
-| 2 | Tap "Continue" / select recipient | Amount-entry screen with numpad | Amount in flow state |
-| 3 | Tap "Next" | Funding-card picker (cards carousel) | Card selected |
-| 4 | Tap "Confirm" | Pre Cheque (review) | Read-only summary shown |
-| 5 | Tap "Confirm" | OTP Empty | OTP request fired |
+| 2 | Tap Continue / select recipient | Amount-entry screen with numpad | Amount in flow state |
+| 3 | Tap Next | Funding-card picker (cards carousel) | Card selected |
+| 4 | Tap Confirm | Pre Cheque (review) | Read-only summary shown |
+| 5 | Tap Confirm | OTP Empty | OTP request fired |
 | 6 | Type / autofill 4–6 digits | OTP Filled | Submit triggered |
 | 7 | (server: ok) | Cheque / Success | Transaction posted |
 | 7' | (server: error) | Cheque / Error | Retry CTA |

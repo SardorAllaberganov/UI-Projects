@@ -26,26 +26,26 @@ acting.
 
 ```mermaid
 flowchart LR
-    Acct[Account / Authorized] -->|tap "Bank account"| View[Bank account view<br/>account number + balance]
-    View -->|tap "Statement"| Stmt[Statement<br/>transaction list per period]
-    View -->|tap "Requisites"| Reqs[Requisites detail<br/>IBAN / SWIFT / BIC info]
-    Reqs -->|tap "Share"| Share[Share sheet<br/>OS share]
-    Reqs -->|tap "Copy"| Copy[Toast: copied]
-    View -->|tap "Pay by requisites"| Pay[→ C.2 pay-by-requisites]
+    Acct[Account / Authorized] -->|tap Bank account| View[Bank account view<br/>account number + balance]
+    View -->|tap Statement| Stmt[Statement<br/>transaction list per period]
+    View -->|tap Requisites| Reqs[Requisites detail<br/>IBAN / SWIFT / BIC info]
+    Reqs -->|tap Share| Share[Share sheet<br/>OS share]
+    Reqs -->|tap Copy| Copy[Toast: copied]
+    View -->|tap Pay by requisites| Pay[→ C.2 pay-by-requisites]
     Stmt -->|tap row| Detail[Transaction detail<br/>same as Monitoring]
-    Stmt -->|tap "Export"| PDF[A4 PDF export]
+    Stmt -->|tap Export| PDF[A4 PDF export]
 ```
 
 ### Step ledger
 
 | # | User action | Screen | Frame (cluster) |
 |---|---|---|---|
-| 1 | Tap "Bank account" tile on Account / Main | Account view | Light / Bank account (`17273:118008` v1 or `17155:121512` v2) |
-| 2 | Tap "Statement" tab | Statement list | Light / Bank account / Statement |
+| 1 | Tap Bank account tile on Account / Main | Account view | Light / Bank account (`17273:118008` v1 or `17155:121512` v2) |
+| 2 | Tap Statement tab | Statement list | Light / Bank account / Statement |
 | 3 | Tap a transaction row | Detail | Light / Bank account / Detail |
-| 4 | Tap "Requisites" tab | Requisite detail | Light / Bank account / Requisites |
-| 5 | Tap "Share" / "Copy" | OS share / toast | (system layer) |
-| 6 | Tap "Pay by requisites" | → C.2 | (transition) |
+| 4 | Tap Requisites tab | Requisite detail | Light / Bank account / Requisites |
+| 5 | Tap Share / Copy | OS share / toast | (system layer) |
+| 6 | Tap Pay by requisites | → C.2 | (transition) |
 
 Cross-references inside both sections:
 - OTP states (cross-ref Auth)
@@ -71,7 +71,7 @@ the matching pillar's payment screen.
 
 ```mermaid
 flowchart LR
-    C1[C.1 Bank account view] -->|tap "Pay by requisites"| Pick[Country / target picker]
+    C1[C.1 Bank account view] -->|tap Pay by requisites| Pick[Country / target picker]
     Pick -->|UZ recipient| Local[→ D.1 Mahalliy o'tkazmalar]
     Pick -->|RU recipient| RU[→ E.4 P2P RU↔UZ]
     Pick -->|other| Generic[Generic requisites form<br/>likely covered by WIP § C.3]
@@ -103,7 +103,7 @@ fund from a Unired card, post via SWIFT-style rail.
 
 ```mermaid
 flowchart LR
-    Entry[Bank account / Pay by requisites] -->|tap "International"| CS[Country Select<br/>flag list]
+    Entry[Bank account / Pay by requisites] -->|tap International| CS[Country Select<br/>flag list]
     CS -->|tap country| SO[Selector Opened<br/>bank picker]
     SO -->|tap bank| NA1[Normal Account / step 1<br/>IBAN entry]
     NA1 -->|type IBAN| NA2[step 2 / IBAN validated]

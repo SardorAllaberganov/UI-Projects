@@ -35,21 +35,21 @@ flowchart LR
     AppOpen[App resume] -->|signed-out| G[Guest user — no cards]
     AppOpen -->|signed-in, no cards| Auth[Authorized — no cards]
     AppOpen -->|signed-in, has cards| A1[Authorized + Cards Added<br/>card carousel + balances]
-    G -->|tap "Sign in"| AuthPillar[→ A.2 Phone sign-in]
-    Auth -->|tap "Add card"| AddCard[→ B.2 Add card]
+    G -->|tap Sign in| AuthPillar[→ A.2 Phone sign-in]
+    Auth -->|tap Add card| AddCard[→ B.2 Add card]
     A1 -->|notification arrives| Notif[+ Active Notification banner]
     A1 -->|tap currency chip| Sel[Select Currency<br/>see G.2]
     A1 -->|tap search ⌕| SearchE[Search / New<br/>empty]
     A1 -->|type| SearchL[Search / Last Search<br/>recent results]
     A1 -->|tap story tile| Stories[Stories — see § I.5]
-    A1 -->|tap "Update available" banner| Update[Update Available<br/>app-store deep link]
-    A1 -->|tap "Monitoring"| Mon[→ § I.2 Monitoring]
-    A1 -->|tap "Cards"| Cards[→ Pillar B]
-    A1 -->|tap "Payment"| Pay[→ Pillar F]
-    A1 -->|tap "QR"| QR[→ F.2 QR payment]
-    A1 -->|tap "Account"| Acc[→ Pillar A Account]
-    A1 -->|tap "International transfers"| CB[→ Pillar E]
-    A1 -->|tap "Local transfers"| Loc[→ Pillar D]
+    A1 -->|tap Update available banner| Update[Update Available<br/>app-store deep link]
+    A1 -->|tap Monitoring| Mon[→ § I.2 Monitoring]
+    A1 -->|tap Cards| Cards[→ Pillar B]
+    A1 -->|tap Payment| Pay[→ Pillar F]
+    A1 -->|tap QR| QR[→ F.2 QR payment]
+    A1 -->|tap Account| Acc[→ Pillar A Account]
+    A1 -->|tap International transfers| CB[→ Pillar E]
+    A1 -->|tap Local transfers| Loc[→ Pillar D]
 ```
 
 ### Variants table
@@ -83,9 +83,9 @@ treat as scrollable-content export, not phone viewport.
 |---|---|---|---|
 | 1 | Cold-start | Splash → Lang | Locale picked |
 | 2 | (auth complete) | Main / Authorized (no cards) | Logged in, no cards |
-| 3 | Tap "Add card" | → B.2 | Card added |
+| 3 | Tap Add card | → B.2 | Card added |
 | 4 | (return) | Main / Cards Added | Card visible in stack |
-| 5 | Tap "International transfers" | → E.0 | Cross-border flow begins |
+| 5 | Tap International transfers | → E.0 | Cross-border flow begins |
 
 ---
 
@@ -100,27 +100,27 @@ across pillars, with per-transaction drill-down + analytics.
 ```mermaid
 flowchart LR
     Entry[Main / cheque / notification] --> M{Has transactions?}
-    M -->|no| E1[Monitoring / Empty state 1<br/>"No activity yet"]
+    M -->|no| E1[Monitoring / Empty state 1<br/>No activity yet]
     M -->|some| List[Monitoring base ×13<br/>list grouped by date]
     E1 --> E2[Empty state 2<br/>illustration variant]
     List -->|tap row| Detail[Transaction detail]
-    Detail -->|tap "Share"| Share[OS share / cheque PDF]
-    List -->|tap "Analytics"| Analytics[Analytics image 419<br/>pie chart by category]
+    Detail -->|tap Share| Share[OS share / cheque PDF]
+    List -->|tap Analytics| Analytics[Analytics image 419<br/>pie chart by category]
     List -->|swipe pull-down| Refresh[(refresh)]
-    Detail -->|tap "Repeat"| Re[→ origin pillar with repeat-payload]
+    Detail -->|tap Repeat| Re[→ origin pillar with repeat-payload]
 ```
 
 ### Step ledger
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Monitoring" on Main | List entry | Light / Monitoring (1..13) |
+| 1 | Tap Monitoring on Main | List entry | Light / Monitoring (1..13) |
 | 2a | (no activity) | Empty | Light / Monitoring / Empty state (1..2) |
 | 2b | (with activity) | Grouped list | Light / Monitoring (variant) |
 | 3 | Tap a transaction | Detail | Light / Monitoring / Detail |
-| 4 | Tap "Share" | OS share / cheque PDF | (cross-ref Shared cheque) |
-| 5 | Tap "Analytics" | Pie chart | image 419 |
-| 6 | (later) Tap "Repeat" | → origin pillar's flow with pre-fill | (cross-ref) |
+| 4 | Tap Share | OS share / cheque PDF | (cross-ref Shared cheque) |
+| 5 | Tap Analytics | Pie chart | image 419 |
+| 6 | (later) Tap Repeat | → origin pillar's flow with pre-fill | (cross-ref) |
 
 | Group | Count |
 |---|---|
@@ -197,7 +197,7 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Chat" | Empty / greeter | Light / Main / Authorized User / Chat (1) |
+| 1 | Tap Chat | Empty / greeter | Light / Main / Authorized User / Chat (1) |
 | 2 | Tap message field | Typing | Chat (2) |
 | 3 | Type + tap Send | Message sent (delivered tick) | Chat (3) |
 | 4 | (agent replies) | Reply received | Chat (4) |
@@ -253,24 +253,24 @@ and let them claim or share rewards.
 ```mermaid
 flowchart LR
     Main[Main / Rewards tile] -->|tap| First{First-time?}
-    First -->|yes| Empty[Gamification / Empty state<br/>"Earn your first reward"]
+    First -->|yes| Empty[Gamification / Empty state<br/>Earn your first reward]
     First -->|no| Base[Gamification base ×2<br/>progress + active rewards]
-    Empty -->|tap "Get started"| Base
+    Empty -->|tap Get started| Base
     Base -->|tap a reward tile| More[Gamification / More ×2<br/>reward detail]
     Base -->|theme: dark active| Dark[**Dark / Gamification**<br/>only Dark frame in file]
-    More -->|tap "Claim"| Claim[(claim flow — not documented)]
-    More -->|tap "Share"| Share[OS share]
+    More -->|tap Claim| Claim[(claim flow — not documented)]
+    More -->|tap Share| Share[OS share]
 ```
 
 ### Step ledger
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Rewards" | Empty / Base | Light / Gamification / Empty state OR Light / Gamification |
+| 1 | Tap Rewards | Empty / Base | Light / Gamification / Empty state OR Light / Gamification |
 | 2 | (variant) | Base alt | Light / Gamification (variant) |
 | 3 | (Dark theme on) | Dark variant | **Dark / Gamification** |
 | 4 | Tap reward tile | More detail | Light / Gamification / More (1..2) |
-| 5 | Tap "Claim" / "Share" | (downstream not documented) | — |
+| 5 | Tap Claim / Share | (downstream not documented) | — |
 
 ### Cluster
 
@@ -303,10 +303,10 @@ standalones. No Final-Design counterpart.
 ```mermaid
 flowchart LR
     Acct[Account / Help] -->|tap| SR[Support screens / root<br/>topic chooser]
-    SR -->|tap "FAQ"| FAQ[Support screens / FAQ<br/>question list]
+    SR -->|tap FAQ| FAQ[Support screens / FAQ<br/>question list]
     FAQ -->|tap a question| Coll[FAQ / Collapsed Question]
     Coll -->|tap chevron| Open[FAQ / Expanded answer]
-    SR -->|tap "Contact support"| Chat[→ I.4 Chat]
+    SR -->|tap Contact support| Chat[→ I.4 Chat]
     SR -->|alt entry| List[Support Screen / FAQ List<br/>standalone variant]
 ```
 
@@ -314,11 +314,11 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Help & Support" | Root | Support screens |
-| 2 | Tap "FAQ" | FAQ list | Support screens / FAQ |
+| 1 | Tap Help & Support | Root | Support screens |
+| 2 | Tap FAQ | FAQ list | Support screens / FAQ |
 | 3 | Tap a question | Collapsed | Support screens / FAQ / Collapsed Question |
 | 4 | Tap chevron | Expanded | (variant) |
-| 5 | Tap "Contact support" | → Chat | (cross-ref I.4) |
+| 5 | Tap Contact support | → Chat | (cross-ref I.4) |
 
 | Frame |
 |---|

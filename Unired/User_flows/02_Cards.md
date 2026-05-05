@@ -25,14 +25,14 @@ B.3 bottom sheet.
 
 ```mermaid
 flowchart LR
-    Tap[Bottom menu tap "Cards"] --> Has{User has cards?}
-    Has -->|no| Empty[List / Empty<br/>"Add your first card" CTA]
+    Tap[Bottom menu tap Cards] --> Has{User has cards?}
+    Has -->|no| Empty[List / Empty<br/>Add your first card CTA]
     Has -->|yes| List[List / Cards ×6<br/>card carousel + balance]
-    Empty -->|tap "+"| Add[→ B.2 Add card]
-    List -->|tap "+"| Add
+    Empty -->|tap +| Add[→ B.2 Add card]
+    List -->|tap +| Add
     List -->|tap card| Detail[Card detail<br/>balance + actions]
     List -->|long-press / tap reorder| Order[Arrange Card Order<br/>drag-handle list]
-    Detail -->|card is blocked| Blocked[Blocked Card<br/>"Unblock" CTA]
+    Detail -->|card is blocked| Blocked[Blocked Card<br/>Unblock CTA]
     Detail -->|Pay-On-Delivery card| PIN[PIN COD<br/>cash-on-delivery PIN]
     Detail -->|tap settings ⋯| BS[→ B.3 bottom sheet]
     Order -->|drag, tap save| List
@@ -42,7 +42,7 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Cards" tab | List entry | (master cluster `13128:107698`) |
+| 1 | Tap Cards tab | List entry | (master cluster `13128:107698`) |
 | 2a | (no cards) | Empty | Light / My Cards / Empty |
 | 2b | (has cards) | Cards carousel | Light / My Cards / Cards (×6) |
 | 3 | Tap card | Card detail | Light / My Cards / Cards (variant) |
@@ -70,8 +70,8 @@ flowchart LR
     Filled -->|RU format detected| AR[Filled / Error - Russian Card<br/>RU-specific message]
     AE -->|tap clear, retype| AF
     AR -->|tap clear / use UZ| AF
-    Filled -->|valid, tap "Add"| Verify[Verification Info<br/>send OTP confirmation]
-    Verify -->|tap "Send code"| OTP[OTP — see 00_Shared_flows]
+    Filled -->|valid, tap Add| Verify[Verification Info<br/>send OTP confirmation]
+    Verify -->|tap Send code| OTP[OTP — see 00_Shared_flows]
     OTP -->|valid| Type[Select Card Type<br/>physical / virtual / linked]
     Type -->|tap type| Done[Success Dialogue<br/>card added modal]
     Done -->|tap OK| List[→ B.1 List]
@@ -87,7 +87,7 @@ flowchart LR
 | 3a | (invalid Luhn) | Filled / Error | Light / My Cards / Add Cards Form / Filled/Error | Red border + msg |
 | 3b | (RU format detected) | Filled / Error - Russian Card | Light / My Cards / Add Cards Form / Filled/Error - Russian Card | RU-specific copy |
 | 4 | Type expiry + CVV | Filled (variant) | Light / My Cards / Add Cards Form / Filled | All fields green |
-| 5 | Tap "Add card" | Verification Info | Light / My Cards / Verification Info | OTP request fired |
+| 5 | Tap Add card | Verification Info | Light / My Cards / Verification Info | OTP request fired |
 | 6 | Complete OTP | (OTP master) | (cross-ref) | `code_verified=true` |
 | 7 | Tap card type | Select Card Type | Light / My Cards / Select Card Type | Type stored |
 | 8 | (server: ok) | Success Dialogue | Light / My Cards / Success Dialogue | Card added |
@@ -130,26 +130,26 @@ flowchart TB
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Limits" on bottom sheet | Daily | Light / My Cards / Card Limits / Daily |
-| 2 | Slide slider, tap "Save" | Daily filled | (variant) |
-| 3 | Tap "Monthly" tab | Monthly | Light / My Cards / Card Limits / Monthly (×2) |
-| 4 | Tap "Save" | OTP confirmation | (cross-ref OTP) |
-| 5 | Tap "Limits info" link | Limits info modal | Light / My Cards / Bottom sheet / Limits info |
+| 1 | Tap Limits on bottom sheet | Daily | Light / My Cards / Card Limits / Daily |
+| 2 | Slide slider, tap Save | Daily filled | (variant) |
+| 3 | Tap Monthly tab | Monthly | Light / My Cards / Card Limits / Monthly (×2) |
+| 4 | Tap Save | OTP confirmation | (cross-ref OTP) |
+| 5 | Tap Limits info link | Limits info modal | Light / My Cards / Bottom sheet / Limits info |
 
 ### Sub-flow B.3.b — Reissue (physical or virtual)
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Reissue" | Reissue / Physical | Light / My Cards / Reissue Card / Virtual Card (1) |
+| 1 | Tap Reissue | Reissue / Physical | Light / My Cards / Reissue Card / Virtual Card (1) |
 | 2 | (virtual variant) | Reissue / Virtual | Light / My Cards / Reissue Card / Virtual Card (2) |
-| 3 | Tap "Confirm" | OTP | (cross-ref OTP) |
+| 3 | Tap Confirm | OTP | (cross-ref OTP) |
 | 4 | (server: ok) | Success Dialogue | Light / My Cards / Success Dialogue |
 
 ### Sub-flow B.3.c — Set new PIN (4 states)
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Set new PIN" | Empty | Light / My Cards / Set New Pin / Empty |
+| 1 | Tap Set new PIN | Empty | Light / My Cards / Set New Pin / Empty |
 | 2 | Type 4 digits | Filled | Light / My Cards / Set New Pin / Filled |
 | 3a | (mismatch on confirm) | Error | Light / My Cards / Set New Pin / Error |
 | 3b | (success) | Success | Light / My Cards / Set New Pin / Success |
@@ -158,7 +158,7 @@ flowchart TB
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Security" | Security toggles | Light / My Cards / Security |
+| 1 | Tap Security | Security toggles | Light / My Cards / Security |
 | 2 | Toggle biometric / 3D-Secure | (state changes) | (variant) |
 | 3 | (after N bad PIN attempts) | Reset PIN attempts | Light / My Cards / Security / Reset PIN attempts (×3) |
 
@@ -187,15 +187,15 @@ detail.
 
 ```mermaid
 flowchart LR
-    Mc[B.1 My Cards] -->|tap "Add UCoin"| AddMC[Add UCoin from My Cards ×2]
-    Main[Main / Authorized] -->|tap "Add UCoin"| AddMain[Add UCoin from Main ×2]
+    Mc[B.1 My Cards] -->|tap Add UCoin| AddMC[Add UCoin from My Cards ×2]
+    Main[Main / Authorized] -->|tap Add UCoin| AddMain[Add UCoin from Main ×2]
     AddMC --> Type[Type ×2<br/>card-type picker]
     AddMain --> Type
     Type -->|tap type| Loading[Loading ×6<br/>multi-step animation]
     Loading -->|done| CardF[UCOIN Card FRONT<br/>card art]
     CardF -->|tap flip| CardB[UCOIN Card BACK]
     CardB -->|tap variants| Variants[Variants picker]
-    CardF -->|tap "QR"| QR[UCoin QR Shared<br/>full-screen QR]
+    CardF -->|tap QR| QR[UCoin QR Shared<br/>full-screen QR]
     CardF -->|tap info ⓘ| Info[Ucoin / Info]
     CardF -->|earn / spend| Cheque[Cheque<br/>UCoin transaction receipt]
     CardF -->|back| List[B.1 My Cards × UCoin in stack ×7]
@@ -205,8 +205,8 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1a | Tap "Add UCoin" on My Cards | Entry from cards | Add UCoin card from My Cards (×2) |
-| 1b | Tap "Add UCoin" on Main | Entry from main | Add UCoin card from Main (×2) |
+| 1a | Tap Add UCoin on My Cards | Entry from cards | Add UCoin card from My Cards (×2) |
+| 1b | Tap Add UCoin on Main | Entry from main | Add UCoin card from Main (×2) |
 | 2 | (loading animation start) | Type / Loading animation | Add UCoin card / Type / Loading animation (×2) |
 | 3 | Pick UCoin card type | Type ×2 | Add UCoin card / Type (×2) |
 | 4 | (multi-step loading) | Loading × 6 sequential frames | Loading (×6) |

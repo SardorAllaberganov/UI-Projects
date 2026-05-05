@@ -31,16 +31,16 @@ Uzbekistan via the Visa local network.
 
 ```mermaid
 flowchart LR
-    Main[Main / Authorized] -->|tap "Local transfers"| Entry[P2P / Local Transfers root]
-    Entry -->|tap "Transfer to Visa"| Visa0[Transfer To Visa / Enter Amount<br/>numpad up, amount empty]
+    Main[Main / Authorized] -->|tap Local transfers| Entry[P2P / Local Transfers root]
+    Entry -->|tap Transfer to Visa| Visa0[Transfer To Visa / Enter Amount<br/>numpad up, amount empty]
     Visa0 -->|type amount| Visa1[Amount Filled / Focused]
     Visa1 -->|tap Next| Visa2[Amount Filled<br/>amount confirmed]
     Visa2 -->|tap card field| Card0[Card Filled / Focused<br/>card-number entry]
     Card0 -->|type 16 digits| Card1[Filled Fields<br/>recipient card validated]
-    Card1 -->|tap "Continue"| Pre[Pre Cheque<br/>review amount + recipient + fee]
+    Card1 -->|tap Continue| Pre[Pre Cheque<br/>review amount + recipient + fee]
     Pre -->|tap Confirm| OTP[OTP — see 00_Shared_flows]
     OTP -->|valid| Ch[Cheque ×3<br/>success / error / hold]
-    Ch -->|tap "Save as recurring"| FT[Transfers / Fast transfers setted up]
+    Ch -->|tap Save as recurring| FT[Transfers / Fast transfers setted up]
     FT -->|tap OK| Main
 ```
 
@@ -48,17 +48,17 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Local transfers" on Main | Local Transfers entry | P2P / Local Transfers (entry variant) |
-| 2 | Tap "Transfer to Visa" / pick recipient mode | Transfer To Visa entry | P2P / Transfer To Visa / Enter Amount |
+| 1 | Tap Local transfers on Main | Local Transfers entry | P2P / Local Transfers (entry variant) |
+| 2 | Tap Transfer to Visa / pick recipient mode | Transfer To Visa entry | P2P / Transfer To Visa / Enter Amount |
 | 3 | Tap amount field, type | Amount Filled / Focused | P2P / Transfer To Visa / Amount Filled / Focused |
 | 4 | (blur) | Amount Filled | P2P / Transfer To Visa / Amount Filled |
 | 5 | Tap recipient-card field | Card Filled / Focused | P2P / Transfer To Visa / Card Filled / Focused |
 | 6 | Type recipient card number | Filled Fields | P2P / Transfer To Visa / Filled Fields |
-| 7 | Tap "Continue" | Pre Cheque | (Pre Cheque variant of Local Transfers) |
-| 8 | Tap "Confirm" | OTP Empty | (cross-ref OTP master) |
+| 7 | Tap Continue | Pre Cheque | (Pre Cheque variant of Local Transfers) |
+| 8 | Tap Confirm | OTP Empty | (cross-ref OTP master) |
 | 9 | Type code | OTP Filled | (cross-ref) |
 | 10 | (server response) | Cheque ×3 (success / error / hold) | (cross-ref Shared cheque) |
-| 11 | (success) Tap "Save as recurring" | Fast transfers setted up | Transfers / Fast transfers setted up |
+| 11 | (success) Tap Save as recurring | Fast transfers setted up | Transfers / Fast transfers setted up |
 | 12 | Tap OK / Done | → Main | — |
 
 ### Cluster
@@ -91,9 +91,9 @@ section.
 
 ```mermaid
 flowchart LR
-    Entry[P2P SBP entry] -->|tap "By phone"| Phone[By phone / type recipient phone]
-    Entry -->|tap "By card"| Card[By card / type recipient card]
-    Entry -->|tap "By cheque"| Ch[By cheque / scan recipient cheque]
+    Entry[P2P SBP entry] -->|tap By phone| Phone[By phone / type recipient phone]
+    Entry -->|tap By card| Card[By card / type recipient card]
+    Entry -->|tap By cheque| Ch[By cheque / scan recipient cheque]
     Phone -->|tap Continue| AmtA[Enter amount]
     Card -->|tap Continue| AmtB[Enter amount]
     Ch -->|scan| AmtC[Enter amount]
@@ -142,8 +142,8 @@ at a Unired-affiliated location.
 
 ```mermaid
 flowchart LR
-    Main[Main] -->|tap "Cash transfer"| E[Cash money transfers ×2<br/>entry screen]
-    E -->|tap "New transfer"| Amt0[Enter amount<br/>numpad up]
+    Main[Main] -->|tap Cash transfer| E[Cash money transfers ×2<br/>entry screen]
+    E -->|tap New transfer| Amt0[Enter amount<br/>numpad up]
     Amt0 -->|type digits| Amt1[Numpad / 8 variants<br/>each digit add updates display]
     Amt1 -->|tap Next| Recv[Receiver info ×2<br/>name + phone]
     Recv -->|tap Continue| Pre[Pre check<br/>review]
@@ -151,24 +151,24 @@ flowchart LR
     Det1 --> Det2[Transfer details / step 2]
     Det2 --> Det3[Transfer details / step 3]
     Det3 --> Det4[Transfer details / step 4]
-    Det4 -->|tap "Issue cheque"| Check[Check / final cheque<br/>pickup code visible]
-    Check -->|tap "Track"| Mon[→ I.2 Monitoring]
+    Det4 -->|tap Issue cheque| Check[Check / final cheque<br/>pickup code visible]
+    Check -->|tap Track| Mon[→ I.2 Monitoring]
 ```
 
 ### Step ledger
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "Cash transfer" on Main | Entry 1 | Cash money transfers (1) |
-| 2 | Tap "New" | Entry 2 | Cash money transfers (2) |
+| 1 | Tap Cash transfer on Main | Entry 1 | Cash money transfers (1) |
+| 2 | Tap New | Entry 2 | Cash money transfers (2) |
 | 3 | (numpad shows) | Enter amount | Enter amount (1) |
 | 4–11 | Type each digit | Enter amount (×8 numpad variants) | Enter amount (2..8) |
 | 12 | Tap Next | Receiver info 1 | Receiver info (1) |
 | 13 | Type receiver name + phone | Receiver info 2 | Receiver info (2) |
 | 14 | Tap Continue | Pre check | Pre check |
 | 15 | Tap Confirm | Transfer details (1..4) | Transfer details (×4) |
-| 16 | Tap "Issue cheque" | Final cheque with pickup code | Check |
-| 17 | Tap "Track" | → I.2 Monitoring | (cross-ref) |
+| 16 | Tap Issue cheque | Final cheque with pickup code | Check |
+| 17 | Tap Track | → I.2 Monitoring | (cross-ref) |
 
 Cross-references inside V1:
 - `P2P / UZ - KR / Step - 2 / History select` — pulls a recipient from KR

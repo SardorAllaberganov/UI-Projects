@@ -30,14 +30,14 @@ corridor + recipient mode + amount + funding card.
 
 ```mermaid
 flowchart LR
-    Main[Main / Authorized] -->|tap "International transfers"| Heading[International transfers root<br/>Section Heading]
-    Heading -->|tap "Pick country"| Country[Countries / Selection<br/>flag list]
+    Main[Main / Authorized] -->|tap International transfers| Heading[International transfers root<br/>Section Heading]
+    Heading -->|tap Pick country| Country[Countries / Selection<br/>flag list]
     Country -->|tap KG| KG[→ E.1 UZ↔KG]
     Country -->|tap TJ| TJ[→ E.2 UZ↔TJ]
     Country -->|tap CN| CN[→ E.3 UZ↔CN]
     Country -->|tap RU| RU[→ E.4 P2P RU↔UZ]
     Country -->|tap KR| KR[→ E.5 UZ→KR]
-    Heading -->|tap "Last transfers"| Last[International transfers / Last transfers<br/>recent recipients]
+    Heading -->|tap Last transfers| Last[International transfers / Last transfers<br/>recent recipients]
     Last -->|tap recipient| ResumeFlow[Resume corridor flow with recipient pre-filled]
 ```
 
@@ -45,15 +45,15 @@ flowchart LR
 
 | # | User action | Screen | Concrete frame example (KG) |
 |---|---|---|---|
-| 1 | Tap "International transfers" | Section Heading | International transfers / Section Heading |
+| 1 | Tap International transfers | Section Heading | International transfers / Section Heading |
 | 2 | Pick country | Countries / Selection | International transfers / Countries / Selection |
 | 3 | Pick transfer type | Transfer type picker | RU → UZ transfer / Type of transfer |
 | 4 | Pick recipient mode (phone / card / QR / requisites) | Mode-specific entry | P2P / UZ - KG / By phone / Empty |
 | 5 | Type recipient identifier | Mode-specific filled | P2P / UZ - KG / By phone / Filled |
 | 6 | Type amount | Amount filled | (variant) |
 | 7 | Pick funding card | Card-picked | (variant) |
-| 8 | Tap "Continue" | Pre Cheque | P2P / UZ - KG / Pre Cheque |
-| 9 | Tap "Confirm" | OTP Empty | (cross-ref OTP) |
+| 8 | Tap Continue | Pre Cheque | P2P / UZ - KG / Pre Cheque |
+| 9 | Tap Confirm | OTP Empty | (cross-ref OTP) |
 | 10 | Type code | OTP Filled | (cross-ref) |
 | 11 | (server response) | Cheque ×3 (success / error / hold) | (cross-ref Shared cheque) |
 
@@ -70,7 +70,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    KG[Country picker: KG] -->|tap "Send"| Type{Pick mode}
+    KG[Country picker: KG] -->|tap Send| Type{Pick mode}
     Type -->|by phone| P0[UZ - KG / By phone / Empty]
     P0 -->|tap field| P1[Focused / Empty]
     P1 -->|type +996…| P2[Focused / Filled]
@@ -96,7 +96,7 @@ empty / focused / filled / error / pre-cheque / OTP / success.
 | # | User action | Screen | Frame |
 |---|---|---|---|
 | 1 | (arrive from country picker) | Mode picker | P2P / UZ - KG / Type picker |
-| 2 | Tap "By phone" | Empty phone field | P2P / UZ - KG / By phone / Empty |
+| 2 | Tap By phone | Empty phone field | P2P / UZ - KG / By phone / Empty |
 | 3 | Tap field | Focused / Empty | P2P / UZ - KG / By phone / Focused/Empty |
 | 4 | Type +996 + 9 digits | Focused / Filled | P2P / UZ - KG / By phone / Focused/Filled |
 | 5 | Tap Next | Amount-entry screen | P2P / UZ - KG / By phone / Filled |
@@ -114,7 +114,7 @@ Same flow shape as KG. By phone · By card · QR · Pre Cheque. Inside
 
 ```mermaid
 flowchart LR
-    Entry[Country picker → TJ] -->|tap mode| Type{phone | card | QR}
+    Entry[Country picker → TJ] -->|tap mode| Type{"phone / card / QR"}
     Type -->|by phone| Phone[UZ - TJ / By phone number<br/>+992 prefix]
     Type -->|by card| Card[UZ - TJ / By Card number]
     Type -->|by QR| QR[UZ - TJ / QR transfer]
@@ -160,10 +160,10 @@ shown).
 flowchart LR
     Heading[Section Heading] --> Countries[Countries ×7<br/>filterable list]
     Countries -->|tap RU| Sel[Countries / Selection]
-    Sel -->|tap "Send to RU"| TT[Transfer type picker ×2<br/>UZ→RU vs RU→UZ]
+    Sel -->|tap Send to RU| TT[Transfer type picker ×2<br/>UZ→RU vs RU→UZ]
     TT -->|UZ→RU| UzRu0[UZ → Russia / step 1<br/>recipient mode picker]
-    UzRu0 -->|tap "By phone"| Phone[UZ - RU / By phone number ×9<br/>9 phone-state variants]
-    UzRu0 -->|tap "By card"| Card[UZ - RU / By Card number / Pre Cheque]
+    UzRu0 -->|tap By phone| Phone[UZ - RU / By phone number ×9<br/>9 phone-state variants]
+    UzRu0 -->|tap By card| Card[UZ - RU / By Card number / Pre Cheque]
     Phone -->|tap Next| OTP[UZ - RU / OTP ×4]
     Card --> OTP
     OTP -->|valid| Success[Cheque / Success ×3]
@@ -171,18 +171,18 @@ flowchart LR
     OTP -->|pending compliance| Hold[Cheque / Hold ×6<br/>largest hold sub-set on file]
     TT -->|RU→UZ| RuUz0[RU → UZ transfer / Type of transfer ×4]
     RuUz0 --> Phone2[Receive on UZ phone / card]
-    Sel -->|tap "Last transfers"| Last[International transfers / Last transfers]
+    Sel -->|tap Last transfers| Last[International transfers / Last transfers]
 ```
 
 ### Step ledger — UZ → RU by phone
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "International transfers" | Section heading | Section Heading |
-| 2 | Tap "Russia" | Countries / Selection | Countries / Selection |
-| 3 | Tap "Send to RU" | Transfer type picker | Countries / Transfer type (1) |
-| 4 | Tap "UZ → RU" | UZ → Russia entry | UZ → Russia (1) |
-| 5 | Tap "By phone" | UZ - RU / By phone empty | UZ - RU / By phone number (1) |
+| 1 | Tap International transfers | Section heading | Section Heading |
+| 2 | Tap Russia | Countries / Selection | Countries / Selection |
+| 3 | Tap Send to RU | Transfer type picker | Countries / Transfer type (1) |
+| 4 | Tap UZ → RU | UZ → Russia entry | UZ → Russia (1) |
+| 5 | Tap By phone | UZ - RU / By phone empty | UZ - RU / By phone number (1) |
 | 6 | Type recipient phone | filled phone | UZ - RU / By phone number (2..9 variants) |
 | 7 | Tap Next | amount entry | UZ → Russia (2..6) |
 | 8 | Tap card field | funding-card picker | UZ → Russia (7..10) |
@@ -192,8 +192,8 @@ flowchart LR
 | 12 | (server: success) | Cheque / Success | RU - UZ / Cheque / Success (×3) |
 | 12' | (server: error — blocked recipient, etc.) | Cheque / Error | RU - UZ / Cheque / Error (×3) |
 | 12'' | (server: pending compliance) | Cheque / Hold | RU - UZ / Cheque / Hold (×6) |
-| 13 | (success) Tap "Track" | → I.2 Monitoring | (cross-ref) |
-| 13' | (hold) Tap "Track" | → I.2 Monitoring | (cross-ref) |
+| 13 | (success) Tap Track | → I.2 Monitoring | (cross-ref) |
+| 13' | (hold) Tap Track | → I.2 Monitoring | (cross-ref) |
 
 ### Cluster — RU↔UZ counts
 
@@ -231,8 +231,8 @@ requiring KR-bank-info + KR-personal-info collection.
 
 ```mermaid
 flowchart LR
-    Type[Type of transfer picker] -->|tap "UZ → RU phone"| RU[UZ → RU phone transfer<br/>shared with E.4]
-    Type -->|tap "UZ → KR"| KR0[UZ → KR / step 1]
+    Type[Type of transfer picker] -->|tap UZ → RU phone| RU[UZ → RU phone transfer<br/>shared with E.4]
+    Type -->|tap UZ → KR| KR0[UZ → KR / step 1]
     KR0 -->|tap recipient bank| Bank[Bank info<br/>KR bank picker × 54 logos]
     Bank -->|tap a bank| Personal[Personal info<br/>KR resident reg # + address]
     Personal -->|fill all fields| Pre[Pre Cheque]
@@ -244,15 +244,15 @@ flowchart LR
 
 | # | User action | Screen | Frame |
 |---|---|---|---|
-| 1 | Tap "UZ → KR" on type picker | Type picker | Wallet transfer all / Type picker |
+| 1 | Tap UZ → KR on type picker | Type picker | Wallet transfer all / Type picker |
 | 2 | Tap recipient-bank field | KR bank picker | Wallet transfer all / Bank info |
 | 3 | Tap a Korean bank (e.g. KEB Hana, KB) | Bank selected | (variant — uses Korean Bank Logos × 54) |
-| 4 | Tap "Continue" | Personal info form | Wallet transfer all / Personal info |
+| 4 | Tap Continue | Personal info form | Wallet transfer all / Personal info |
 | 5 | Type recipient resident reg # + address + phone | Filled form | (variant) |
 | 6 | Type amount + currency | Amount filled | (variant) |
 | 7 | Pick funding card | Card-picked | (variant) |
-| 8 | Tap "Continue" | Pre Cheque | Wallet transfer all / Pre Cheque |
-| 9 | Tap "Confirm" | → OTP | (Shared) |
+| 8 | Tap Continue | Pre Cheque | Wallet transfer all / Pre Cheque |
+| 9 | Tap Confirm | → OTP | (Shared) |
 | 10 | (after OTP) | Cheque | (Shared) |
 
 Korea-specific differences vs other corridors:
@@ -325,16 +325,16 @@ be routed by phone (recipient never shares card number).
 
 ```mermaid
 flowchart LR
-    Entry[Account / Card → Visa alias] -->|tap "Connect"| Connect[Visa alias / Connect]
+    Entry[Account / Card → Visa alias] -->|tap Connect| Connect[Visa alias / Connect]
     Connect -->|tap card| Selected[Connect / Selected<br/>card highlighted]
     Selected -->|tap Confirm| Result1[Result success]
     Selected -->|server: rejected| Result2[Result error]
-    Entry -->|tap "Change"| Change1[Change alias 1]
+    Entry -->|tap Change| Change1[Change alias 1]
     Change1 --> Change2[Change alias 2]
-    Change2 -->|server: validation needed| Alert[Change / Alert<br/>"Confirm via OTP"]
+    Change2 -->|server: validation needed| Alert[Change / Alert<br/>Confirm via OTP]
     Alert --> OTP[OTP]
     OTP --> Confirmation[Confirmation modal]
-    Entry -->|tap "Deactivate"| Deact1[Deactivate confirmation 1]
+    Entry -->|tap Deactivate| Deact1[Deactivate confirmation 1]
     Deact1 -->|tap Confirm| Deact2[Deactivate confirmation 2]
     Deact2 --> Result1
 ```
