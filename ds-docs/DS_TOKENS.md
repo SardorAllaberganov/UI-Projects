@@ -1,278 +1,284 @@
 # DS Tokens
 
-Every design token, traced to its primitive alias per mode. Split by
-collection. Source: [.inventory-current.json](./.inventory-current.json).
+Authoritative catalog of every Figma variable in the design system.
 
-- [Primitives](#primitives) — raw hex values, single mode
-- [Color](#color) — Light / Dark semantic aliases
-- [Spacing](#spacing) — 4pt scale
-- [Radius](#radius)
+- File: `gSas2PBv3XMAXj36FQDhFa`
+- Last synced: 2026-05-13
+- Source of truth: [.inventory-current.json](./.inventory-current.json)
+
+Counts: 69 primitives · 65 color tokens · 10 spacing · 6 radius.
 
 ---
 
-## Primitives
+## Collections
 
-Collection `VariableCollectionId:4:2`. Single mode "Value". Scopes `[]`
-(hidden from pickers) — only consumed via aliasing from Color.
+| Collection | ID | Modes | Variable count |
+|---|---|---|---|
+| Primitives | `VariableCollectionId:4:2` | Value | 69 |
+| Color | `VariableCollectionId:5:2` | Light / Dark | 65 |
+| Spacing | `VariableCollectionId:6:2` | Value | 10 |
+| Radius | `VariableCollectionId:6:13` | Value | 6 |
 
-### Brand red
+---
 
-| Token | Hex | Notes |
+## Primitives (Color)
+
+Single-mode `Value` collection. Primitives are referenced by Color
+tokens via alias — never bind primitives directly to component layers.
+
+### DS palette (42 vars)
+
+| Name | Hex | ID |
 |---|---|---|
-| `red/50` | `#fbeced` | brand-subtle (Light) |
-| `red/400` | `#de4955` | brand-hover (Dark) |
-| `red/500` | `#d2222d` | **brand anchor** |
-| `red/600` | `#b41b24` | brand-hover (Light) / brand-pressed (Dark) |
-| `red/700` | `#8f1218` | brand-pressed (Light) |
-| `red/900` | `#3d0b0f` | brand-subtle (Dark) |
+| white | `#FFFFFF` | `VariableID:4:7` |
+| stone/50 | `#F6F5F2` | `VariableID:4:8` |
+| stone/100 | `#ECEAE5` | `VariableID:4:9` |
+| stone/200 | `#D8D5CE` | `VariableID:4:10` |
+| stone/300 | `#B5B0A5` | `VariableID:59:268` |
+| stone/400 | `#9E9A92` | `VariableID:4:11` |
+| stone/600 | `#5E5A54` | `VariableID:4:12` |
+| stone/700 | `#3C3933` | `VariableID:59:269` |
+| stone/800 | `#2B2925` | `VariableID:59:270` |
+| stone/900 | `#1A1918` | `VariableID:4:13` |
+| stone/950 | `#141312` | `VariableID:4:14` |
+| red/50 | `#FBECED` | `VariableID:4:6` |
+| red/400 | `#DE4955` | `VariableID:59:272` |
+| red/500 | `#D2222D` | `VariableID:4:3` |
+| red/600 | `#B41B24` | `VariableID:4:4` |
+| red/700 | `#8F1218` | `VariableID:4:5` |
+| red/900 | `#3D0B0F` | `VariableID:59:271` |
+| blue/50 | `#ECF2FE` | `VariableID:109:717` |
+| blue/400 | `#79ABFB` | `VariableID:109:718` |
+| blue/500 | `#438BFA` | `VariableID:109:719` |
+| blue/600 | `#1B73EC` | `VariableID:109:720` |
+| blue/700 | `#155CC0` | `VariableID:109:721` |
+| blue/900 | `#0F2E5B` | `VariableID:109:722` |
+| green/50 | `#E8F3EC` | `VariableID:4:16` |
+| green/400 | `#4ADE80` | `VariableID:126:717` |
+| green/500 | `#22C55E` | `VariableID:59:273` |
+| green/700 | `#1F7A4C` | `VariableID:4:15` |
+| green/900 | `#0D2E1B` | `VariableID:59:274` |
+| garnet/50 | `#F7E8E9` | `VariableID:4:18` |
+| garnet/400 | `#F87171` | `VariableID:59:275` |
+| garnet/500 | `#DC2626` | `VariableID:126:718` |
+| garnet/800 | `#7A1820` | `VariableID:4:17` |
+| garnet/900 | `#2E0A0D` | `VariableID:59:276` |
+| amber/50 | `#F9EEDB` | `VariableID:4:20` |
+| amber/400 | `#FBBF24` | `VariableID:59:277` |
+| amber/500 | `#F59E0B` | `VariableID:126:719` |
+| amber/600 | `#B67A1F` | `VariableID:4:19` |
+| amber/900 | `#3D2A0A` | `VariableID:59:278` |
+| sky/50 | `#F0F9FF` | `VariableID:130:717` |
+| sky/400 | `#38BDF8` | `VariableID:130:718` |
+| sky/500 | `#0EA5E9` | `VariableID:130:719` |
+| sky/900 | `#0C4A6E` | `VariableID:130:720` |
 
-### Brand-secondary blue
+### iOS Platform Chrome palette (27 vars)
 
-| Token | Hex | Notes |
+Apple system colors and chrome surfaces. Only used by the Platform
+Chrome · iOS components (Status Bar, Keyboard, Search Bar, Home
+Indicator). App-level content should NOT bind to these — use the DS
+palette tokens.
+
+| Name | Hex | ID |
 |---|---|---|
-| `blue/50` | `#ecf2fe` | brand-secondary-subtle (Light) |
-| `blue/400` | `#79abfb` | brand-secondary (Dark) |
-| `blue/500` | `#438bfa` | **brand-secondary anchor** |
-| `blue/600` | `#1b73ec` | brand-secondary-hover (Light) |
-| `blue/700` | `#155cc0` | brand-secondary-pressed (Light) |
-| `blue/900` | `#0f2e5b` | brand-secondary-subtle (Dark) |
-
-### Neutral stone
-
-| Token | Hex |
-|---|---|
-| `stone/50` | `#f6f5f2` |
-| `stone/100` | `#eceae5` |
-| `stone/200` | `#d8d5ce` |
-| `stone/300` | `#b5b0a5` |
-| `stone/400` | `#9e9a92` |
-| `stone/600` | `#5e5a54` |
-| `stone/700` | `#3c3933` |
-| `stone/800` | `#2b2925` |
-| `stone/900` | `#1a1918` |
-| `stone/950` | `#141312` |
-| `white` | `#ffffff` |
-
-### State palettes
-
-Green (positive):
-
-| Token | Hex |
-|---|---|
-| `green/50` | `#e8f3ec` |
-| `green/400` | `#4ade80` |
-| `green/500` | `#22c55e` |
-| `green/700` | `#1f7a4c` |
-| `green/900` | `#0d2e1b` |
-
-Garnet (negative):
-
-| Token | Hex |
-|---|---|
-| `garnet/50` | `#f7e8e9` |
-| `garnet/400` | `#f87171` |
-| `garnet/500` | `#dc2626` |
-| `garnet/800` | `#7a1820` |
-| `garnet/900` | `#2e0a0d` |
-
-Amber (warning):
-
-| Token | Hex |
-|---|---|
-| `amber/50` | `#f9eedb` |
-| `amber/400` | `#fbbf24` |
-| `amber/500` | `#f59e0b` |
-| `amber/600` | `#b67a1f` |
-| `amber/900` | `#3d2a0a` |
-
-Sky (info):
-
-| Token | Hex |
-|---|---|
-| `sky/50` | `#f0f9ff` |
-| `sky/400` | `#38bdf8` |
-| `sky/500` | `#0ea5e9` |
-| `sky/900` | `#0c4a6e` |
+| ios/black | `#000000` | `VariableID:172:863` |
+| ios/accent-l | `#007AFF` | `VariableID:172:881` |
+| ios/accent-d | `#0A84FF` | `VariableID:172:882` |
+| ios/navy | `#172B85` | `VariableID:172:883` |
+| ios/pinch-l | `#01153C` | `VariableID:172:886` |
+| ios/pinch-d | `#F2F2F7` | `VariableID:172:887` |
+| ios/bar-bg-l | `#F9F9F9` | `VariableID:172:875` |
+| ios/bar-bg-d | `#1C1C1E` | `VariableID:172:876` |
+| ios/fill-l | `#EFEFF4` | `VariableID:172:873` |
+| ios/fill-d | `#2C2C2E` | `VariableID:172:874` |
+| ios/glyph-l | `#D1D1D6` | `VariableID:172:871` |
+| ios/glyph-d | `#48484A` | `VariableID:172:872` |
+| ios/key-bg-l | `#D0D4DC` | `VariableID:172:877` |
+| ios/key-bg-d | `#151515` | `VariableID:172:878` |
+| ios/key-face-d-real | `#6C6C70` | `VariableID:187:863` |
+| ios/key-mod-l | `#ABB2C1` | `VariableID:172:879` |
+| ios/key-mod-d | `#565B66` | `VariableID:172:880` |
+| ios/key-mod-d-real | `#474747` | `VariableID:187:864` |
+| ios/label-quat | `#8E8E93` | `VariableID:172:868` |
+| ios/label-sec-l | `#3C3C43` | `VariableID:172:864` |
+| ios/label-sec-d | `#EBEBF5` | `VariableID:172:865` |
+| ios/label-ter-l | `#767680` | `VariableID:172:866` |
+| ios/label-ter-d | `#AEAEB2` | `VariableID:172:867` |
+| ios/separator-l | `#E5E5EA` | `VariableID:172:869` |
+| ios/separator-d | `#38383A` | `VariableID:172:870` |
+| ios/dim-stroke-l | `#D8D8D8` | `VariableID:172:884` |
+| ios/mid-stroke-l | `#979797` | `VariableID:172:885` |
 
 ---
 
-## Color
+## Color tokens (semantic, 65 vars)
 
-Collection `VariableCollectionId:5:2`. Modes: Light (`5:0`), Dark (`59:0`).
-Code syntax: `var(--color-*)`.
+Two-mode collection. **Light** is the default. **Dark** mode flips
+surface/text aliases; brand stays red across modes.
 
-### Surface + background
+### Background / Surface / Border (7)
 
-| Token | Light | Dark | Scopes |
+| Name | Light → Primitive | Dark → Primitive | Scopes |
 |---|---|---|---|
-| `color/background` | white | stone/950 | FRAME_FILL, SHAPE_FILL |
-| `color/surface` | white | stone/900 | FRAME_FILL, SHAPE_FILL |
-| `color/surface-muted` | stone/50 | stone/800 | FRAME_FILL, SHAPE_FILL |
-| `color/surface-hero` | stone/950 | stone/50 | FRAME_FILL, SHAPE_FILL |
+| `color/background` | `white` `#FFFFFF` | `stone/950` `#141312` | FRAME_FILL, SHAPE_FILL |
+| `color/surface` | `white` `#FFFFFF` | `stone/900` `#1A1918` | FRAME_FILL, SHAPE_FILL |
+| `color/surface-muted` | `stone/50` `#F6F5F2` | `stone/800` `#2B2925` | FRAME_FILL, SHAPE_FILL |
+| `color/surface-hero` | `stone/950` `#141312` | `stone/50` `#F6F5F2` | FRAME_FILL, SHAPE_FILL |
+| `color/border-subtle` | `stone/100` `#ECEAE5` | `stone/900` `#1A1918` | SHAPE_FILL, STROKE_COLOR |
+| `color/border` | `stone/200` `#D8D5CE` | `stone/700` `#3C3933` | SHAPE_FILL, STROKE_COLOR |
+| `color/border-strong` | `stone/900` `#1A1918` | `stone/100` `#ECEAE5` | SHAPE_FILL, STROKE_COLOR |
 
-Pattern B: `surface-hero` + `text-on-hero` invert together so hero
-cards (Account Card) and Primary buttons flip from dark-on-light in
-Light mode to light-on-dark in Dark mode.
+### Text (6)
 
-### Border
-
-| Token | Light | Dark | Scopes |
+| Name | Light → Primitive | Dark → Primitive | Scopes |
 |---|---|---|---|
-| `color/border` | stone/200 | stone/700 | SHAPE_FILL, STROKE_COLOR |
-| `color/border-strong` | stone/900 | stone/100 | SHAPE_FILL, STROKE_COLOR |
-| `color/border-subtle` | stone/100 | stone/900 | SHAPE_FILL, STROKE_COLOR |
+| `color/text-primary` | `stone/950` `#141312` | `stone/50` `#F6F5F2` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
+| `color/text-secondary` | `stone/600` `#5E5A54` | `stone/300` `#B5B0A5` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
+| `color/text-tertiary` | `stone/400` `#9E9A92` | `stone/400` `#9E9A92` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
+| `color/text-on-brand` | `white` `#FFFFFF` | `white` `#FFFFFF` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
+| `color/text-on-hero` | `white` `#FFFFFF` | `stone/950` `#141312` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
+| `color/text-on-hero-muted` | `stone/400` `#9E9A92` | `stone/600` `#5E5A54` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
 
-### Text
+### Brand — primary (4)
 
-| Token | Light | Dark | Scopes |
-|---|---|---|---|
-| `color/text-primary` | stone/950 | stone/50 | TEXT_FILL, STROKE_COLOR |
-| `color/text-secondary` | stone/600 | stone/300 | TEXT_FILL, STROKE_COLOR |
-| `color/text-tertiary` | stone/400 | stone/400 | TEXT_FILL, STROKE_COLOR |
-| `color/text-on-brand` | white | white | TEXT_FILL, STROKE_COLOR |
-| `color/text-on-hero` | white | stone/950 | TEXT_FILL, STROKE_COLOR |
-| `color/text-on-hero-muted` | stone/400 | stone/600 | TEXT_FILL, STROKE_COLOR |
+| Name | Light → Primitive | Dark → Primitive |
+|---|---|---|
+| `color/brand` | `red/500` `#D2222D` | `red/500` `#D2222D` |
+| `color/brand-hover` | `red/600` `#B41B24` | `red/400` `#DE4955` |
+| `color/brand-pressed` | `red/700` `#8F1218` | `red/600` `#B41B24` |
+| `color/brand-subtle` | `red/50` `#FBECED` | `red/900` `#3D0B0F` |
 
-### Brand (red)
+### Brand — secondary (4)
 
-| Token | Light | Dark | Scopes |
-|---|---|---|---|
-| `color/brand` | red/500 | red/500 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/brand-hover` | red/600 | red/400 | same |
-| `color/brand-pressed` | red/700 | red/600 | same |
-| `color/brand-subtle` | red/50 | red/900 | FRAME_FILL, SHAPE_FILL |
+| Name | Light → Primitive | Dark → Primitive |
+|---|---|---|
+| `color/brand-secondary` | `blue/500` `#438BFA` | `blue/400` `#79ABFB` |
+| `color/brand-secondary-hover` | `blue/600` `#1B73EC` | `blue/500` `#438BFA` |
+| `color/brand-secondary-pressed` | `blue/700` `#155CC0` | `blue/600` `#1B73EC` |
+| `color/brand-secondary-subtle` | `blue/50` `#ECF2FE` | `blue/900` `#0F2E5B` |
 
-### Brand-secondary (blue)
+### State (8)
 
-| Token | Light | Dark | Scopes |
-|---|---|---|---|
-| `color/brand-secondary` | blue/500 | blue/400 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/brand-secondary-hover` | blue/600 | blue/500 | same |
-| `color/brand-secondary-pressed` | blue/700 | blue/600 | same |
-| `color/brand-secondary-subtle` | blue/50 | blue/900 | FRAME_FILL, SHAPE_FILL |
+| Name | Light → Primitive | Dark → Primitive |
+|---|---|---|
+| `color/positive` | `green/500` `#22C55E` | `green/400` `#4ADE80` |
+| `color/positive-subtle` | `green/50` `#E8F3EC` | `green/900` `#0D2E1B` |
+| `color/negative` | `garnet/500` `#DC2626` | `garnet/400` `#F87171` |
+| `color/negative-subtle` | `garnet/50` `#F7E8E9` | `garnet/900` `#2E0A0D` |
+| `color/warning` | `amber/500` `#F59E0B` | `amber/400` `#FBBF24` |
+| `color/warning-subtle` | `amber/50` `#F9EEDB` | `amber/900` `#3D2A0A` |
+| `color/info` | `sky/500` `#0EA5E9` | `sky/400` `#38BDF8` |
+| `color/info-subtle` | `sky/50` `#F0F9FF` | `sky/900` `#0C4A6E` |
 
-### State
+### iOS Platform Chrome (36)
 
-| Token | Light | Dark | Scopes |
-|---|---|---|---|
-| `color/positive` | green/500 | green/400 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/positive-subtle` | green/50 | green/900 | FRAME_FILL, SHAPE_FILL |
-| `color/negative` | garnet/500 | garnet/400 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/negative-subtle` | garnet/50 | garnet/900 | FRAME_FILL, SHAPE_FILL |
-| `color/warning` | amber/500 | amber/400 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/warning-subtle` | amber/50 | amber/900 | FRAME_FILL, SHAPE_FILL |
-| `color/info` | sky/500 | sky/400 | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/info-subtle` | sky/50 | sky/900 | FRAME_FILL, SHAPE_FILL |
+Bind only from Platform Chrome · iOS components. App content should
+NOT touch these. Pairs marked `-light` / `-dark` are pinned to the
+named mode (used to render the keyboard's dark/light row groups in
+either app theme). The unsuffixed token (e.g. `color/ios/ios-accent`)
+inherits from the current theme.
 
-### iOS platform
-
-Platform-specific tokens for authentic iOS chrome (Status Bar,
-Keyboard & Indicator, Search Bar). Not for general DS use — prefer
-the semantic `text-*`, `surface-*`, `border-*` tokens for app content.
-
-| Token | Light | Dark | Scopes |
-|---|---|---|---|
-| `color/ios-label`            | ios/black `#000000`   | white `#ffffff`       | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-label-secondary`  | ios/label-sec-l `#3c3c43` | ios/label-sec-d `#ebebf5` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-label-tertiary`   | ios/label-ter-l `#767680` | ios/label-ter-d `#aeaeb2` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-label-quaternary` | ios/label-quat `#8e8e93`  | ios/label-quat `#8e8e93`  | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-glyph`            | ios/glyph-l `#d1d1d6` | ios/glyph-d `#48484a` | SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-separator`        | ios/separator-l `#e5e5ea` | ios/separator-d `#38383a` | SHAPE_FILL, STROKE_COLOR |
-| `color/ios-fill`             | ios/fill-l `#efeff4`  | ios/fill-d `#2c2c2e`  | FRAME_FILL, SHAPE_FILL |
-| `color/ios-bar-background`   | ios/bar-bg-l `#f9f9f9`| ios/bar-bg-d `#1c1c1e`| FRAME_FILL, SHAPE_FILL |
-| `color/ios-key-background`   | ios/key-bg-l `#d0d4dc`| ios/key-bg-d `#151515`| FRAME_FILL, SHAPE_FILL |
-| `color/ios-key-face`         | white `#ffffff`       | ios/key-mod-d `#565b66`| FRAME_FILL, SHAPE_FILL |
-| `color/ios-key-modifier`     | ios/key-mod-l `#abb2c1`| ios/key-mod-d `#565b66`| FRAME_FILL, SHAPE_FILL |
-| `color/ios-accent`           | ios/accent-l `#007aff`| ios/accent-d `#0a84ff`| SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-| `color/ios-navy-glyph`       | ios/navy `#172b85`    | ios/navy `#172b85`    | SHAPE_FILL |
-| `color/ios-dim-stroke`       | ios/dim-stroke-l `#d8d8d8`| ios/glyph-d `#48484a` | STROKE_COLOR, SHAPE_FILL |
-| `color/ios-mid-stroke`       | ios/mid-stroke-l `#979797`| ios/label-quat `#8e8e93` | STROKE_COLOR, SHAPE_FILL |
-| `color/ios-pinch-handle`     | ios/pinch-l `#01153c` | ios/pinch-d `#f2f2f7` | SHAPE_FILL |
-| `color/ios-backdrop`         | ios/black `#000000`   | ios/black `#000000`   | FRAME_FILL, SHAPE_FILL |
-| `color/ios-overlay-white`    | white `#ffffff`       | white `#ffffff`       | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR |
-
-### iOS mode-stable (fixed-light / fixed-dark) tokens
-
-Every Apple UI Kit component set ships with a `Dark Mode` or `Theme`
-**variant axis**. For those variants to render correctly regardless of
-the file's ambient Color collection mode, each uses a mode-stable
-iOS token that resolves to the same primitive in both Light and Dark.
-Use the `-light` token inside a `Dark Mode=False` / `Theme=Light`
-variant, and the `-dark` token inside a `Dark Mode=True` /
-`Theme=Dark` variant.
-
-| Token | Both modes resolve to |
-|---|---|
-| `color/ios-key-bg-light`     | ios/key-bg-l `#d0d4dc` |
-| `color/ios-key-bg-dark`      | ios/key-bg-d `#151515` |
-| `color/ios-key-face-light`   | white `#ffffff` |
-| `color/ios-key-face-dark`    | ios/key-face-d-real `#6c6c70` |
-| `color/ios-key-mod-light`    | ios/key-mod-l `#abb2c1` |
-| `color/ios-key-mod-dark`     | ios/key-mod-d-real `#474747` |
-| `color/ios-label-sec-light`  | ios/label-sec-l `#3c3c43` |
-| `color/ios-label-sec-dark`   | ios/label-sec-d `#ebebf5` |
-| `color/ios-label-ter-light`  | ios/label-ter-l `#767680` |
-| `color/ios-label-ter-dark`   | ios/label-ter-d `#aeaeb2` |
-| `color/ios-separator-light`  | ios/separator-l `#e5e5ea` |
-| `color/ios-separator-dark`   | ios/separator-d `#38383a` |
-| `color/ios-fill-light`       | ios/fill-l `#efeff4` |
-| `color/ios-fill-dark`        | ios/fill-d `#2c2c2e` |
-| `color/ios-bar-bg-light`     | ios/bar-bg-l `#f9f9f9` |
-| `color/ios-bar-bg-dark`      | ios/bar-bg-d `#1c1c1e` |
-| `color/ios-accent-light`     | ios/accent-l `#007aff` |
-| `color/ios-accent-dark`      | ios/accent-d `#0a84ff` |
-
-Reuse guide:
-- `color/ios-backdrop` doubles as "always black label" (e.g. letter
-  text in a Dark Mode=False keyboard variant).
-- `color/ios-overlay-white` doubles as "always white label" (e.g.
-  letter text in a Dark Mode=True keyboard variant, or status-bar
-  icons on the Cupertino scrim).
-
-Backed by 25 new primitives (prefix `ios/`) added to the Primitives
-collection. Primitive hex values match Apple's published system
-colors for UIKit light/dark modes.
-
-`color/ios-backdrop`, `color/ios-overlay-white`, and the
-`-light` / `-dark` tokens above are the **mode-stable** iOS tokens
-— same primitive in both Color collection modes. All other
-`color/ios-*` tokens flip with mode (DS default). Don't mix the two:
-if a component uses a variant axis to pick theme, all its paints
-must bind to the mode-stable tokens; otherwise they'll flip
-independently and break the variant's intent.
+| Name | Light → Primitive | Dark → Primitive |
+|---|---|---|
+| `color/ios/ios-accent` | `ios/accent-l` `#007AFF` | `ios/accent-d` `#0A84FF` |
+| `color/ios/ios-accent-light` | `ios/accent-l` `#007AFF` | `ios/accent-l` `#007AFF` |
+| `color/ios/ios-accent-dark` | `ios/accent-d` `#0A84FF` | `ios/accent-d` `#0A84FF` |
+| `color/ios/ios-backdrop` | `ios/black` `#000000` | `ios/black` `#000000` |
+| `color/ios/ios-bar-background` | `ios/bar-bg-l` `#F9F9F9` | `ios/bar-bg-d` `#1C1C1E` |
+| `color/ios/ios-bar-bg-light` | `ios/bar-bg-l` `#F9F9F9` | `ios/bar-bg-l` `#F9F9F9` |
+| `color/ios/ios-bar-bg-dark` | `ios/bar-bg-d` `#1C1C1E` | `ios/bar-bg-d` `#1C1C1E` |
+| `color/ios/ios-fill` | `ios/fill-l` `#EFEFF4` | `ios/fill-d` `#2C2C2E` |
+| `color/ios/ios-fill-light` | `ios/fill-l` `#EFEFF4` | `ios/fill-l` `#EFEFF4` |
+| `color/ios/ios-fill-dark` | `ios/fill-d` `#2C2C2E` | `ios/fill-d` `#2C2C2E` |
+| `color/ios/ios-glyph` | `ios/glyph-l` `#D1D1D6` | `ios/glyph-d` `#48484A` |
+| `color/ios/ios-key-background` | `ios/key-bg-l` `#D0D4DC` | `ios/key-bg-d` `#151515` |
+| `color/ios/ios-key-bg-light` | `ios/key-bg-l` `#D0D4DC` | `ios/key-bg-l` `#D0D4DC` |
+| `color/ios/ios-key-bg-dark` | `ios/key-bg-d` `#151515` | `ios/key-bg-d` `#151515` |
+| `color/ios/ios-key-face` | `white` `#FFFFFF` | `ios/key-mod-d` `#565B66` |
+| `color/ios/ios-key-face-light` | `white` `#FFFFFF` | `white` `#FFFFFF` |
+| `color/ios/ios-key-face-dark` | `ios/key-face-d-real` `#6C6C70` | `ios/key-face-d-real` `#6C6C70` |
+| `color/ios/ios-key-modifier` | `ios/key-mod-l` `#ABB2C1` | `ios/key-mod-d` `#565B66` |
+| `color/ios/ios-key-mod-light` | `ios/key-mod-l` `#ABB2C1` | `ios/key-mod-l` `#ABB2C1` |
+| `color/ios/ios-key-mod-dark` | `ios/key-mod-d-real` `#474747` | `ios/key-mod-d-real` `#474747` |
+| `color/ios/ios-label` | `ios/black` `#000000` | `white` `#FFFFFF` |
+| `color/ios/ios-label-secondary` | `ios/label-sec-l` `#3C3C43` | `ios/label-sec-d` `#EBEBF5` |
+| `color/ios/ios-label-sec-light` | `ios/label-sec-l` `#3C3C43` | `ios/label-sec-l` `#3C3C43` |
+| `color/ios/ios-label-sec-dark` | `ios/label-sec-d` `#EBEBF5` | `ios/label-sec-d` `#EBEBF5` |
+| `color/ios/ios-label-tertiary` | `ios/label-ter-l` `#767680` | `ios/label-ter-d` `#AEAEB2` |
+| `color/ios/ios-label-ter-light` | `ios/label-ter-l` `#767680` | `ios/label-ter-l` `#767680` |
+| `color/ios/ios-label-ter-dark` | `ios/label-ter-d` `#AEAEB2` | `ios/label-ter-d` `#AEAEB2` |
+| `color/ios/ios-label-quaternary` | `ios/label-quat` `#8E8E93` | `ios/label-quat` `#8E8E93` |
+| `color/ios/ios-separator` | `ios/separator-l` `#E5E5EA` | `ios/separator-d` `#38383A` |
+| `color/ios/ios-separator-light` | `ios/separator-l` `#E5E5EA` | `ios/separator-l` `#E5E5EA` |
+| `color/ios/ios-separator-dark` | `ios/separator-d` `#38383A` | `ios/separator-d` `#38383A` |
+| `color/ios/ios-dim-stroke` | `ios/dim-stroke-l` `#D8D8D8` | `ios/glyph-d` `#48484A` |
+| `color/ios/ios-mid-stroke` | `ios/mid-stroke-l` `#979797` | `ios/label-quat` `#8E8E93` |
+| `color/ios/ios-navy-glyph` | `ios/navy` `#172B85` | `ios/navy` `#172B85` |
+| `color/ios/ios-pinch-handle` | `ios/pinch-l` `#01153C` | `ios/pinch-d` `#F2F2F7` |
+| `color/ios/ios-overlay-white` | `white` `#FFFFFF` | `white` `#FFFFFF` |
 
 ---
 
-## Spacing
+## Spacing (10)
 
-Collection `VariableCollectionId:6:2`. Single mode "Value". Scopes
-`WIDTH_HEIGHT, GAP`. 4pt base grid with pragmatic steps after `space/6`.
+Single-mode `Value` collection. Scopes: `WIDTH_HEIGHT`, `GAP`.
 
-| Token | px |
-|---|---|
-| `space/1` | 4 |
-| `space/2` | 8 |
-| `space/3` | 12 |
-| `space/4` | 16 |
-| `space/5` | 20 |
-| `space/6` | 24 |
-| `space/7` | 32 |
-| `space/8` | 40 |
-| `space/9` | 56 |
-| `space/10` | 80 |
+| Name | Value | Code | ID |
+|---|---|---|---|
+| `space/1` | 4 | `var(--space-1)` | `VariableID:6:3` |
+| `space/2` | 8 | `var(--space-2)` | `VariableID:6:4` |
+| `space/3` | 12 | `var(--space-3)` | `VariableID:6:5` |
+| `space/4` | 16 | `var(--space-4)` | `VariableID:6:6` |
+| `space/5` | 20 | `var(--space-5)` | `VariableID:6:7` |
+| `space/6` | 24 | `var(--space-6)` | `VariableID:6:8` |
+| `space/7` | 32 | `var(--space-7)` | `VariableID:6:9` |
+| `space/8` | 40 | `var(--space-8)` | `VariableID:6:10` |
+| `space/9` | 56 | `var(--space-9)` | `VariableID:6:11` |
+| `space/10` | 80 | `var(--space-10)` | `VariableID:6:12` |
 
 ---
 
-## Radius
+## Radius (6)
 
-Collection `VariableCollectionId:6:13`. Single mode "Value". Scopes
-`CORNER_RADIUS`.
+Single-mode `Value` collection. Scope: `CORNER_RADIUS`.
 
-| Token | px |
-|---|---|
-| `radius/xs` | 4 |
-| `radius/sm` | 8 |
-| `radius/md` | 12 |
-| `radius/lg` | 16 |
-| `radius/xl` | 24 |
-| `radius/full` | 9999 |
+| Name | Value | Code | ID |
+|---|---|---|---|
+| `radius/xs` | 4 | `var(--radius-xs)` | `VariableID:77:322` |
+| `radius/sm` | 8 | `var(--radius-sm)` | `VariableID:6:14` |
+| `radius/md` | 12 | `var(--radius-md)` | `VariableID:6:15` |
+| `radius/lg` | 16 | `var(--radius-lg)` | `VariableID:6:16` |
+| `radius/xl` | 24 | `var(--radius-xl)` | `VariableID:6:17` |
+| `radius/full` | 9999 | `var(--radius-full)` | `VariableID:6:18` |
+
+---
+
+## Text styles (15)
+
+Two font families: **Geologica** (live) and **Clash Display** (intent —
+currently renders as Geologica Bold pending manual swap, see
+[DS_LESSONS.md](./DS_LESSONS.md)).
+
+| Style | Font | Size | LH | LS | Note |
+|---|---|---|---|---|---|
+| display/xl | Clash Display Semibold | 48 | 52 | −2% | Clash intent, Geologica fallback |
+| display/md | Clash Display Semibold | 36 | 40 | −2% | Clash intent, Geologica fallback |
+| title/lg | Clash Display Semibold | 28 | 34 | −1% | Clash intent, Geologica fallback |
+| title/md | Clash Display Semibold | 22 | 28 | −1% | Clash intent, Geologica fallback |
+| title/sm | Geologica SemiBold | 18 | 24 | — | |
+| subtitle | Geologica Medium | 16 | 22 | — | |
+| body | Geologica Regular | 15 | 22 | — | |
+| body/sm | Geologica Regular | 13 | 18 | — | |
+| label | Geologica Medium | 13 | 18 | — | |
+| button | Geologica SemiBold | 15 | 20 | — | |
+| input-text | Geologica Regular | 16 | 22 | — | |
+| caption | Geologica Medium | 12 | 16 | — | |
+| overline | Geologica SemiBold | 11 | 14 | 8% | UPPER case |
+| numeric/display | Clash Display Semibold | 36 | 40 | −1% | Tabular numerals via OpenType |
+| numeric/body | Geologica Medium | 15 | 22 | — | Tabular numerals via OpenType |
+
+## Effect styles
+
+None. Shadows are applied directly on individual nodes (no shared
+effect style is defined).

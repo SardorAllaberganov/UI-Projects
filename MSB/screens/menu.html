@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Меню</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 120px;
+  }
+
+  .header-pink {
+    background: linear-gradient(167.16deg, #F93C65 23.888%, #E6303A 85.587%);
+    border-radius: 0 0 24px 24px;
+    padding-bottom: 18px;
+  }
+  .header-pink .ios-status .time { color: #fff; }
+  .header-pink .ios-status .levels img { filter: brightness(0) invert(1); }
+
+  .top-bar-menu {
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .top-bar-menu .hamburger {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .top-bar-menu .hamburger img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+  }
+  .top-bar-menu .title {
+    flex: 1;
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #FFFFFF;
+    text-align: left;
+  }
+  .top-bar-menu .right { display: flex; gap: 16px; align-items: center; }
+  .top-bar-menu .right .icon-btn {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .top-bar-menu .right .icon-btn img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+  }
+
+  .tile-grid {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tile {
+    background: #F6F8F9;
+    border-radius: 16px;
+    padding: 16px;
+    width: calc(50% - 4px);
+    height: 114px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .12s ease;
+    cursor: pointer;
+    border: none;
+    text-align: left;
+    font-family: inherit;
+  }
+  .tile:active { transform: scale(.98); }
+  .tile .icon-box {
+    width: 36px;
+    height: 36px;
+    background: #F6F8F9;
+    border: 0.371px solid #8CC5FF;
+    border-radius: 10px;
+    box-shadow: -3.375px 3.375px 3.375px rgba(10, 132, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .tile .icon-box img {
+    width: 24px;
+    height: 24px;
+  }
+  .tile .label {
+    font: 600 14px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="header-pink">
+    <div class="ios-status on-gradient">
+      <div class="time">9:41</div>
+      <div class="dynamic-island"></div>
+      <div class="levels">
+        <img class="cellular" src="../assets/ic-cellular.svg" alt="">
+        <img class="wifi" src="../assets/ic-wifi.svg" alt="">
+        <img class="battery" src="../assets/ic-battery.svg" alt="">
+      </div>
+    </div>
+
+    <div class="top-bar-menu">
+      <button class="hamburger" onclick="history.back()" aria-label="Назад">
+        <img src="../assets/ic-hamburger.svg" alt="">
+      </button>
+      <div class="title">Меню</div>
+      <div class="right">
+        <button class="icon-btn" onclick="MSB.toast('Поддержка · скоро')" aria-label="Поддержка">
+          <img src="../assets/ic-headphones.svg" alt="">
+        </button>
+        <button class="icon-btn" onclick="location.href='notifications.html'" aria-label="Уведомления">
+          <img src="../assets/ic-bell.svg" alt="">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tile-grid">
+    <a class="tile" href="accounts.html">
+      <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+      <div class="label">Мои счета</div>
+    </a>
+    <a class="tile" href="reports.html">
+      <div class="icon-box"><img src="../assets/ic-stats.svg" alt=""></div>
+      <div class="label">Статистика</div>
+    </a>
+    <a class="tile" href="#" onclick="MSB.toast('Мои авто · скоро'); return false;">
+      <div class="icon-box"><img src="../assets/ic-car.svg" alt=""></div>
+      <div class="label">Мои авто</div>
+    </a>
+    <a class="tile" href="#" onclick="MSB.toast('Коммунальные услуги · скоро'); return false;">
+      <div class="icon-box"><img src="../assets/ic-utility.svg" alt=""></div>
+      <div class="label">Коммунальные услуги</div>
+    </a>
+    <a class="tile" href="document-templates.html">
+      <div class="icon-box"><img src="../assets/ic-doc-template.svg" alt=""></div>
+      <div class="label">Шаблоны кадровых документов</div>
+    </a>
+    <a class="tile" href="counterparties.html">
+      <div class="icon-box"><img src="../assets/ic-users.svg" alt=""></div>
+      <div class="label">Мои контрагенты</div>
+    </a>
+    <a class="tile" href="payroll.html">
+      <div class="icon-box"><img src="../assets/ic-wallet.svg" alt=""></div>
+      <div class="label">Зарплата</div>
+    </a>
+    <a class="tile" href="staff.html">
+      <div class="icon-box"><img src="../assets/ic-employee.svg" alt=""></div>
+      <div class="label">Кадры</div>
+    </a>
+  </div>
+
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('menu');
+</script>
+</body>
+</html>

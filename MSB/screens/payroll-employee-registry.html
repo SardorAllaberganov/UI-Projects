@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Реестр сотрудников</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 110px;
+  }
+
+  .meta-card {
+    background: #F0F0F0;
+    padding: 16px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .meta-field {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .meta-field .lbl {
+    font: 400 12px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .meta-field .val {
+    font: 600 15px/1.4 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+
+  .info-banner {
+    margin: 12px 16px 0;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FEF3C7;
+    border-radius: 10px;
+  }
+  .info-banner .i-circle {
+    width: 18px; height: 18px;
+    border: 1.5px solid #EAB308;
+    border-radius: 50%;
+    color: #EAB308;
+    display: flex; align-items: center; justify-content: center;
+    font: 700 12px/1 'Manrope', sans-serif;
+    flex-shrink: 0;
+  }
+  .info-banner .info-text {
+    font: 500 13px/1.2 'Manrope', sans-serif;
+    color: #B45309;
+  }
+
+  .emp-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  .emp-row {
+    background: #F0F0F0;
+    padding: 12px 16px;
+    border-bottom: 1px solid #DFDFE4;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .emp-row .meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .emp-row .card {
+    font: 700 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .emp-row .name {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .emp-row .amount-input {
+    width: 130px;
+    height: 44px;
+    border: 1px solid #DFDFE4;
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 0 12px;
+    outline: none;
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+    font-family: inherit;
+    text-align: left;
+  }
+  .emp-row .amount-input::placeholder { color: #A6A6A9; }
+  .emp-row .amount-input:focus { border-color: #F93C65; }
+  .emp-row .amount-readonly {
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+    display: flex;
+    gap: 8px;
+  }
+  .cta-btn-pink {
+    flex: 1;
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+  }
+  .cta-btn-outline {
+    width: 56px;
+    background: #FFFFFF;
+    border: 1px solid #DFDFE4;
+    height: 56px;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3F3F46;
+  }
+
+  /* Bottom sheet for Excel upload */
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: #F0F0F0;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px;
+    z-index: 250;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    animation: sheet-up .25s ease;
+  }
+  .bottom-sheet.open { display: flex; }
+  @keyframes sheet-up { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }
+  .bottom-sheet .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bottom-sheet .title {
+    font: 700 18px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .bottom-sheet .close {
+    width: 28px; height: 28px;
+    background: transparent;
+    border: 1px solid #DFDFE4;
+    border-radius: 50%;
+    color: #3F3F46;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 400 16px/1 'Manrope', sans-serif;
+  }
+  .bottom-sheet .desc {
+    font: 500 14px/1.4 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .bottom-sheet .file-pick {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .bottom-sheet .file-pick .upload-ic {
+    width: 24px;
+    height: 24px;
+    color: #3F3F46;
+  }
+  .bottom-sheet .file-pick .lbl {
+    font: 600 15px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+
+  /* Center modal for transaction details */
+  .tx-modal {
+    background: #F0F0F0;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tx-modal .title {
+    font: 700 18px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .tx-modal .desc {
+    font: 500 14px/1.4 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .tx-modal .field {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tx-modal .field .lbl {
+    font: 400 12px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .tx-modal .field .val {
+    font: 700 15px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .tx-modal .row-2 { display: flex; gap: 8px; }
+  .tx-modal .row-2 .field { flex: 1; min-width: 0; }
+  .tx-modal .error-text {
+    font: 500 14px/1.3 'Manrope', sans-serif;
+    color: #F97316;
+  }
+  .tx-modal .modal-actions { margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div id="metaCard" class="meta-card" style="display: none;">
+    <div class="meta-field">
+      <div class="lbl">Описание</div>
+      <div class="val" id="descVal"></div>
+    </div>
+    <div class="meta-field">
+      <div class="lbl">Назначение</div>
+      <div class="val" id="purposeVal"></div>
+    </div>
+  </div>
+
+  <div class="info-banner" id="hintBanner" style="display: none;">
+    <span class="i-circle">i</span>
+    <span class="info-text">Введите сумму в пустые поля ниже.</span>
+  </div>
+
+  <div class="emp-list" id="empList"></div>
+
+  <div class="footer-cta" id="footerCta">
+    <button class="cta-btn-outline" onclick="openSheet('excel')" title="Загрузить Excel">
+      <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 4v12M7 9l5-5 5 5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="cta-btn-pink" id="saveBtn" onclick="openSheet('tx')">Сохранить</button>
+  </div>
+
+  <!-- Excel upload bottom sheet -->
+  <div class="modal-backdrop" id="excelBackdrop" onclick="closeSheet(event, 'excel')"></div>
+  <div class="bottom-sheet" id="excelSheet">
+    <div class="head">
+      <div class="title">Выберите файл Excel</div>
+      <button class="close" onclick="closeSheetFn('excel')">✕</button>
+    </div>
+    <div class="desc">Выберите файл Excel из файловой системы</div>
+    <button class="file-pick" onclick="uploadFile()">
+      <span class="upload-ic">
+        <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M12 16V8M8 12l4-4 4 4M5 20h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="lbl">Выбрать из файлов</span>
+    </button>
+  </div>
+
+  <!-- Transaction details (center modal) -->
+  <div class="modal-backdrop" id="txBackdrop" onclick="closeSheet(event, 'tx')"></div>
+  <div class="modal-center" id="txModal">
+    <div class="tx-modal" style="width: 100%; padding: 0; background: transparent;">
+      <div class="title">Детали операции</div>
+      <div class="desc">Вы совершаете транзакцию по:</div>
+      <div class="field">
+        <div class="lbl">Количество карт</div>
+        <div class="val">14</div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <div class="lbl">Остаток счета</div>
+          <div class="val" id="balanceVal">10 000 000 сум</div>
+        </div>
+        <div class="field">
+          <div class="lbl">Сумма операции</div>
+          <div class="val" id="amountVal">10 000 000 сум</div>
+        </div>
+      </div>
+      <div class="error-text" id="insufErr" style="display: none;">
+        На балансе недостаточно средств для завершения транзакции по ведомости.
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" onclick="closeSheetFn('tx')">Отмена</button>
+        <button class="modal-btn-confirm" id="sendBtn" onclick="confirmTx()">Отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success modal -->
+  <div class="modal-backdrop" id="successBackdrop" onclick="closeSheet(event, 'success')"></div>
+  <div class="modal-center" id="successModal">
+    <div class="modal-icon-success"></div>
+    <div class="modal-text">Ваша операция прошла успешно</div>
+    <button class="modal-btn-close-wide" onclick="closeSheetFn('success'); location.href='payroll-registry-history.html';">Все понятно. Закрыть</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+
+  const fmt = n => {
+    const parts = n.toFixed(2).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + parts[1];
+  };
+
+  // Determine state from URL params
+  const isNew = MSB.qsParam('new') === '1';
+  const regId = MSB.qsParam('id');
+  const descParam = MSB.qsParam('desc') || '';
+  const purposeParam = MSB.qsParam('purpose') || '';
+  let mode = isNew ? 'empty' : 'view'; // empty (input) or view (read-only)
+
+  let reg = null;
+  if (regId) reg = MSB_DATA.payrollRegistries.find(r => r.id === regId);
+
+  // Title
+  const headerTitle = reg ? reg.name : (descParam || 'Аванс, октябрь');
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: headerTitle, back: true, showActions: false });
+
+  // Meta card + hint banner only on new flow
+  if (isNew && descParam) {
+    document.getElementById('metaCard').style.display = 'flex';
+    document.getElementById('descVal').textContent = descParam;
+    document.getElementById('purposeVal').textContent = purposeParam || 'Не указано';
+    document.getElementById('hintBanner').style.display = 'flex';
+  }
+
+  // Employee rows
+  const emps = MSB_DATA.payrollEmployees.slice(0, 10);
+  // Sample: 9 use repeated demo card, 1 keeps actual data for variation
+  const demoCard = '4934 5377 7660 0580';
+  const demoName = 'Falonchiyev Pistonchi';
+
+  function renderRows() {
+    document.getElementById('empList').innerHTML = emps.map((e, i) => {
+      const showInput = mode === 'empty';
+      return `
+        <div class="emp-row">
+          <div class="meta">
+            <div class="card">${demoCard}</div>
+            <div class="name">${demoName}</div>
+          </div>
+          ${showInput
+            ? `<input class="amount-input" placeholder="${i === 0 && isNew ? 'Summani kiriting' : 'Введите сумму'}" data-i="${i}">`
+            : `<div class="amount-readonly">${fmt(e.amount)}</div>`}
+        </div>`;
+    }).join('');
+  }
+  renderRows();
+
+  // Hide footer CTA when in read-only view
+  if (mode === 'view') {
+    document.getElementById('footerCta').style.display = 'none';
+  }
+
+  // Sheet/modal handlers
+  window.openSheet = (name) => {
+    if (name === 'tx') {
+      // Check sums entered
+      const inputs = document.querySelectorAll('.amount-input');
+      const total = Array.from(inputs).reduce((sum, inp) => {
+        return sum + (parseFloat(inp.value.replace(/[^\d.]/g, '')) || 0);
+      }, 0);
+      const balance = 10000000;
+      document.getElementById('amountVal').textContent = fmt(total > 0 ? total : 10000000).replace('.00', '') + ' сум';
+      document.getElementById('balanceVal').textContent = fmt(balance).replace('.00', '') + ' сум';
+      if (total > balance) {
+        document.getElementById('insufErr').style.display = 'block';
+        document.getElementById('sendBtn').disabled = true;
+        document.getElementById('sendBtn').style.opacity = '.5';
+        document.getElementById('sendBtn').style.cursor = 'not-allowed';
+        document.getElementById('balanceVal').textContent = '9 000 000 сум';
+      } else {
+        document.getElementById('insufErr').style.display = 'none';
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('sendBtn').style.opacity = '1';
+        document.getElementById('sendBtn').style.cursor = 'pointer';
+      }
+    }
+    document.getElementById(name + 'Backdrop').classList.add('open');
+    if (name === 'excel') document.getElementById(name + 'Sheet').classList.add('open');
+    else document.getElementById(name + 'Modal').classList.add('open');
+  };
+
+  window.closeSheetFn = (name) => {
+    document.getElementById(name + 'Backdrop').classList.remove('open');
+    const sheet = document.getElementById(name + 'Sheet');
+    const modal = document.getElementById(name + 'Modal');
+    if (sheet) sheet.classList.remove('open');
+    if (modal) modal.classList.remove('open');
+  };
+
+  window.closeSheet = (e, name) => {
+    if (e.target.id === name + 'Backdrop') closeSheetFn(name);
+  };
+
+  window.uploadFile = () => {
+    closeSheetFn('excel');
+    // Auto-fill all inputs with mock data
+    document.querySelectorAll('.amount-input').forEach((inp, i) => {
+      inp.value = emps[i] ? emps[i].amount.toFixed(0) : '';
+    });
+    MSB.toast('Файл Excel загружен · суммы заполнены');
+  };
+
+  window.confirmTx = () => {
+    closeSheetFn('tx');
+    setTimeout(() => openSheet('success'), 200);
+  };
+</script>
+</body>
+</html>

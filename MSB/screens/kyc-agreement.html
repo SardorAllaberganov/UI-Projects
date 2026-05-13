@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MyID · Зарплатная карта</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 120px;
+  }
+
+  .form-intro { padding: 8px 16px 4px; }
+  .form-intro .title {
+    font: 700 22px/1.3 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 6px;
+  }
+  .form-intro .sub {
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+  }
+
+  /* Card preview */
+  .card-preview-wrap {
+    padding: 16px;
+  }
+  .card-preview {
+    aspect-ratio: 1.586 / 1;
+    background: linear-gradient(135deg, #F93C65 0%, #E6303A 70%, #B30016 100%);
+    border-radius: 18px;
+    padding: 20px;
+    color: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(230, 48, 58, 0.30);
+  }
+  .card-preview::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    top: -60px;
+    right: -40px;
+  }
+  .card-preview::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    bottom: -40px;
+    left: 40%;
+  }
+  .card-preview .card-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card-preview .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-preview .brand .unired-mark {
+    font: 800 18px/1 'Manrope', sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .card-preview .brand .chip {
+    width: 36px;
+    height: 26px;
+    background: linear-gradient(135deg, #FFE5A0 0%, #F0C040 100%);
+    border-radius: 5px;
+    position: relative;
+  }
+  .card-preview .brand .chip::before,
+  .card-preview .brand .chip::after {
+    content: '';
+    position: absolute;
+    background: rgba(0,0,0,0.15);
+  }
+  .card-preview .brand .chip::before {
+    top: 6px; bottom: 6px; left: 12px; width: 1px;
+  }
+  .card-preview .brand .chip::after {
+    left: 6px; right: 6px; top: 12px; height: 1px;
+  }
+  .card-preview .number {
+    font: 600 18px/1 'Manrope', sans-serif;
+    letter-spacing: 2px;
+  }
+  .card-preview .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .card-preview .footer .holder {
+    font: 600 13px/1.2 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex: 1;
+    min-width: 0;
+  }
+  .card-preview .footer .visa {
+    font: 800 18px/1 'Arial', sans-serif;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  .benefits {
+    margin: 0 16px 16px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .benefit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .benefit-row .check {
+    width: 22px; height: 22px;
+    background: #DCFCE7;
+    color: #16A34A;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font: 700 13px/1 sans-serif;
+  }
+  .benefit-row .text {
+    font: 500 14px/1.3 'Manrope', sans-serif;
+    color: #3F3F46;
+    flex: 1;
+  }
+
+  .agreement-card {
+    margin: 0 16px 16px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .agreement-card .title {
+    font: 600 14px/1.3 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 10px;
+  }
+  .agreement-card .text {
+    font: 400 13px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+    max-height: 120px;
+    overflow-y: auto;
+    background: #F6F8F9;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .agree-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .agree-toggle input {
+    width: 20px;
+    height: 20px;
+    accent-color: #E6303A;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .agree-toggle .lbl {
+    font: 500 13px/1.4 'Manrope', sans-serif;
+    color: #3F3F46;
+    flex: 1;
+  }
+  .agree-toggle .lbl a {
+    color: #E6303A;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .cta-btn-pink[disabled] { opacity: .4; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="kyc-steps">
+    <div class="kyc-step-bar done"></div>
+    <div class="kyc-step-bar done"></div>
+    <div class="kyc-step-bar done"></div>
+  </div>
+  <div class="kyc-step-label"><span class="current">Шаг 3 из 3</span> · Согласие</div>
+
+  <div class="form-intro">
+    <div class="title">Зарплатная карта Unired</div>
+    <div class="sub">Карта оформляется бесплатно. Заберите её в ближайшем отделении банка или закажите доставку.</div>
+  </div>
+
+  <div class="card-preview-wrap">
+    <div class="card-preview">
+      <div class="card-content">
+        <div class="brand">
+          <div class="unired-mark">Unired</div>
+          <div class="chip"></div>
+        </div>
+        <div class="number">•••• •••• •••• ••••</div>
+        <div class="footer">
+          <div class="holder" id="cardHolder">CARDHOLDER NAME</div>
+          <div class="visa">VISA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="benefits">
+    <div class="benefit-row">
+      <span class="check">✓</span>
+      <span class="text">Бесплатное обслуживание и выпуск карты</span>
+    </div>
+    <div class="benefit-row">
+      <span class="check">✓</span>
+      <span class="text">Получение зарплаты на карту от работодателя</span>
+    </div>
+    <div class="benefit-row">
+      <span class="check">✓</span>
+      <span class="text">Снятие наличных без комиссии в банкоматах Unired</span>
+    </div>
+    <div class="benefit-row">
+      <span class="check">✓</span>
+      <span class="text">Cashback до 5% на покупки</span>
+    </div>
+  </div>
+
+  <div class="agreement-card">
+    <div class="title">Договор на оформление карты</div>
+    <div class="text">
+      Настоящий договор регулирует отношения между Клиентом и АО "Unired Bank" по выпуску и обслуживанию банковской карты Visa в рамках зарплатного проекта. Клиент подтверждает достоверность предоставленных персональных данных и согласие на их обработку в соответствии с законодательством Республики Узбекистан. Карта выпускается на срок 3 года с возможностью продления. Тариф обслуживания «Зарплатный» — без абонентской платы. Лимиты снятия наличных и онлайн-операций установлены в соответствии с тарифным планом банка.
+    </div>
+    <label class="agree-toggle">
+      <input type="checkbox" id="agree">
+      <span class="lbl">Я согласен с <a href="#" onclick="return false;">условиями договора</a> и подтверждаю оформление зарплатной карты Unired Visa</span>
+    </label>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" id="signBtn" disabled>Подписать и завершить</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const token = MSB.qsParam('token');
+  const inv = token ? MSB.getInvite(token) : null;
+  if (!inv) location.replace('kyc-welcome.html');
+
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Согласие на оформление', back: true, showActions: false });
+
+  // Personalize card with employee name
+  const holder = (inv.firstName + ' ' + inv.lastName).toUpperCase();
+  document.getElementById('cardHolder').textContent = holder;
+
+  const agree = document.getElementById('agree');
+  const signBtn = document.getElementById('signBtn');
+  agree.addEventListener('change', e => {
+    signBtn.disabled = !e.target.checked;
+  });
+
+  signBtn.addEventListener('click', () => {
+    if (!agree.checked) return;
+    // Persist new staff to localStorage (employee side completes onboarding)
+    MSB.addNewStaff({
+      id: 'new-' + token,
+      token,
+      company: 'OOO "Demo Company 2"',
+      name: inv.firstName + ' ' + inv.lastName,
+      firstName: inv.firstName,
+      lastName: inv.lastName,
+      position: 'Новый сотрудник',
+      phone: inv.phone,
+      passport: inv.passport,
+      dob: inv.dob,
+      cardLast4: Math.floor(1000 + Math.random() * 9000).toString(),
+      createdAt: new Date().toISOString(),
+    });
+    MSB.markInviteCompleted(token);
+    location.href = 'kyc-success.html?token=' + token;
+  });
+</script>
+</body>
+</html>

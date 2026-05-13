@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Контрагент</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .cp-hero {
+    background: #fff;
+    text-align: center;
+    padding: 24px 16px 16px;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 12px;
+  }
+  .cp-hero .av {
+    width: 72px; height: 72px;
+    background: var(--msb-red-light);
+    color: var(--msb-red);
+    border-radius: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  .cp-hero .name { font-weight: 700; font-size: 17px; }
+  .cp-hero .inn { color: var(--msb-text-muted); font-size: 13px; margin-top: 4px; }
+  .cp-hero .balance-pill {
+    margin-top: 14px;
+    padding: 10px 16px;
+    background: var(--msb-bg);
+    border-radius: 12px;
+    display: inline-block;
+  }
+  .cp-hero .balance-pill .k { font-size: 12px; color: var(--msb-text-muted); }
+  .cp-hero .balance-pill .v { font-weight: 700; font-size: 18px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div id="content"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  const id = MSB.qsParam('id') || 'c1';
+  const c = MSB_DATA.counterparties.find(x => x.id === id);
+  if (!c) location.href = 'counterparties.html';
+
+  document.getElementById('topBar').innerHTML = MSB.topBar({ title: 'Контрагент', back: true });
+
+  const isDebtor = c.type === 'debtor';
+  const sign = isDebtor ? '+' : '–';
+  const cls = isDebtor ? 'success' : 'red';
+  const txs = MSB_DATA.transactions.filter(t => t.counterparty.includes(c.name.split(' ')[1] || c.name));
+
+  document.getElementById('content').innerHTML = `
+    <div class="cp-hero">
+      <div class="av">${MSB.initials(c.name)}</div>
+      <div class="name">${c.name}</div>
+      <div class="inn">ИНН ${c.inn} · ${c.city}</div>
+      <div class="balance-pill">
+        <div class="k">${isDebtor ? 'Дебиторская задолженность' : 'Кредиторская задолженность'}</div>
+        <div class="v" style="color: ${isDebtor ? 'var(--msb-success)' : 'var(--msb-red)'};">${sign} ${MSB.fmtMoney(c.balance, c.currency)}</div>
+      </div>
+    </div>
+
+    <div style="padding: 0 16px;">
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <button class="btn btn-primary" onclick="location.href='transfer.html?to=${c.id}'">↑ Перевод</button>
+        <button class="btn btn-outline" onclick="MSB.toast('Создать счёт · скоро')">📄 Счёт</button>
+      </div>
+
+      <div class="section-title flush">Реквизиты</div>
+      <div class="card">
+        <div class="kv-row"><div class="k">Наименование</div><div class="v">${c.name}</div></div>
+        <div class="kv-row"><div class="k">ИНН</div><div class="v">${c.inn}</div></div>
+        <div class="kv-row"><div class="k">Город</div><div class="v">${c.city}</div></div>
+        <div class="kv-row"><div class="k">Контакт</div><div class="v">${c.contact}</div></div>
+      </div>
+
+      <div class="section-title">Операции (${txs.length})</div>
+      ${txs.length ? txs.map(t => {
+        const acc = MSB_DATA.accounts.find(a => a.id === t.accountId);
+        const s = t.type === 'income' ? '+' : '–';
+        return `
+          <a href="transaction-detail.html?id=${t.id}" class="card-row">
+            <div class="avatar">${t.type === 'income' ? '↓' : '↑'}</div>
+            <div class="meta">
+              <div class="title">${t.description}</div>
+              <div class="sub">${MSB.relativeDay(t.date)} · ${t.time}</div>
+            </div>
+            <div class="trail">
+              <div class="amount ${t.type}">${s} ${MSB.fmtMoney(t.amount, acc?.currency)}</div>
+            </div>
+          </a>`;
+      }).join('') : '<div class="empty" style="padding: 32px 16px;"><div>Операций с этим контрагентом ещё не было</div></div>'}
+    </div>`;
+</script>
+</body>
+</html>

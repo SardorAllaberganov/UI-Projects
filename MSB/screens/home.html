@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Главная</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px; /* room for fixed bottom nav + home indicator */
+  }
+
+  /* ----- Header (pink gradient) ----- */
+  .header-pink {
+    background: linear-gradient(153.43deg, #F93C65 23.888%, #E6303A 85.587%);
+    border-radius: 0 0 24px 24px;
+    padding-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header-pink .ios-status .time { color: #fff; }
+  .header-pink .ios-status .levels img { filter: brightness(0) invert(1); }
+
+  .top-bar-home {
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .top-bar-home .icon-btn {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .top-bar-home .icon-btn img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+  }
+  .top-bar-home .right { display: flex; gap: 16px; align-items: center; }
+
+  .brand-home {
+    position: absolute;
+    top: 60px;
+    left: 64px;
+    width: 84px;
+    height: 28px;
+  }
+  .brand-home .unired { position: absolute; inset: 0 0 31.3% 0; }
+  .brand-home .business { position: absolute; inset: 74.98% 0.43% 0 52.69%; }
+  .brand-home img { display: block; width: 100%; height: 100%; }
+
+  .balance-container {
+    padding: 0 16px;
+    margin-top: 12px; /* below top bar */
+  }
+  .balance-card {
+    background: rgba(255, 255, 255, 0.20);
+    border: 0.33px solid #FFFFFF;
+    border-radius: 16px;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #FFFFFF;
+  }
+  .balance-card .head { display: flex; justify-content: space-between; align-items: center; }
+  .balance-card .head .label {
+    font: 500 16px/1 'Manrope', sans-serif;
+    color: #FFFFFF;
+  }
+  .balance-card .head .settings {
+    display: flex; align-items: center; gap: 4px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+  }
+  .balance-card .head .settings .lbl {
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #FFFFFF;
+  }
+  .balance-card .head .settings img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+  }
+  .balance-card .row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .balance-card .amount-row { display: flex; align-items: flex-end; gap: 4px; }
+  .balance-card .amount { font: 600 24px/1 'Manrope', sans-serif; color: #FFFFFF; }
+  .balance-card .currency {
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #FFFFFF;
+    padding-bottom: 3px;
+  }
+  .balance-card .eye {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .balance-card .eye img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+  }
+
+  /* ----- Main content (cards) ----- */
+  .main-content {
+    padding: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .info-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.02));
+  }
+  .info-card.no-padding-x { padding: 16px 0; }
+  .info-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .info-card .card-header .title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .info-card .card-header .title-row.padded { padding: 0 16px; }
+  .info-card .card-header .title {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .info-card .card-header .copy-btn,
+  .info-card .card-header .dropdown {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .info-card .card-header .copy-btn img,
+  .info-card .card-header .dropdown img {
+    width: 20px; height: 20px;
+    opacity: .7;
+  }
+  .info-card .card-header .dropdown img { transform: scaleY(-1); }
+  .info-card .card-header .right-icons { display: flex; gap: 12px; align-items: center; padding-right: 16px; }
+
+  .info-card .field {
+    background: #F6F8F9;
+    border-radius: 12px;
+    padding: 6px 12px;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-card .field .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+  .info-card .field .lbl {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .info-card .field .val {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .info-card .field-row {
+    display: flex;
+    gap: 8px;
+  }
+  .info-card .field-row .field { flex: 1; min-width: 0; }
+
+  /* Report table */
+  .report-table {
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  .report-row {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 12px;
+  }
+  .report-row.header {
+    background: #F6F8F9;
+    border-radius: 16px 16px 0 0;
+  }
+  .report-row.body {
+    border-bottom: 1px dashed #DFDFE4;
+    border-left: 1px dashed #DFDFE4;
+    border-right: 1px dashed #DFDFE4;
+  }
+  .report-row.body:last-child { border-radius: 0 0 16px 16px; }
+  .report-row .col-name {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 0;
+  }
+  .report-row .col-val {
+    width: 72px;
+    padding: 4px 0;
+  }
+  .report-row.header span {
+    font: 600 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .report-row.body span {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <!-- ============= Pink Header ============= -->
+  <div class="header-pink">
+    <div class="ios-status on-gradient">
+      <div class="time">9:41</div>
+      <div class="dynamic-island"></div>
+      <div class="levels">
+        <img class="cellular" src="../assets/ic-cellular.svg" alt="">
+        <img class="wifi" src="../assets/ic-wifi.svg" alt="">
+        <img class="battery" src="../assets/ic-battery.svg" alt="">
+      </div>
+    </div>
+
+    <!-- Top app bar with hamburger + actions -->
+    <div class="top-bar-home">
+      <button class="icon-btn" onclick="location.href='menu.html'" aria-label="Меню">
+        <img src="../assets/ic-hamburger.svg" alt="">
+      </button>
+      <div class="right">
+        <button class="icon-btn" onclick="MSB.toast('Поддержка · скоро')" aria-label="Поддержка">
+          <img src="../assets/ic-headphones.svg" alt="">
+        </button>
+        <button class="icon-btn" onclick="location.href='notifications.html'" aria-label="Уведомления">
+          <img src="../assets/ic-bell.svg" alt="">
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating brand mark over the bar -->
+    <div class="brand-home">
+      <div class="unired"><img src="../assets/logo-unired.svg" alt="Unired"></div>
+      <div class="business"><img src="../assets/logo-business.svg" alt="business"></div>
+    </div>
+
+    <div class="balance-container">
+      <div class="balance-card">
+        <div class="head">
+          <div class="label">Баланс счета</div>
+          <button class="settings" onclick="MSB.toast('Настройка баланса · скоро')">
+            <span class="lbl">Настройка</span>
+            <img src="../assets/ic-settings.svg" alt="">
+          </button>
+        </div>
+        <div class="row">
+          <div class="amount-row">
+            <div class="amount" id="balanceAmt">1 236 266 153.00</div>
+            <div class="currency">UZS</div>
+          </div>
+          <button class="eye" onclick="toggleBalance()" id="eyeBtn">
+            <img src="../assets/ic-eye-off.svg" alt="">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= Main Content ============= -->
+  <div class="main-content">
+
+    <!-- Company Details -->
+    <div class="info-card">
+      <div class="card-header">
+        <div class="title-row">
+          <span class="title">Реквизиты компании</span>
+          <button class="copy-btn" onclick="copyDetails()"><img src="../assets/ic-copy.svg" alt=""></button>
+        </div>
+        <button class="dropdown" onclick="toggleSection('company')"><img src="../assets/ic-chevron-down.svg" alt=""></button>
+      </div>
+      <div id="companyContent" style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="field">
+          <div class="content">
+            <div class="lbl">Наименование компании</div>
+            <div class="val" id="companyName"></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <div class="content">
+              <div class="lbl">МФО</div>
+              <div class="val" id="companyMfo"></div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="content">
+              <div class="lbl">ИНН</div>
+              <div class="val" id="companyInn"></div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="content">
+              <div class="lbl">Код</div>
+              <div class="val" id="companyCode"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="content">
+            <div class="lbl">Директор</div>
+            <div class="val" id="companyDir"></div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="content">
+            <div class="lbl">Бухгалтер</div>
+            <div class="val" id="companyAcc"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnover -->
+    <div class="info-card">
+      <div class="card-header">
+        <div class="title-row">
+          <span class="title">Динамика оборота Холдинга</span>
+        </div>
+        <button class="dropdown" onclick="toggleSection('turnover')"><img src="../assets/ic-chevron-down.svg" alt=""></button>
+      </div>
+      <div id="turnoverContent" style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="field-row">
+          <div class="field">
+            <div class="content">
+              <div class="lbl">Остаток на начало</div>
+              <div class="val" id="tStart"></div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="content">
+              <div class="lbl">Остаток на конец</div>
+              <div class="val" id="tEnd"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <div class="content">
+              <div class="lbl">Приход</div>
+              <div class="val" id="tIn"></div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="content">
+              <div class="lbl">Расход</div>
+              <div class="val" id="tOut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report -->
+    <div class="info-card no-padding-x">
+      <div class="card-header">
+        <div class="title-row padded">
+          <span class="title">Отчёт</span>
+        </div>
+        <div class="right-icons">
+          <button class="dropdown" onclick="toggleSection('report')"><img src="../assets/ic-chevron-down.svg" alt=""></button>
+        </div>
+      </div>
+      <div class="report-table" id="reportTable"></div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('home');
+
+  const c = MSB_DATA.company;
+  document.getElementById('companyName').textContent = c.name;
+  document.getElementById('companyMfo').textContent  = c.mfo;
+  document.getElementById('companyInn').textContent  = c.inn;
+  document.getElementById('companyCode').textContent = c.code;
+  document.getElementById('companyDir').textContent  = c.director;
+  document.getElementById('companyAcc').textContent  = c.accountant;
+
+  const t = MSB_DATA.turnover;
+  const fmt = n => new Intl.NumberFormat('ru-RU').format(n) + ' UZS';
+  document.getElementById('tStart').textContent = fmt(t.startBalance);
+  document.getElementById('tEnd').textContent   = fmt(t.endBalance);
+  document.getElementById('tIn').textContent    = fmt(t.income);
+  document.getElementById('tOut').textContent   = fmt(t.expense);
+
+  document.getElementById('reportTable').innerHTML = `
+    <div class="report-row header">
+      <span class="col-name">Статьи расхода</span>
+      <span class="col-val">День</span>
+      <span class="col-val">Месяц</span>
+      <span class="col-val">Год</span>
+    </div>
+    ${MSB_DATA.expenseReport.map(r => `
+      <div class="report-row body">
+        <span class="col-name">${r.name}</span>
+        <span class="col-val">${r.day.toFixed(2)}</span>
+        <span class="col-val">${r.month.toFixed(2)}</span>
+        <span class="col-val">${r.year.toFixed(2)}</span>
+      </div>
+    `).join('')}
+  `;
+
+  let balanceHidden = false;
+  window.toggleBalance = () => {
+    balanceHidden = !balanceHidden;
+    document.getElementById('balanceAmt').textContent = balanceHidden ? '• • • • • • •' : '1 236 266 153.00';
+  };
+
+  window.copyDetails = () => {
+    const txt = `${c.name}\nИНН: ${c.inn}\nМФО: ${c.mfo}\nКод: ${c.code}\nДиректор: ${c.director}`;
+    if (navigator.clipboard) navigator.clipboard.writeText(txt);
+    MSB.toast('Реквизиты скопированы');
+  };
+
+  window.toggleSection = (name) => {
+    const el = document.getElementById(name + 'Content') || document.getElementById('reportTable');
+    if (!el) return;
+    el.style.display = el.style.display === 'none' ? '' : 'none';
+  };
+</script>
+</body>
+</html>

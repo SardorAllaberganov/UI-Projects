@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Уведомления</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .notif {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .notif.unread { background: #FFF8F8; border-left: 3px solid var(--msb-red); }
+  .notif .ico {
+    width: 40px; height: 40px;
+    background: var(--msb-red-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .notif .body { flex: 1; min-width: 0; }
+  .notif .title { font-weight: 600; font-size: 14px; }
+  .notif .text { color: var(--msb-text-muted); font-size: 13px; margin-top: 2px; }
+  .notif .time { color: var(--msb-text-faint); font-size: 11px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div style="padding: 12px 16px;">
+    <div id="list"></div>
+
+    <button class="btn btn-outline" onclick="markAll()">Отметить все как прочитанные</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  document.getElementById('topBar').innerHTML = MSB.topBar({ title: 'Уведомления', back: true });
+
+  function render() {
+    document.getElementById('list').innerHTML = MSB_DATA.notifications.map(n => `
+      <div class="notif ${n.read ? '' : 'unread'}" onclick="markRead('${n.id}')">
+        <div class="ico">${n.icon}</div>
+        <div class="body">
+          <div class="title">${n.title}</div>
+          <div class="text">${n.body}</div>
+          <div class="time">${MSB.relativeDay(n.date)} · ${n.time}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.markRead = (id) => {
+    const n = MSB_DATA.notifications.find(x => x.id === id);
+    n.read = true;
+    render();
+  };
+  window.markAll = () => {
+    MSB_DATA.notifications.forEach(n => n.read = true);
+    render();
+    MSB.toast('Все уведомления отмечены');
+  };
+
+  render();
+</script>
+</body>
+</html>

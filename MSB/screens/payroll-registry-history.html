@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · История реестеров</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 110px;
+  }
+
+  .registry-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .registry-row {
+    padding: 16px;
+    background: #F0F0F0;
+    border-bottom: 1px solid #DFDFE4;
+    cursor: pointer;
+    transition: background .15s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .registry-row:active { background: #E7E9EC; }
+  .registry-row .row-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .registry-row .name {
+    font: 700 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .registry-row .date {
+    font: 400 13px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .registry-row .row-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .registry-row .status {
+    font: 500 14px/1 'Manrope', sans-serif;
+  }
+  .registry-row .amount {
+    font: 700 17px/1 'Manrope', sans-serif;
+    color: #16A34A;
+  }
+  .registry-row.has-chev { display: flex; align-items: center; gap: 12px; }
+  .registry-row.has-chev .body { flex: 1; min-width: 0; }
+  .registry-row.has-chev .chev { color: #A1A1AA; flex-shrink: 0; }
+
+  .confirm-btn-row {
+    margin-top: 10px;
+  }
+  .confirm-btn {
+    width: 100%;
+    height: 44px;
+    background: #FFFFFF;
+    border: 1px solid #DFDFE4;
+    border-radius: 12px;
+    color: #3F3F46;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .confirm-btn .check-circle {
+    width: 18px; height: 18px;
+    border: 1.5px solid #3F3F46;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #3F3F46;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    transition: filter .15s ease;
+  }
+  .cta-btn-pink:active { filter: brightness(.93); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="registry-list" id="list"></div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="location.href='payroll-create-registry.html'">Формировать реестр</button>
+  </div>
+
+  <!-- Confirm dialog -->
+  <div class="modal-backdrop" id="confirmBackdrop" onclick="closeModal(event, 'confirm')"></div>
+  <div class="modal-center" id="confirmModal">
+    <div class="modal-icon-warn">!</div>
+    <div class="modal-text">Вы уверены, что хотите подтвердить эту операцию?</div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="hideModal('confirm')">Отмена</button>
+      <button class="modal-btn-confirm" onclick="confirmAction()">Да</button>
+    </div>
+  </div>
+
+  <!-- Success dialog -->
+  <div class="modal-backdrop" id="successBackdrop" onclick="closeModal(event, 'success')"></div>
+  <div class="modal-center" id="successModal">
+    <div class="modal-icon-success"></div>
+    <div class="modal-text">Ваша операция прошла успешно</div>
+    <button class="modal-btn-close-wide" onclick="hideModal('success')">Все понятно. Закрыть</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'История реестеров по контракту', back: true, showActions: false });
+
+  const fmt = n => {
+    const parts = n.toFixed(2).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + parts[1];
+  };
+
+  function render() {
+    document.getElementById('list').innerHTML = MSB_DATA.payrollRegistries.map(r => {
+      const st = MSB_DATA.payrollRegistryStatus[r.status];
+      const hasChev = !r.needsConfirm;
+      return `
+        <div class="registry-row ${hasChev ? 'has-chev' : ''}" ${hasChev ? `onclick="location.href='payroll-employee-registry.html?id=${r.id}'"` : ''}>
+          <div class="body">
+            <div class="row-top">
+              <div class="name">${r.name}</div>
+              <div class="date">${r.date}</div>
+            </div>
+            <div class="row-bottom">
+              <div class="status" style="color: ${st.color};">${st.label}</div>
+              <div class="amount">${fmt(r.amount)}</div>
+            </div>
+            ${r.needsConfirm ? `
+              <div class="confirm-btn-row">
+                <button class="confirm-btn" onclick="event.stopPropagation(); showModal('confirm');">
+                  <span class="check-circle">
+                    <svg viewBox="0 0 14 14" fill="none" width="10" height="10"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  Подтвердить
+                </button>
+              </div>
+            ` : ''}
+          </div>
+          ${hasChev ? '<div class="chev"><svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' : ''}
+        </div>`;
+    }).join('');
+  }
+  render();
+
+  window.showModal = (name) => {
+    document.getElementById(name + 'Backdrop').classList.add('open');
+    document.getElementById(name + 'Modal').classList.add('open');
+  };
+  window.hideModal = (name) => {
+    document.getElementById(name + 'Backdrop').classList.remove('open');
+    document.getElementById(name + 'Modal').classList.remove('open');
+  };
+  window.closeModal = (e, name) => {
+    if (e.target.id === name + 'Backdrop') hideModal(name);
+  };
+  window.confirmAction = () => {
+    hideModal('confirm');
+    setTimeout(() => showModal('success'), 100);
+  };
+</script>
+</body>
+</html>

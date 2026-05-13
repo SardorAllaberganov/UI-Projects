@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Сотрудник</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .hero-employee {
+    text-align: center;
+    padding: 24px 16px 12px;
+    background: #fff;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 12px;
+  }
+  .hero-employee .av {
+    width: 80px; height: 80px;
+    background: var(--msb-red);
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .hero-employee .name { font-weight: 700; font-size: 18px; }
+  .hero-employee .pos { color: var(--msb-text-muted); font-size: 14px; margin-top: 4px; }
+  .hero-employee .actions { display: flex; gap: 8px; padding: 16px 16px 0; }
+  .hero-employee .actions .btn-mini {
+    flex: 1;
+    background: var(--msb-bg);
+    border: none;
+    height: 42px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--msb-text);
+  }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div id="content"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  const id = MSB.qsParam('id') || 'e1';
+  const e = MSB_DATA.staff.find(x => x.id === id);
+  if (!e) location.href = 'staff.html';
+
+  document.getElementById('topBar').innerHTML = MSB.topBar({
+    title: 'Сотрудник',
+    back: true,
+    action: '<button class="icon-btn" onclick="MSB.toast(`Редактирование · скоро`)">✎</button>'
+  });
+
+  const tenure = (() => {
+    const start = new Date(e.hireDate);
+    const now = new Date('2026-05-13');
+    const years = Math.floor((now - start) / (365.25 * 86400000));
+    const months = Math.floor(((now - start) / (30.44 * 86400000)) % 12);
+    return `${years > 0 ? years + ' г. ' : ''}${months} мес.`;
+  })();
+
+  document.getElementById('content').innerHTML = `
+    <div class="hero-employee">
+      <div class="av">${MSB.initials(e.name)}</div>
+      <div class="name">${e.name}</div>
+      <div class="pos">${e.position}</div>
+      <div style="margin-top: 10px;">
+        ${e.status === 'vacation' ? '<span class="chip warn">В отпуске</span>' : '<span class="chip success">Активен</span>'}
+      </div>
+      <div class="actions">
+        <button class="btn-mini" onclick="callEmp()">📞 Позвонить</button>
+        <button class="btn-mini" onclick="emailEmp()">✉ Письмо</button>
+      </div>
+    </div>
+
+    <div style="padding: 0 16px;">
+      <div class="section-title flush">Контакты</div>
+      <div class="card">
+        <div class="kv-row"><div class="k">Телефон</div><div class="v">${e.phone}</div></div>
+        <div class="kv-row"><div class="k">Email</div><div class="v">${e.email}</div></div>
+      </div>
+
+      <div class="section-title">Трудовая информация</div>
+      <div class="card">
+        <div class="kv-row"><div class="k">Должность</div><div class="v">${e.position}</div></div>
+        <div class="kv-row"><div class="k">Дата приёма</div><div class="v">${MSB.fmtDate(e.hireDate)}</div></div>
+        <div class="kv-row"><div class="k">Стаж в компании</div><div class="v">${tenure}</div></div>
+        <div class="kv-row"><div class="k">Оклад</div><div class="v">${MSB.fmtMoney(e.salary)}</div></div>
+      </div>
+
+      <div class="section-title">Действия</div>
+      <a href="document-templates.html" class="card-row">
+        <div class="avatar">📋</div>
+        <div class="meta">
+          <div class="title">Создать документ</div>
+          <div class="sub">Приказ, договор, инструкция</div>
+        </div>
+        <span class="chevron">›</span>
+      </a>
+      <a href="payroll.html" class="card-row">
+        <div class="avatar">💰</div>
+        <div class="meta">
+          <div class="title">История выплат</div>
+          <div class="sub">Зарплата за последние месяцы</div>
+        </div>
+        <span class="chevron">›</span>
+      </a>
+      <div class="card-row" onclick="MSB.toast('Отпуск · скоро')">
+        <div class="avatar">🏖</div>
+        <div class="meta">
+          <div class="title">Оформить отпуск</div>
+          <div class="sub">Создать приказ об отпуске</div>
+        </div>
+        <span class="chevron">›</span>
+      </div>
+
+      <div style="padding: 20px 0;">
+        <button class="btn btn-outline" style="color: #DC2626;" onclick="confirmFire()">Уволить сотрудника</button>
+      </div>
+    </div>`;
+
+  window.callEmp = () => MSB.toast('Звонок ' + e.phone);
+  window.emailEmp = () => MSB.toast('Письмо на ' + e.email);
+  window.confirmFire = () => {
+    if (confirm(`Подтвердить увольнение: ${e.name}?`)) {
+      MSB.toast('Создан приказ об увольнении');
+    }
+  };
+</script>
+</body>
+</html>

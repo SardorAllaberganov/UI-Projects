@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Формировать реестр</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 110px;
+  }
+
+  .form-list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-field .lbl {
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .form-field .input-group {
+    background: #FFFFFF;
+    height: 56px;
+    border-radius: 16px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .form-field input,
+  .form-field textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+    font-family: inherit;
+    padding: 0;
+    width: 100%;
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: #A6A6A9;
+    font-weight: 400;
+  }
+  .form-field .cal-btn {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .form-field .cal-btn img {
+    width: 24px; height: 24px;
+    opacity: .5;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    transition: filter .15s ease;
+  }
+  .cta-btn-pink:active { filter: brightness(.93); }
+  .cta-btn-pink[disabled] { opacity: .5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="form-list">
+    <div class="form-field">
+      <label class="lbl" for="date">Дата</label>
+      <div class="input-group">
+        <input id="date" type="text" value="15.10.2024">
+        <button class="cal-btn"><img src="../assets/ic-calendar.svg" alt=""></button>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="lbl" for="desc">Описание</label>
+      <div class="input-group">
+        <input id="desc" type="text" placeholder="Введите описание">
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="lbl" for="purpose">Назначение</label>
+      <div class="input-group">
+        <input id="purpose" type="text" placeholder="Введите назначение">
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" id="submitBtn" onclick="submit()">Формировать</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Формировать реестр', back: true, showActions: false });
+
+  window.submit = () => {
+    const desc = document.getElementById('desc').value;
+    const purpose = document.getElementById('purpose').value;
+    // Persist to URL for next screen
+    const params = new URLSearchParams({ desc: desc || 'Новый реестр', purpose: purpose || '' });
+    location.href = 'payroll-employee-registry.html?new=1&' + params.toString();
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Список контрактов</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+  }
+
+  .toggle-mode {
+    position: fixed;
+    bottom: 24px;
+    right: max(24px, calc(50% - 215px + 24px));
+    background: #FFFFFF;
+    border: 1px solid #DFDFE4;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font: 500 11px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .contracts-list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .contract-row {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 14px 16px;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    width: 100%;
+    transition: transform .12s ease;
+  }
+  .contract-row:active { transform: scale(.99); }
+  .contract-row .name {
+    flex: 1;
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .contract-row .chev {
+    width: 20px; height: 20px;
+    color: #A1A1AA;
+    flex-shrink: 0;
+  }
+
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 200px 40px 40px;
+    min-height: 60vh;
+  }
+  .empty-state .icon-wrap {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: #3F3F46;
+  }
+  .empty-state .text {
+    font: 500 16px/1.5 'Manrope', sans-serif;
+    color: #3F3F46;
+    max-width: 280px;
+  }
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+  <div id="topBar"></div>
+
+  <div id="content"></div>
+
+  <button class="toggle-mode" id="toggleBtn">Переключить вид</button>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Список контрактов', back: true, showActions: false });
+
+  // Toggle between empty and filled state for demo
+  let mode = sessionStorage.getItem('contracts_mode') || 'filled';
+
+  function render() {
+    const content = document.getElementById('content');
+    if (mode === 'empty' || MSB_DATA.payrollContracts.length === 0) {
+      content.innerHTML = `
+        <div class="empty-state">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+              <rect x="10" y="18" width="44" height="38" rx="3" stroke="#3F3F46" stroke-width="2.5" fill="none"/>
+              <rect x="6" y="10" width="52" height="12" rx="2" stroke="#3F3F46" stroke-width="2.5" fill="none"/>
+              <rect x="22" y="30" width="20" height="4" rx="2" fill="#3F3F46"/>
+            </svg>
+          </div>
+          <div class="text">У вас нет активных контрактов.<br>Свяжитесь с вашим банком</div>
+        </div>`;
+    } else {
+      content.innerHTML = `
+        <div class="contracts-list">
+          ${MSB_DATA.payrollContracts.map(c => `
+            <a class="contract-row" href="payroll-registry-history.html?contract=${c.id}">
+              <div class="name">${c.name}</div>
+              <div class="chev">
+                <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </a>
+          `).join('')}
+        </div>`;
+    }
+  }
+
+  document.getElementById('toggleBtn').addEventListener('click', () => {
+    mode = mode === 'empty' ? 'filled' : 'empty';
+    sessionStorage.setItem('contracts_mode', mode);
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

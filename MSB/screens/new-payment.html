@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Новое платежное поручение</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+
+  .pink-extra {
+    background: linear-gradient(167.16deg, #F93C65 23.888%, #E6303A 85.587%);
+    padding: 8px 16px 16px;
+    border-radius: 0 0 24px 24px;
+    margin-top: -8px;
+  }
+  .type-chip {
+    background: rgba(255,255,255,0.20);
+    border: 0.5px solid rgba(255,255,255,0.5);
+    border-radius: 16px;
+    padding: 10px 14px;
+    color: #FFFFFF;
+    font: 600 14px/1 'Manrope', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    cursor: pointer;
+  }
+  .type-chip .chev {
+    width: 16px; height: 16px;
+    filter: brightness(0) invert(1);
+    transform: scaleY(-1);
+  }
+
+  .form-section {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 12px;
+    margin: 8px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-section .sec-title {
+    font: 600 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+    padding: 4px 0;
+  }
+  .form-field {
+    background: #F6F8F9;
+    border-radius: 12px;
+    padding: 6px 12px;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    position: relative;
+  }
+  .form-field .lbl {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .form-field .val {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    word-break: break-word;
+  }
+  .form-field.placeholder .val {
+    color: #A6A6A9;
+    font-weight: 400;
+  }
+  .form-field.disabled .val { color: #A6A6A9; }
+  .form-field.dropdown::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 12px;
+    height: 7px;
+    background: url('../assets/ic-chevron-down.svg') center/contain no-repeat;
+    transform: translateY(-50%) scaleY(-1);
+    opacity: .6;
+  }
+  .form-field input, .form-field textarea {
+    border: none;
+    outline: none;
+    background: transparent;
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    width: 100%;
+    font-family: inherit;
+    padding: 0;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: #A6A6A9; font-weight: 400; }
+  .row-2 { display: flex; gap: 8px; }
+  .row-2 .form-field { flex: 1; min-width: 0; }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    margin: 8px 16px 0;
+    background: #FFFFFF;
+    border-radius: 16px;
+  }
+  .toggle-row .lbl { font: 600 14px/1 'Manrope', sans-serif; color: #3F3F46; }
+  .switch {
+    width: 36px; height: 20px;
+    background: #DFDFE4;
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s ease;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: transform .2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+  .switch.on { background: linear-gradient(155.13deg, #F93C65 23.888%, #E6303A 85.587%); }
+  .switch.on::after { transform: translateX(16px); }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px 16px;
+    background: #F0F0F0;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .home-indicator-fixed {
+    position: fixed; bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    height: 34px; background: #F0F0F0;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 8px; z-index: 30;
+  }
+  .home-indicator-fixed::after { content: ''; width: 144px; height: 5px; background: #000; border-radius: 100px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="pink-extra">
+    <button class="type-chip">
+      <span id="ptype">Поручение в бюджет</span>
+      <img class="chev" src="../assets/ic-chevron-down.svg" alt="">
+    </button>
+  </div>
+
+  <!-- Sender section -->
+  <div class="form-section">
+    <div class="sec-title">Отправитель</div>
+    <div class="form-field">
+      <div class="lbl">Наименование компании</div>
+      <div class="val">OOO 'Demo Company 2'</div>
+    </div>
+    <div class="row-2">
+      <div class="form-field">
+        <div class="lbl">МФО</div>
+        <div class="val">00444</div>
+      </div>
+      <div class="form-field">
+        <div class="lbl">ИНН</div>
+        <div class="val">123456789</div>
+      </div>
+    </div>
+    <div class="form-field">
+      <div class="lbl">Банк</div>
+      <div class="val">КУКОН Ш., АТ БАНКИ "УНИВЕРСАЛ БАНК" БОШ ОФИСИ</div>
+    </div>
+    <div class="form-field dropdown">
+      <div class="lbl">Счет отправителя</div>
+      <div class="val">20208000123456789001</div>
+    </div>
+    <div class="form-field disabled">
+      <div class="lbl">Баланс</div>
+      <div class="val">100 000 000 UZS</div>
+    </div>
+  </div>
+
+  <!-- Recipient section -->
+  <div class="form-section">
+    <div class="sec-title">Получатель</div>
+    <div class="form-field placeholder">
+      <div class="lbl">Лицевой счет в бюджет или налог</div>
+      <input type="text" placeholder="пр. 200000000123456789001">
+    </div>
+    <div class="form-field placeholder">
+      <div class="lbl">ИНН бюджет</div>
+      <input type="text" placeholder="пр. 123456789">
+    </div>
+  </div>
+
+  <!-- Details section -->
+  <div class="form-section">
+    <div class="sec-title">Детали</div>
+    <div class="row-2">
+      <div class="form-field dropdown disabled">
+        <div class="lbl">Дата проводки</div>
+        <div class="val">02.04.2024</div>
+      </div>
+      <div class="form-field dropdown">
+        <div class="lbl">Номер</div>
+        <div class="val">556</div>
+      </div>
+    </div>
+    <div class="form-field dropdown">
+      <div class="lbl">Код назначения</div>
+      <div class="val">00228</div>
+    </div>
+    <div style="font: 400 12px/1.4 'Manrope', sans-serif; color: #A6A6A9; padding: 0 4px;">Пакта имтиёзли кредити хисобидан электроэнергия учун</div>
+    <div class="form-field placeholder">
+      <div class="lbl">Сумма</div>
+      <input type="text" placeholder="0">
+    </div>
+    <div class="form-field placeholder">
+      <div class="lbl">Сумма прописью</div>
+      <input type="text" placeholder="Ноль">
+    </div>
+    <div class="form-field">
+      <div class="lbl">Назначение платежа</div>
+      <div class="val">Оплата 100% за аренду помещения</div>
+    </div>
+  </div>
+
+  <div class="toggle-row">
+    <div class="lbl">Сохранить как шаблон</div>
+    <div class="switch" onclick="this.classList.toggle('on')"></div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="MSB.toast('Платежное поручение отправлено')">Ввести</button>
+  </div>
+  <div class="home-indicator-fixed"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Новое платежное поручение', back: true, showActions: false });
+  const types = { budget: 'Поручение в бюджет', treasury: 'Поручение в казначейство', card: 'Пополнение пластиковой карты', payment: 'Платежное поручение' };
+  const t = MSB.qsParam('t');
+  if (t && types[t]) document.getElementById('ptype').textContent = types[t];
+</script>
+</body>
+</html>

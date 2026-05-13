@@ -6,6 +6,72 @@ Triggered by `/ds_sync`.
 
 ---
 
+## 2026-05-13 — Full inventory re-sync · catching up 3 weeks of drift
+
+**Area:** all (tokens + components + docs)
+
+First `/ds_sync` since 2026-04-23. The previous `.inventory-last.json`
+checkpoint reflected the DS as of Apr 23, but the canvas had moved
+forward in two batches — large additions Apr 24 (the "critical-gap"
+components + iOS Platform Chrome page) and incremental polish since.
+
+**Diff vs. 2026-04-23 inventory:**
+
+Tokens — no rebinds, no removals. Added:
+- **+27 primitives** (all `ios/*` — Apple system color anchors)
+- **+36 color tokens** (all `color/ios/*` — semantic Apple chrome)
+- **+1 radius**: `radius/xs = 4`
+- No spacing, text-style, or effect-style changes.
+
+Component sets — 14 → 34 (+20):
+- **Inputs & Controls (10):** Radio, Radio Row, Chip, Stepper, Slider,
+  Amount Input, App Numpad, Date Picker (single component), Content
+  Tabs, Pagination Dots.
+- **Feedback (3):** Alert Dialog, Notification Banner, Progress Steps.
+- **Display (3):** Card Visual, Receipt Row, PIN Dots.
+- **Pattern atoms (1):** Accordion, FAB.
+- **iOS Platform Chrome page (3):** iOS Status Bar, iOS Keyboard,
+  iOS Search Bar.
+- **Prop-changed:** `Input` gained a `Style` axis (`Boxed` / `Bottom-
+  lined`) — variantCount 5 → 10. Existing instances default to
+  `Boxed`, matching their pre-axis appearance.
+
+Single components — 17 → 23 (+6):
+- Design System page (+5): Date Picker, Section Header, Onboarding
+  Slide, Card (generic), Full-screen Loader.
+- Platform Chrome · iOS page (+1): iOS Home Indicator.
+
+Pages — 1 → 4: added `Sample Screens` (162:833), `Platform Chrome ·
+iOS` (197:863), `DS Guide` (257:1357).
+
+**Tokens added:** `radius/xs`; 27 `ios/*` primitives; 36 `color/ios/*`
+semantic tokens.
+
+**Components touched:** see breakdown above (24 added, 1 prop-changed).
+
+**Follow-ups:**
+- Effect styles still empty (0). If shared shadows become a thing,
+  define them here rather than per-node.
+- `color/ios/*` tokens have a `light`/`dark` mode-pinned variant for
+  every theme-aware token. Verify whether the keyboard's dark/light
+  row split actually requires both, or whether `color/ios/*` (without
+  suffix) suffices — could halve the iOS token count.
+- DS Guide page (`257:1357`) inventory shows 3 children but the
+  domain-grouped doc sections aren't enumerated; consider auditing
+  whether the on-canvas docs still mirror master state after the
+  recent additions.
+
+**Docs regenerated:**
+- `DS_CONTEXT.md` — counts, component map, page list.
+- `DS_TOKENS.md` — full token catalog (split by primitive / color /
+  spacing / radius / text styles).
+- `DS_COMPONENTS.md` — every set + single component with master ID,
+  variant axes, properties, and slot targets.
+- `.inventory-last.json` ← `.inventory-current.json` (checkpoint
+  rotated).
+
+---
+
 ## 2026-04-23 — AsiaSend v.2 redesign · Phase 1 (Auth) complete
 
 **Area:** components + cross-file consumption

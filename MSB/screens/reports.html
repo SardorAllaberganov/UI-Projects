@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Отчеты по Qr-коду</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+
+  .ops-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 8px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ops-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0 8px;
+  }
+  .ops-head .title {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .ops-head .filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .ops-row {
+    background: #F6F8F9;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  .ops-row .qr-icon-box {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ops-row .meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ops-row .term {
+    font: 600 15px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .ops-row .status {
+    font: 500 13px/1 'Manrope', sans-serif;
+  }
+  .ops-row .right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ops-row .amount {
+    font: 600 14px/1 'Manrope', sans-serif;
+  }
+  .ops-row .date {
+    font: 400 12px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="ops-card">
+    <div class="ops-head">
+      <div class="title">Операции</div>
+      <button class="filter">
+        Фильтр
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="opsList"></div>
+  </div>
+
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Отчеты по Qr-коду', back: true, showActions: false });
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('reports');
+
+  const fmt = n => {
+    const parts = n.toFixed(2).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + parts[1];
+  };
+
+  document.getElementById('opsList').innerHTML = MSB_DATA.qrOperations.map(o => {
+    const st = MSB_DATA.qrOpStatus[o.status];
+    return `
+      <div class="ops-row" onclick="MSB.toast('Детали операции #${o.id}')">
+        <div class="qr-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" width="32" height="32">
+            <rect x="4" y="4" width="6" height="6" rx="1" stroke="#3F3F46" stroke-width="1.5"/>
+            <rect x="14" y="4" width="6" height="6" rx="1" stroke="#3F3F46" stroke-width="1.5"/>
+            <rect x="4" y="14" width="6" height="6" rx="1" stroke="#3F3F46" stroke-width="1.5"/>
+            <rect x="6.5" y="6.5" width="1" height="1" fill="#3F3F46"/>
+            <rect x="16.5" y="6.5" width="1" height="1" fill="#3F3F46"/>
+            <rect x="6.5" y="16.5" width="1" height="1" fill="#3F3F46"/>
+            <rect x="14" y="14" width="2" height="2" fill="#3F3F46"/>
+            <rect x="18" y="14" width="2" height="2" fill="#3F3F46"/>
+            <rect x="14" y="18" width="2" height="2" fill="#3F3F46"/>
+            <rect x="18" y="18" width="2" height="2" fill="#3F3F46"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="term">Terminal name "${o.terminal}"</div>
+          <div class="status" style="color: ${st.color};">${st.label}</div>
+        </div>
+        <div class="right">
+          <div class="amount" style="color: ${st.color};">${fmt(o.amount)} uzs</div>
+          <div class="date">${o.date}</div>
+        </div>
+      </div>`;
+  }).join('');
+</script>
+</body>
+</html>

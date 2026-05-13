@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Кадры</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+  .pink-extra {
+    background: linear-gradient(167.16deg, #F93C65 23.888%, #E6303A 85.587%);
+    padding: 0 16px 18px;
+    border-radius: 0 0 24px 24px;
+    margin-top: -8px;
+  }
+  .search-pill {
+    background: rgba(255,255,255,0.20);
+    border-radius: 999px;
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #FFFFFF;
+  }
+  .search-pill input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #FFFFFF;
+    font: 400 14px/1 'Manrope', sans-serif;
+    font-family: inherit;
+  }
+  .search-pill input::placeholder { color: rgba(255,255,255,0.8); }
+  .search-pill .search-ico {
+    width: 24px; height: 24px;
+    color: #FFFFFF;
+  }
+
+  .company-block {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .company-block .company-name {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 4px;
+  }
+  .employee-row {
+    background: #F6F8F9;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+  }
+  .employee-row .avatar {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .employee-row .meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .employee-row .name {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .employee-row .position {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .employee-row .chev {
+    width: 16px; height: 16px;
+    color: #9CA3AF;
+    flex-shrink: 0;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px 16px;
+    background: #F0F0F0;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .home-indicator-fixed {
+    position: fixed; bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    height: 34px; background: #F0F0F0;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 8px; z-index: 30;
+  }
+  .home-indicator-fixed::after { content: ''; width: 144px; height: 5px; background: #000; border-radius: 100px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="pink-extra">
+    <div class="search-pill">
+      <input id="q" type="text" placeholder="Название компании, имя, должность польз...">
+      <span class="search-ico">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <div id="staffGroups"></div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="location.href='staff-add.html'">Добавить кадр</button>
+  </div>
+  <div class="home-indicator-fixed"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Кадры', back: true, showActions: false });
+
+  let query = '';
+
+  function render() {
+    // Merge new staff from localStorage (those who completed KYC) with mock data
+    const newStaffList = MSB.loadNewStaff();
+    const pendingInvites = MSB.loadInvites().filter(i => i.status === 'pending');
+    const all = [...MSB_DATA.staff, ...newStaffList.map(s => ({ ...s, isNew: true }))];
+
+    const list = all.filter(e =>
+      !query ||
+      e.name.toLowerCase().includes(query) ||
+      e.position.toLowerCase().includes(query) ||
+      e.company.toLowerCase().includes(query)
+    );
+
+    const grouped = {};
+    list.forEach(e => { (grouped[e.company] = grouped[e.company] || []).push(e); });
+
+    let html = '';
+
+    // Pending invites block (shown at top)
+    if (pendingInvites.length > 0) {
+      html += `
+        <div class="company-block" style="border: 1px dashed #F93C65; background: #FFFBFC;">
+          <div class="company-name" style="color: #E6303A;">Ожидают подтверждения (${pendingInvites.length})</div>
+          ${pendingInvites.map(inv => `
+            <div class="employee-row" style="background: #FFF; opacity: .9; cursor: default;">
+              <span class="avatar">
+                <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                  <circle cx="12" cy="12" r="10" stroke="#F93C65" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <path d="M12 7v5l3 2" stroke="#F93C65" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="meta">
+                <span class="name">${inv.firstName} ${inv.lastName}</span>
+                <span class="position">Ожидает прохождения KYC · ${inv.phone}</span>
+              </span>
+            </div>
+          `).join('')}
+        </div>`;
+    }
+
+    html += Object.entries(grouped).map(([co, items]) => `
+      <div class="company-block">
+        <div class="company-name">${co}</div>
+        ${items.map(e => `
+          <button class="employee-row" onclick="${e.isNew ? `MSB.toast('Новый сотрудник: ${e.name}')` : `location.href='staff-profile.html?id=${e.id}'`}">
+            <span class="avatar">
+              ${e.isNew
+                ? '<svg viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="12" cy="12" r="10" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/><path d="M8 12l3 3 5-6" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'
+                : '<svg viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#9CA3AF" stroke-width="1.5" fill="none"/><circle cx="12" cy="10" r="3" stroke="#9CA3AF" stroke-width="1.5" fill="none"/><path d="M5.5 19c1.4-2.4 3.8-4 6.5-4s5.1 1.6 6.5 4" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>'}
+            </span>
+            <span class="meta">
+              <span class="name">${e.name}${e.isNew ? ' <span style="background:#DCFCE7; color:#15803D; font:600 10px/1 Manrope; padding:2px 6px; border-radius:4px; vertical-align:middle;">NEW</span>' : ''}</span>
+              <span class="position">${e.position}</span>
+            </span>
+            <span class="chev">
+              <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+                <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        `).join('')}
+      </div>
+    `).join('');
+
+    document.getElementById('staffGroups').innerHTML = html;
+  }
+
+  render();
+  document.getElementById('q').addEventListener('input', e => { query = e.target.value.toLowerCase(); render(); });
+</script>
+</body>
+</html>

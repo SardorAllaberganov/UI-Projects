@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Мои контрагенты</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+  }
+  .section {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 8px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .section .stitle {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .nav-row {
+    background: #F6F8F9;
+    border-radius: 16px;
+    padding: 12px 16px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    width: 100%;
+  }
+  .nav-row .icon-box {
+    width: 36px; height: 36px;
+    background: #F6F8F9;
+    border: 0.371px solid #8CC5FF;
+    border-radius: 10px;
+    box-shadow: -3.375px 3.375px 3.375px rgba(10,132,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-row .icon-box img { width: 24px; height: 24px; }
+  .nav-row .label {
+    flex: 1;
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .nav-row .chev {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: #A1A1AA;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="section">
+    <div class="stitle">Список контрагентов</div>
+
+    <a class="nav-row" href="counterparty-partners.html">
+      <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+      <div class="label">Список партнеров</div>
+      <div class="chev">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+
+    <a class="nav-row" href="counterparty-contracts.html">
+      <div class="icon-box"><img src="../assets/ic-qr-nav.svg" alt=""></div>
+      <div class="label">Список договоров</div>
+      <div class="chev">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+
+    <a class="nav-row" href="counterparty-debt.html">
+      <div class="icon-box"><img src="../assets/ic-qr-nav.svg" alt=""></div>
+      <div class="label">Задолженность</div>
+      <div class="chev">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Мои контрагенты', back: true, showActions: false });
+</script>
+</body>
+</html>

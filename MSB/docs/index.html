@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Подключение сотрудника · Бизнес-процесс · Unired Business</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --pink: #F93C65;
+    --red: #E6303A;
+    --gradient: linear-gradient(114.77deg, #F93C65 23.888%, #E6303A 85.587%);
+    --text: #3F3F46;
+    --text-muted: #7D7D85;
+    --text-faint: #A1A1AA;
+    --surface: #FFFFFF;
+    --bg: #F4F4F5;
+    --bg-field: #F6F8F9;
+    --border: #DFDFE4;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--gradient);
+    color: #fff;
+    padding: 48px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before, .hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .hero::before { width: 320px; height: 320px; top: -120px; left: -80px; }
+  .hero::after { width: 220px; height: 220px; bottom: -100px; right: -60px; }
+  .hero .crumb {
+    font: 500 12px/1 'Manrope', sans-serif;
+    opacity: .85;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 {
+    font: 800 36px/1.15 'Manrope', sans-serif;
+    margin: 0 0 12px;
+    letter-spacing: -.02em;
+    max-width: 800px;
+    margin-left: auto; margin-right: auto;
+    position: relative; z-index: 1;
+  }
+  .hero .lead {
+    font: 400 17px/1.5 'Manrope', sans-serif;
+    opacity: .92;
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  .hero .meta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .hero .meta .chip {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.30);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font: 600 12px/1 'Manrope', sans-serif;
+    color: #fff;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1100px;
+    margin: -48px auto 0;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Section card */
+  .card {
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 4px 32px rgba(63,63,70,0.06);
+    margin-bottom: 24px;
+  }
+  .card h2 {
+    font: 700 22px/1.2 'Manrope', sans-serif;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+  .card .lead-2 {
+    color: var(--text-muted);
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    margin: 0 0 24px;
+  }
+  .section-num {
+    display: inline-block;
+    background: var(--gradient);
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font: 700 14px/32px 'Manrope', sans-serif;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* Actors grid */
+  .actors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .actor {
+    padding: 16px;
+    border-radius: 14px;
+    border-left: 4px solid;
+  }
+  .actor.hr { background: #FFE5EB; border-color: #E6303A; }
+  .actor.emp { background: #DCFCE7; border-color: #16A34A; }
+  .actor.myid { background: #DBEAFE; border-color: #2563EB; }
+  .actor.bank { background: #FEF3C7; border-color: #EAB308; }
+  .actor.factory { background: #FFE4D6; border-color: #F97316; }
+  .actor.courier { background: #EDE9FE; border-color: #A855F7; }
+  .actor .emoji { font-size: 22px; margin-bottom: 6px; }
+  .actor .name { font: 700 15px/1.2 'Manrope', sans-serif; color: var(--text); margin-bottom: 2px; }
+  .actor .role { font: 400 12px/1.4 'Manrope', sans-serif; color: var(--text-muted); }
+  .actor .tool { font: 600 11px/1.4 'Manrope', sans-serif; color: var(--text); margin-top: 4px; opacity: .7; }
+
+  /* Mermaid diagram wrapper */
+  .diagram-wrap {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .mermaid {
+    text-align: center;
+    min-width: 800px;
+  }
+
+  /* Phase timeline */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) { .phases { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 540px) { .phases { grid-template-columns: 1fr 1fr; } }
+  .phase-pill {
+    background: var(--bg-field);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .phase-pill:hover { transform: translateY(-2px); border-color: var(--pink); }
+  .phase-pill .num {
+    display: inline-block;
+    background: var(--gradient);
+    color: #fff;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    line-height: 24px;
+    font: 700 12px/24px 'Manrope', sans-serif;
+    margin-bottom: 8px;
+  }
+  .phase-pill .pname {
+    font: 600 13px/1.2 'Manrope', sans-serif;
+    margin-bottom: 4px;
+  }
+  .phase-pill .time {
+    font: 500 11px/1 'Manrope', sans-serif;
+    color: var(--text-muted);
+  }
+
+  /* Steps table */
+  .steps {
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 13px/1.4 'Manrope', sans-serif;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--bg-field);
+    font: 600 12px/1 'Manrope', sans-serif;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  td .step-num {
+    display: inline-block;
+    background: var(--pink);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font: 700 11px/22px 'Manrope', sans-serif;
+  }
+  td code, td .badge {
+    background: var(--bg-field);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font: 500 12px/1 'JetBrains Mono', monospace;
+    color: var(--red);
+  }
+  .badge.green { background: #DCFCE7; color: #15803D; }
+  .badge.yellow { background: #FEF3C7; color: #B45309; }
+  .badge.blue { background: #DBEAFE; color: #1E40AF; }
+
+  .phase-block {
+    margin-bottom: 32px;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .phase-header h3 {
+    font: 700 18px/1 'Manrope', sans-serif;
+    margin: 0;
+  }
+  .phase-header .time-badge {
+    background: var(--pink);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font: 600 12px/1 'Manrope', sans-serif;
+  }
+
+  /* State machines */
+  .state-machine {
+    background: var(--bg-field);
+    border-radius: 14px;
+    padding: 16px;
+    font: 500 13px/1.6 'JetBrains Mono', 'Manrope', monospace;
+    color: var(--text);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .state-section {
+    margin-bottom: 16px;
+  }
+  .state-section .title {
+    font: 700 14px/1 'Manrope', sans-serif;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* SLA bar */
+  .sla-bar {
+    display: flex;
+    height: 60px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 16px 0 8px;
+  }
+  .sla-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font: 700 11px/1 'Manrope', sans-serif;
+    text-align: center;
+    padding: 0 8px;
+    position: relative;
+  }
+  .sla-segment.s1 { background: #E6303A; flex: 1; }
+  .sla-segment.s2 { background: #2563EB; flex: 1; }
+  .sla-segment.s3 { background: #EAB308; flex: 1; }
+  .sla-segment.s4 { background: #F97316; flex: 3; }
+  .sla-segment.s5 { background: #A855F7; flex: 2; }
+  .sla-segment.s6 { background: #16A34A; flex: 2; }
+  .sla-total {
+    text-align: center;
+    margin-top: 12px;
+    font: 700 22px/1 'Manrope', sans-serif;
+    color: var(--text);
+  }
+  .sla-total span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Exception list */
+  .exceptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 720px) { .exceptions { grid-template-columns: 1fr; } }
+  .exception {
+    background: var(--bg-field);
+    border-radius: 12px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--pink);
+  }
+  .exception .e-trigger {
+    font: 600 13px/1.3 'Manrope', sans-serif;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .exception .e-handle {
+    font: 400 12px/1.4 'Manrope', sans-serif;
+    color: var(--text-muted);
+  }
+
+  /* Footer */
+  .footer-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .footer-links a {
+    background: var(--bg-field);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    font: 600 12px/1 'Manrope', sans-serif;
+    border: 1px solid var(--border);
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .footer-links a:hover { border-color: var(--pink); color: var(--pink); }
+
+  .open-questions {
+    background: linear-gradient(135deg, rgba(249,60,101,0.05) 0%, rgba(230,48,58,0.05) 100%);
+    border: 1px dashed var(--pink);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .open-questions ol {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .open-questions li {
+    margin-bottom: 8px;
+    font: 400 14px/1.5 'Manrope', sans-serif;
+  }
+
+  /* TOC */
+  .toc {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .toc h3 {
+    font: 700 13px/1 'Manrope', sans-serif;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin: 0 0 12px;
+  }
+  .toc ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font: 500 13px/1.5 'Manrope', sans-serif;
+    padding: 4px 0;
+    display: block;
+    transition: color .15s ease;
+  }
+  .toc a:hover { color: var(--pink); }
+
+  .download-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  .download-bar a {
+    background: var(--surface);
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    font: 600 13px/1 'Manrope', sans-serif;
+    border: 1px solid var(--border);
+    transition: transform .12s ease;
+  }
+  .download-bar a:hover { transform: translateY(-1px); border-color: var(--pink); color: var(--pink); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="crumb">Unired Business · Документация</div>
+  <h1>Подключение сотрудника и выпуск зарплатной карты</h1>
+  <p class="lead">Бизнес-процесс приглашения нового сотрудника, удалённого прохождения KYC через MyID, эмиссии зарплатной карты и её доставки по адресу компании.</p>
+  <div class="meta">
+    <span class="chip">Владелец: HR + Операционный отдел</span>
+    <span class="chip">SLA: 5–7 рабочих дней</span>
+    <span class="chip">v1.0 · 2026-05-13</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="toc">
+    <h3>Разделы</h3>
+    <ul>
+      <li><a href="#actors">1. Участники</a></li>
+      <li><a href="#diagram">2. Диаграмма процесса</a></li>
+      <li><a href="#phases">3. Фазы и шаги</a></li>
+      <li><a href="#states">4. Состояния</a></li>
+      <li><a href="#sla">5. Сроки (SLA)</a></li>
+      <li><a href="#exceptions">6. Исключения</a></li>
+      <li><a href="#integrations">7. Интеграции</a></li>
+      <li><a href="#open">8. Открытые вопросы</a></li>
+    </ul>
+  </div>
+
+  <!-- ========== ACTORS ========== -->
+  <section class="card" id="actors">
+    <h2><span class="section-num">1</span>Участники</h2>
+    <p class="lead-2">В процессе участвуют шесть сторон. Каждая отвечает за свои шаги; передачи между ними — ключевые точки контроля.</p>
+    <div class="actors">
+      <div class="actor hr">
+        <div class="emoji">🏢</div>
+        <div class="name">HR-администратор</div>
+        <div class="role">Владелец бизнеса / администратор зарплатного проекта</div>
+        <div class="tool">Мобильное приложение Unired Business</div>
+      </div>
+      <div class="actor emp">
+        <div class="emoji">👤</div>
+        <div class="name">Сотрудник</div>
+        <div class="role">Новый сотрудник, получающий зарплатную карту</div>
+        <div class="tool">Веб-ссылка на личном устройстве</div>
+      </div>
+      <div class="actor myid">
+        <div class="emoji">🆔</div>
+        <div class="name">MyID</div>
+        <div class="role">Национальный сервис электронной идентификации (внешний)</div>
+        <div class="tool">MyID SDK / API</div>
+      </div>
+      <div class="actor bank">
+        <div class="emoji">🏦</div>
+        <div class="name">Unired Core</div>
+        <div class="role">Корбанковская система · жизненный цикл счетов и карт</div>
+        <div class="tool">Внутренний бэк-офис</div>
+      </div>
+      <div class="actor factory">
+        <div class="emoji">🏭</div>
+        <div class="name">Производство карт</div>
+        <div class="role">Партнёр-фабрика (BPC, Thales)</div>
+        <div class="tool">Линия персонализации и эмбоссинга</div>
+      </div>
+      <div class="actor courier">
+        <div class="emoji">🚚</div>
+        <div class="name">Служба доставки</div>
+        <div class="role">Курьерская служба (Express24, BTS, собственная)</div>
+        <div class="tool">Приложение курьера + API отслеживания</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DIAGRAM ========== -->
+  <section class="card" id="diagram">
+    <h2><span class="section-num">2</span>Диаграмма процесса (свимлейн)</h2>
+    <p class="lead-2">Цветовая разметка по участникам. Сплошные стрелки = поток процесса. Вертикальный порядок чтения = время.</p>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart TD
+  classDef hr fill:#FFE5EB,stroke:#E6303A,color:#3F3F46
+  classDef emp fill:#DCFCE7,stroke:#16A34A,color:#15803D
+  classDef myid fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+  classDef bank fill:#FEF3C7,stroke:#EAB308,color:#854D0E
+  classDef factory fill:#FFE4D6,stroke:#F97316,color:#9A3412
+  classDef courier fill:#EDE9FE,stroke:#A855F7,color:#6B21A8
+
+  subgraph HR ["🏢 HR-администратор"]
+    A1["Открыть Кадры → Добавить кадр"]:::hr
+    A2["Заполнить форму: паспорт, ДР, телефон, ФИО"]:::hr
+    A3["Отправить приглашение"]:::hr
+    A4["Видит приглашение в списке Кадры"]:::hr
+    A12["Получает карты по адресу компании"]:::hr
+    A13["Выдаёт карты сотрудникам"]:::hr
+  end
+
+  subgraph EMP ["👤 Сотрудник"]
+    B1["Получает SMS со ссылкой KYC"]:::emp
+    B2["Открывает ссылку — 24 часа"]:::emp
+    B3["Вводит паспорт + дату рождения"]:::emp
+    B4["Проходит Face ID"]:::emp
+    B5["Подписывает согласие на карту"]:::emp
+    B14["Получает карту от HR + активирует"]:::emp
+  end
+
+  subgraph MYID ["🆔 MyID — KYC"]
+    M1["Проверка паспорта по гос. базе"]:::myid
+    M2["Проверка лица — liveness"]:::myid
+    M3["Возврат KYC-токена + проверенных данных"]:::myid
+  end
+
+  subgraph BANK ["🏦 Unired Core Banking"]
+    C1["Получает запрос на эмиссию"]:::bank
+    C2{"KYC пройден? Договор активен?"}:::bank
+    C3["Генерация данных карты: PAN, срок, CVV"]:::bank
+    C4["Создание записи карты, привязка к счёту клиента"]:::bank
+    C9["Обновление статуса: delivered → active"]:::bank
+  end
+
+  subgraph FACT ["🏭 Производство карт"]
+    P1["Получает шифрованный файл персонализации"]:::factory
+    P2["Печать + эмбоссинг физической карты"]:::factory
+    P3["Генерация PIN-конверта"]:::factory
+    P4["Контроль качества"]:::factory
+    P5["Передача партии в доставку"]:::factory
+  end
+
+  subgraph COUR ["🚚 Служба доставки"]
+    D1["Забор партии карт с фабрики"]:::courier
+    D2["Сортировка по адресам компаний"]:::courier
+    D3["В пути — трекинг → HR-приложение"]:::courier
+    D4["Передача HR — подпись + проверка ID"]:::courier
+  end
+
+  A1 --> A2 --> A3 --> B1
+  A3 -.создаёт приглашение.-> A4
+  B1 --> B2 --> B3 --> M1
+  M1 --> B4 --> M2 --> M3
+  M3 --> B5 --> C1
+  C1 --> C2
+  C2 -- да --> C3 --> C4 --> P1
+  C2 -- нет --> X1["❌ Отказ + уведомление HR"]:::bank
+  P1 --> P2 --> P3 --> P4 --> P5 --> D1
+  D1 --> D2 --> D3 --> D4
+  D4 --> A12 --> A13 --> B14
+  B14 -- первая операция ИЛИ смена PIN --> C9
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PHASES ========== -->
+  <section class="card" id="phases">
+    <h2><span class="section-num">3</span>Шесть фаз</h2>
+    <p class="lead-2">Каждая фаза принадлежит конкретному участнику или паре участников. Наведите курсор для выделения.</p>
+
+    <div class="phases">
+      <div class="phase-pill"><div class="num">1</div><div class="pname">Приглашение</div><div class="time">~ Минуты</div></div>
+      <div class="phase-pill"><div class="num">2</div><div class="pname">KYC</div><div class="time">3 – 10 мин</div></div>
+      <div class="phase-pill"><div class="num">3</div><div class="pname">Эмиссия</div><div class="time">&lt; 1 дня</div></div>
+      <div class="phase-pill"><div class="num">4</div><div class="pname">Производство</div><div class="time">2 – 3 дня</div></div>
+      <div class="phase-pill"><div class="num">5</div><div class="pname">Доставка</div><div class="time">1 – 2 дня</div></div>
+      <div class="phase-pill"><div class="num">6</div><div class="pname">Выдача</div><div class="time">0 – 7 дней</div></div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 1 · Приглашение (HR → Сотрудник)</h3><span class="time-badge">~ Минуты</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Участник</th><th>Действие системы</th></tr>
+        <tr><td><span class="step-num">1</span></td><td>Открыть <code>Кадры</code> → нажать <code>Добавить кадр</code></td><td>HR</td><td><code>staff.html</code> → <code>staff-add.html</code></td></tr>
+        <tr><td><span class="step-num">2</span></td><td>Заполнить форму (паспорт <code>AA1234567</code>, ДР <code>ДД.ММ.ГГГГ</code>, телефон <code>+998…</code>, ФИО)</td><td>HR</td><td>Клиентская валидация</td></tr>
+        <tr><td><span class="step-num">3</span></td><td>Нажать <code>Отправить приглашение</code></td><td>HR</td><td><code>MSB.createInvite()</code> · токен с 24-часовым сроком · SMS-шлюз отправляет ссылку</td></tr>
+        <tr><td><span class="step-num">4</span></td><td>Увидеть приглашение в списке кадров</td><td>HR</td><td>Закреплённый блок <span class="badge yellow">Ожидают подтверждения (N)</span></td></tr>
+      </table></div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 2 · KYC (Сотрудник + MyID)</h3><span class="time-badge">3 – 10 мин</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Участник</th><th>Действие системы</th></tr>
+        <tr><td><span class="step-num">5</span></td><td>Открыть SMS-ссылку</td><td>Сотрудник</td><td>Проверка валидности токена + срока</td></tr>
+        <tr><td><span class="step-num">6</span></td><td>Ввести паспорт + ДР</td><td>Сотрудник</td><td>Сверка с данными приглашения — должны совпадать</td></tr>
+        <tr><td><span class="step-num">7</span></td><td>Пройти Face ID</td><td>Сотрудник + MyID</td><td>Проверка живости (повернуть голову, моргнуть)</td></tr>
+        <tr><td><span class="step-num">8</span></td><td>Прочитать и принять согласие на карту</td><td>Сотрудник</td><td>Персонализированный превью карты с именем держателя</td></tr>
+        <tr><td><span class="step-num">9</span></td><td>KYC завершён</td><td>MyID</td><td>Подписанный токен верификации → бэкенд Unired · <span class="badge green">invite.status = completed</span></td></tr>
+      </table></div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 3 · Эмиссия карты (бэк-офис банка)</h3><span class="time-badge">&lt; 1 рабочего дня</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Действие системы</th><th>SLA</th></tr>
+        <tr><td><span class="step-num">10</span></td><td>Получить запрос на эмиссию</td><td>Webhook от бэкенда приложения с KYC-токеном + ID счёта клиента</td><td>Реальное время</td></tr>
+        <tr><td><span class="step-num">11</span></td><td>Валидация запроса</td><td>KYC пройден? Договор зарплатного проекта активен? Сотрудник не дубликат?</td><td>&lt; 5 мин</td></tr>
+        <tr><td><span class="step-num">12</span></td><td>Генерация данных карты</td><td>PAN (Visa BIN), срок (+3 года), CVV, seed для PIN</td><td>&lt; 1 мин</td></tr>
+        <tr><td><span class="step-num">13</span></td><td>Создание записи карты</td><td>Привязка к счёту клиента · <span class="badge blue">статус: requested</span></td><td>&lt; 1 мин</td></tr>
+        <tr><td><span class="step-num">14</span></td><td>Отправка на производство</td><td>Шифрованный файл персонализации (ISO 8583 или собственный формат) по защищённому каналу</td><td>Партия в течение дня</td></tr>
+      </table></div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 4 · Физическое производство (фабрика карт)</h3><span class="time-badge">2 – 3 рабочих дня</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Описание</th><th>SLA</th></tr>
+        <tr><td><span class="step-num">15</span></td><td>Получить партию персонализации</td><td>Ежедневная шифрованная партия от банка</td><td>T+0</td></tr>
+        <tr><td><span class="step-num">16</span></td><td>Печать + эмбоссинг карты</td><td>ФИО держателя, PAN, срок; персонализация магнитной полосы + EMV-чипа</td><td>T+1</td></tr>
+        <tr><td><span class="step-num">17</span></td><td>Генерация PIN-конверта</td><td>Защищённый конверт с признаком вскрытия; PIN не виден человеку</td><td>T+1</td></tr>
+        <tr><td><span class="step-num">18</span></td><td>Контроль качества</td><td>Чтение чипа + полосы, визуальный осмотр, выборочный контроль партии</td><td>T+1</td></tr>
+        <tr><td><span class="step-num">19</span></td><td>Передача в доставку</td><td>Опечатанная партия + манифест с адресами компаний</td><td>T+2</td></tr>
+      </table></div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 5 · Доставка (курьерская служба)</h3><span class="time-badge">1 – 2 рабочих дня</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Описание</th><th>SLA</th></tr>
+        <tr><td><span class="step-num">20</span></td><td>Забор партии</td><td>Курьер расписывается за опечатанную партию на фабрике</td><td>T+2</td></tr>
+        <tr><td><span class="step-num">21</span></td><td>Сортировка по адресам</td><td>Группировка по адресам компаний; одна посылка на компанию</td><td>T+2</td></tr>
+        <tr><td><span class="step-num">22</span></td><td>В пути</td><td>События трекинга отправляются в HR-приложение · <span class="badge blue">статус: in_transit</span></td><td>T+3</td></tr>
+        <tr><td><span class="step-num">23</span></td><td>Передача HR</td><td>HR расписывается + предъявляет ID; курьер фиксирует в приложении</td><td>T+3 — T+4</td></tr>
+      </table></div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase-block">
+      <div class="phase-header"><h3>Фаза 6 · Выдача и активация (HR + Сотрудник)</h3><span class="time-badge">0 – 7 дней</span></div>
+      <div class="steps"><table>
+        <tr><th>#</th><th>Шаг</th><th>Участник</th><th>Описание</th></tr>
+        <tr><td><span class="step-num">24</span></td><td>HR получает партию карт</td><td>HR</td><td>Push-уведомление: «Карта Алишера Каримова доставлена»</td></tr>
+        <tr><td><span class="step-num">25</span></td><td>HR выдаёт карту сотруднику</td><td>HR</td><td>Внутренняя передача; HR отмечает <code>Выдана</code> в приложении</td></tr>
+        <tr><td><span class="step-num">26</span></td><td>Сотрудник активирует карту</td><td>Сотрудник</td><td>Первая операция ИЛИ смена PIN в банкомате · <span class="badge green">статус: active</span></td></tr>
+        <tr><td><span class="step-num">27</span></td><td>Первая выплата зарплаты</td><td>HR</td><td>Следующий зарплатный реестр включает нового сотрудника</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ========== STATES ========== -->
+  <section class="card" id="states">
+    <h2><span class="section-num">4</span>Состояния (state machines)</h2>
+    <p class="lead-2">Три сущности отслеживают свой жизненный цикл независимо. Каждый переход — event-sourced и идемпотентен.</p>
+
+    <div class="state-section">
+      <div class="title">Состояния приглашения</div>
+      <div class="state-machine">created → pending → completed
+                  ↘ expired (>24 ч)
+                  ↘ cancelled (действие HR)</div>
+    </div>
+    <div class="state-section">
+      <div class="title">Состояния карты</div>
+      <div class="state-machine">requested → in_production → produced → in_delivery → delivered → distributed → active
+                                                  ↘ delivery_failed → returned_to_branch</div>
+    </div>
+    <div class="state-section">
+      <div class="title">Состояния сотрудника (вид для HR)</div>
+      <div class="state-machine">invited → onboarding (KYC в процессе)
+        ↘ onboarded (KYC пройден, ожидает карту)
+        ↘ active (карта доставлена + активирована)
+        ↘ rejected (KYC провален, требуется эскалация)</div>
+    </div>
+  </section>
+
+  <!-- ========== SLA ========== -->
+  <section class="card" id="sla">
+    <h2><span class="section-num">5</span>Хронология SLA</h2>
+    <p class="lead-2">Визуальный таймлайн полного процесса. Фаза 4 (Производство) — самый длинный сегмент.</p>
+
+    <div class="sla-bar">
+      <div class="sla-segment s1" title="Фаза 1: Приглашение (минуты)">1. Приглашение</div>
+      <div class="sla-segment s2" title="Фаза 2: KYC (3-10 мин)">2. KYC</div>
+      <div class="sla-segment s3" title="Фаза 3: Эмиссия (<1 дня)">3. Эмиссия</div>
+      <div class="sla-segment s4" title="Фаза 4: Производство (2-3 дня)">4. Производство</div>
+      <div class="sla-segment s5" title="Фаза 5: Доставка (1-2 дня)">5. Доставка</div>
+      <div class="sla-segment s6" title="Фаза 6: Выдача (0-7 дней)">6. Выдача</div>
+    </div>
+    <div class="sla-total">HR отправляет → карта в руках: <span>5 – 7 рабочих дней</span></div>
+    <p style="text-align:center; color: var(--text-muted); font: 400 13px/1.5 'Manrope', sans-serif; margin: 8px 0 0;">Первая зарплата зачисляется в течение 30 дней после активации</p>
+  </section>
+
+  <!-- ========== EXCEPTIONS ========== -->
+  <section class="card" id="exceptions">
+    <h2><span class="section-num">6</span>Точки принятия решений и исключения</h2>
+    <p class="lead-2">Реалистичные сценарии сбоев и их обработка системой.</p>
+    <div class="exceptions">
+      <div class="exception"><div class="e-trigger">Срок KYC-токена истёк</div><div class="e-handle">Сотрудник не может продолжить → обращается к HR → HR создаёт новое приглашение (новое 24-часовое окно).</div></div>
+      <div class="exception"><div class="e-trigger">Паспорт не совпадает с приглашением</div><div class="e-handle">Показать ошибку, разрешить 3 повторных попытки. После 3 неудач → блокировка + ручная проверка.</div></div>
+      <div class="exception"><div class="e-trigger">Face liveness не прошёл</div><div class="e-handle">До 3 попыток. После 3 неудач → эскалация в отделение для ручного KYC.</div></div>
+      <div class="exception"><div class="e-trigger">Валидация банка не пройдена</div><div class="e-handle">Автоматический отказ + уведомление HR. HR связывается с банком для оформления зарплатного договора.</div></div>
+      <div class="exception"><div class="e-trigger">Брак на производстве</div><div class="e-handle">Повторная печать в следующей партии. Уведомление HR о задержке на +1 день.</div></div>
+      <div class="exception"><div class="e-trigger">Доставка не состоялась (HR отсутствует)</div><div class="e-handle">Повтор на следующий рабочий день. После 2 неудач → курьер хранит карту в депо, HR забирает сам.</div></div>
+      <div class="exception"><div class="e-trigger">HR задерживает выдачу &gt; 7 дней</div><div class="e-handle">Напоминающие push-уведомления.</div></div>
+      <div class="exception"><div class="e-trigger">HR задерживает выдачу &gt; 30 дней</div><div class="e-handle">Карта автоматически деактивируется; требуется повторный выпуск.</div></div>
+    </div>
+  </section>
+
+  <!-- ========== INTEGRATIONS ========== -->
+  <section class="card" id="integrations">
+    <h2><span class="section-num">7</span>Точки интеграции</h2>
+    <p class="lead-2">Межсистемные взаимодействия в рамках процесса.</p>
+    <div class="steps"><table>
+      <tr><th>Интеграция</th><th>Направление</th><th>Протокол</th><th>Назначение</th></tr>
+      <tr><td>Приложение → SMS-шлюз</td><td>Исходящее</td><td><code>REST + HMAC</code></td><td>Отправка SMS со ссылкой KYC</td></tr>
+      <tr><td>Приложение ↔ MyID</td><td>Двунаправленное</td><td><code>OAuth 2.0 + JWS</code></td><td>Обмен KYC-токенами</td></tr>
+      <tr><td>Приложение → Unired Core</td><td>Исходящее</td><td><code>gRPC / REST</code></td><td>Запрос эмиссии после завершения KYC</td></tr>
+      <tr><td>Unired Core → фабрика карт</td><td>Исходящее</td><td><code>SFTP — шифрованная партия</code></td><td>Данные для персонализации</td></tr>
+      <tr><td>Фабрика → API доставки</td><td>Исходящее</td><td><code>REST webhook</code></td><td>Партия готова к забору</td></tr>
+      <tr><td>Доставка → Приложение</td><td>Исходящие webhook'и</td><td><code>REST</code></td><td>Push-события: <span class="badge blue">in_transit</span> <span class="badge green">delivered</span></td></tr>
+      <tr><td>Unired Core → Приложение</td><td>Исходящее</td><td><code>Pub/sub события</code></td><td>Изменения жизненного цикла карты</td></tr>
+    </table></div>
+    <p style="margin-top: 16px; color: var(--text-muted); font: 400 13px/1.5 'Manrope', sans-serif;">
+      <strong style="color: var(--text);">Идемпотентность:</strong> каждый переход состояния ключуется по <code>(invite_token, transition_type)</code>, чтобы предотвратить дублирование карт при повторных попытках.
+      <br>
+      <strong style="color: var(--text);">Аудит:</strong> каждое действие HR, сотрудника, MyID, банковского оператора и курьера логируется с меткой времени и идентификатором инициатора для AML/KYC-комплаенса.
+    </p>
+  </section>
+
+  <!-- ========== OPEN QUESTIONS ========== -->
+  <section class="card" id="open">
+    <h2><span class="section-num">8</span>Открытые вопросы команды</h2>
+    <p class="lead-2">Решения, которые должны быть приняты Продуктом перед релизом v1.</p>
+    <div class="open-questions">
+      <ol>
+        <li>Должны ли события статуса карты отображаться в профиле сотрудника у HR (живой трекинг-таймлайн) или только в виде push-уведомлений?</li>
+        <li>Экспресс-доставка — есть ли спрос на премиум-тариф со сроком 2 дня вместо 5–7?</li>
+        <li>Доставка PIN — отдельным конвертом на адрес компании или SMS сотруднику? Нужен анализ безопасности.</li>
+        <li>Можно ли разрешить сотрудникам пользоваться картой через Apple Pay / Google Pay сразу, пока физическая карта производится?</li>
+        <li>Массовая загрузка (Excel со списком 50+ сотрудников) — добавлять в v1.1?</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="download-bar">
+    <a href="employee-onboarding-process.md">📄 Markdown-источник</a>
+    <a href="../index.html">🏠 Лаунчер прототипа</a>
+    <a href="../screens/staff-add.html">▶ Попробовать процесс</a>
+  </div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#FFE5EB',
+      primaryTextColor: '#3F3F46',
+      primaryBorderColor: '#E6303A',
+      lineColor: '#7D7D85',
+      fontFamily: 'Manrope, sans-serif',
+      fontSize: '13px',
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+      padding: 10,
+    },
+  });
+</script>
+
+</body>
+</html>

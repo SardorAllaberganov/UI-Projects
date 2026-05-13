@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Зарплата</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+
+  .promo-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 8px 16px 0;
+    position: relative;
+  }
+  .promo-card .head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .promo-card .icon-box {
+    width: 36px; height: 36px;
+    background: #F6F8F9;
+    border: 0.371px solid #8CC5FF;
+    border-radius: 10px;
+    box-shadow: -3.375px 3.375px 3.375px rgba(10, 132, 255, 0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .promo-card .icon-box img { width: 24px; height: 24px; }
+  .promo-card .title {
+    flex: 1;
+    font: 600 18px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .promo-card .close {
+    width: 24px; height: 24px;
+    background: #F0F0F0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    color: #7D7D85;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .promo-card .desc {
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+    margin-bottom: 14px;
+  }
+  .promo-card .cta {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    font: 600 15px/1 'Manrope', sans-serif;
+    cursor: pointer;
+  }
+
+  .info-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 16px 0;
+  }
+  .info-card .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .info-card .title {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .info-card .subtitle {
+    font: 400 13px/1.4 'Manrope', sans-serif;
+    color: #7D7D85;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="promo-card">
+    <div class="head">
+      <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+      <div class="title">Выплаты сотрудникам</div>
+      <button class="close" onclick="this.parentElement.parentElement.style.display='none'">✕</button>
+    </div>
+    <div class="desc">Выплачивайте зарплаты и разовые вознаграждения сотрудникам в несколько кликов.</div>
+    <button class="cta" onclick="openSheet()">Подключить услугу</button>
+  </div>
+
+  <div class="info-card">
+    <div class="head">
+      <div class="title">Реестры выплат</div>
+    </div>
+    <div class="subtitle">Управляйте зарплатами, авансами и премиями сотрудникам.</div>
+    <button style="margin-top: 12px; background: transparent; border: none; color: #F93C65; font: 600 14px/1 'Manrope', sans-serif; cursor: pointer; padding: 0;" onclick="location.href='payroll-landing.html'">Открыть Зарплатный проект →</button>
+  </div>
+
+  <div class="info-card">
+    <div class="head">
+      <div class="title">Сотрудники</div>
+    </div>
+    <div class="subtitle">8 активных сотрудников.</div>
+    <button style="margin-top: 12px; background: transparent; border: none; color: #F93C65; font: 600 14px/1 'Manrope', sans-serif; cursor: pointer; padding: 0;" onclick="location.href='staff.html'">Перейти в Кадры →</button>
+  </div>
+
+  <!-- Bottom sheet modal -->
+  <div id="sheetBackdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100;" onclick="closeSheet(event)"></div>
+  <div id="sheet" style="display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: #fff; border-radius: 24px 24px 0 0; padding: 16px; z-index: 101; animation: sh-in .25s ease;">
+    <div style="width: 36px; height: 4px; background: #DFDFE4; border-radius: 2px; margin: 0 auto 16px;"></div>
+    <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+      <div style="width: 40px; height: 40px; background: #F6F8F9; border: 0.371px solid #8CC5FF; border-radius: 12px; box-shadow: -3.375px 3.375px 3.375px rgba(10, 132, 255, 0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <img src="../assets/ic-money.svg" alt="" style="width: 24px; height: 24px;">
+      </div>
+      <div style="flex: 1; font: 700 18px/1.3 'Manrope', sans-serif; color: #3F3F46;">
+        Подключение услуги "Выплаты сотрудникам"
+      </div>
+      <button onclick="closeSheet()" style="width: 24px; height: 24px; background: #F0F0F0; border: none; border-radius: 50%; cursor: pointer; color: #7D7D85;">✕</button>
+    </div>
+    <div style="font: 400 14px/1.5 'Manrope', sans-serif; color: #54545B; margin-bottom: 16px;">
+      Для активации услуги необходимо ознакомиться с <span style="color: #2563EB;">публичной офертой</span> и подтвердить согласие. После подключения вы сможете добавлять сотрудников и управлять выплатами прямо в приложении
+    </div>
+    <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; cursor: pointer;">
+      <input type="checkbox" id="agree" style="width: 18px; height: 18px; margin-top: 2px; accent-color: #2563EB;">
+      <span style="font: 400 13px/1.4 'Manrope', sans-serif; color: #54545B;">Согласен с условиями публичной оферты и подтверждаю подключение услуги.</span>
+    </label>
+    <button onclick="connectService()" style="width: 100%; height: 48px; background: #2563EB; color: #fff; border: none; border-radius: 14px; font: 600 16px/1 'Manrope', sans-serif; cursor: pointer;" id="connectBtn" disabled>Подключить</button>
+  </div>
+</div>
+
+<style>
+  @keyframes sh-in { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }
+  #sheet button#connectBtn[disabled] { opacity: .5; cursor: not-allowed; }
+</style>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Зарплата', back: true });
+
+  window.openSheet = () => {
+    document.getElementById('sheetBackdrop').style.display = 'block';
+    document.getElementById('sheet').style.display = 'block';
+  };
+  window.closeSheet = (e) => {
+    if (e && e.target.id !== 'sheetBackdrop') return;
+    document.getElementById('sheetBackdrop').style.display = 'none';
+    document.getElementById('sheet').style.display = 'none';
+  };
+  if (typeof closeSheet === 'function') {
+    // also bind to button
+    document.querySelectorAll('#sheet button[onclick="closeSheet()"]').forEach(b => {
+      b.onclick = () => closeSheet({ target: { id: 'sheetBackdrop' } });
+    });
+  }
+  document.getElementById('agree').addEventListener('change', e => {
+    document.getElementById('connectBtn').disabled = !e.target.checked;
+  });
+  window.connectService = () => {
+    MSB.toast('Услуга «Выплаты сотрудникам» подключена');
+    setTimeout(() => closeSheet({ target: { id: 'sheetBackdrop' } }), 800);
+  };
+</script>
+</body>
+</html>

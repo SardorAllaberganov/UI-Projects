@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · QR оплата</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 200px;
+  }
+
+  .qr-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 8px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .qr-date-header {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .qr-row {
+    background: #F6F8F9;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    gap: 16px;
+  }
+  .qr-row .left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .qr-row .id {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .qr-row .card-num {
+    font: 400 12px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .qr-row .amount {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-top: 2px;
+  }
+  .qr-row .type {
+    font: 500 12px/1 'Manrope', sans-serif;
+    margin-top: 2px;
+  }
+  .qr-row .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    justify-content: space-between;
+  }
+  .qr-row .status {
+    font: 600 14px/1 'Manrope', sans-serif;
+  }
+  .qr-row .date {
+    font: 400 12px/1.4 'Manrope', sans-serif;
+    color: #7D7D85;
+    text-align: right;
+  }
+  .qr-row .expiry {
+    font: 400 12px/1.4 'Manrope', sans-serif;
+    text-align: right;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 104px; /* above bottom nav */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 25;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="qr-card">
+    <div class="qr-date-header">25-iyul, 2025</div>
+    <div id="qrList"></div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="location.href='qr-generate.html'">Сгенерировать QR-код</button>
+  </div>
+
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'QR оплата', back: false });
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('qr');
+
+  const fmt = n => {
+    const parts = n.toFixed(2).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + parts[1];
+  };
+
+  document.getElementById('qrList').innerHTML = MSB_DATA.qrCodes.map(q => {
+    const st = MSB_DATA.qrStatus[q.status];
+    const tp = MSB_DATA.qrType[q.type];
+    return `
+      <a class="qr-row" href="qr-detail.html?id=${q.id}">
+        <div class="left">
+          <div class="id">#${q.id}</div>
+          <div class="card-num">${q.card}</div>
+          <div class="amount">${fmt(q.amount)} uzs</div>
+          <div class="type" style="color: ${tp.color};">${tp.label}</div>
+        </div>
+        <div class="right">
+          <div class="status" style="color: ${st.color};">${st.label}</div>
+          <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end; flex: 1; justify-content: flex-end;">
+            <div class="date">${q.created}</div>
+            <div class="expiry" style="color: ${q.status === 'expired' || q.status === 'used' ? '#7D7D85' : '#16A34A'};">${q.expiry}</div>
+          </div>
+        </div>
+      </a>`;
+  }).join('');
+</script>
+</body>
+</html>

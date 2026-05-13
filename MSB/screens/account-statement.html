@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Выписка по счету</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+  .form-area {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .label-row {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 6px 12px;
+    background: #FFFFFF;
+    border-radius: 12px;
+  }
+  .label-row .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+  .label-row .lbl {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .label-row .val {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+
+  .input-pair { display: flex; gap: 10px; }
+  .input-pair .input-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .input-field .lbl {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #54545B;
+  }
+  .input-field .input-group {
+    background: #FFFFFF;
+    height: 56px;
+    border-radius: 16px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .input-field .val {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+    flex: 1;
+  }
+  .input-field .cal-icon {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .input-field .cal-icon img { width: 24px; height: 24px; opacity: .5; }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px 16px;
+    background: #F0F0F0;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.99deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .home-indicator-fixed {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    height: 34px; background: #F0F0F0;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 8px; z-index: 30;
+  }
+  .home-indicator-fixed::after { content: ''; width: 144px; height: 5px; background: #000; border-radius: 100px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="form-area">
+    <div class="label-row">
+      <div class="inner">
+        <div class="lbl">Счет</div>
+        <div class="val" id="accNum">20208978805408838002</div>
+      </div>
+    </div>
+
+    <div class="input-pair">
+      <div class="input-field">
+        <div class="lbl">Период с:</div>
+        <div class="input-group">
+          <span class="val">27.03.2024</span>
+          <button class="cal-icon"><img src="../assets/ic-calendar.svg" alt=""></button>
+        </div>
+      </div>
+      <div class="input-field">
+        <div class="lbl">Период по:</div>
+        <div class="input-group">
+          <span class="val">27.03.2024</span>
+          <button class="cal-icon"><img src="../assets/ic-calendar.svg" alt=""></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="MSB.toast('Выписка формируется...')">Выполнить</button>
+  </div>
+  <div class="home-indicator-fixed"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Выписка по счету', back: true });
+  const id = MSB.qsParam('id');
+  const a = id ? MSB_DATA.accounts.find(x => x.id === id) : null;
+  if (a) document.getElementById('accNum').textContent = a.number;
+</script>
+</body>
+</html>

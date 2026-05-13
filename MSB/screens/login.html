@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Вход</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #E6303A; }
+  .frame {
+    width: 430px;
+    height: 932px;
+    margin: 0 auto;
+    position: relative;
+    background: linear-gradient(114.77deg, #F93C65 23.888%, #E6303A 85.587%);
+    overflow: hidden;
+  }
+  @media (max-width: 430px) { .frame { width: 100%; height: 100vh; } }
+
+  .status-bar-abs { position: absolute; top: 0; left: 0; width: 100%; z-index: 5; }
+  .brand-container {
+    position: absolute;
+    top: 95px;
+    left: 128px;
+    width: 175px;
+    height: 58px;
+  }
+  .brand-container .unired { position: absolute; inset: 0 0 31.3% 0; }
+  .brand-container .business { position: absolute; inset: 74.98% 0.43% 0 52.69%; }
+  .brand-container img { display: block; width: 100%; height: 100%; }
+
+  .login-sheet {
+    position: absolute;
+    bottom: 34px;
+    left: 0;
+    width: 100%;
+    height: 700px;
+    background: #F6F8F9;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .login-sheet .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 0;
+    align-items: center;
+    min-height: 0;
+  }
+  .login-sheet .header {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .login-sheet .header .title {
+    font: 600 24px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .login-sheet .header .sub {
+    font: 500 16px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+  }
+
+  .fields { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label {
+    font: 500 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .field .input-group {
+    background: #FFFFFF;
+    height: 56px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .field input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+    height: 100%;
+    font-family: inherit;
+  }
+  .field input::placeholder { color: #A6A6A9; }
+  .field .right-icon {
+    width: 24px; height: 24px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .field .right-icon img { width: 20px; height: 14px; opacity: .6; }
+
+  .actions { display: flex; flex-direction: column; gap: 24px; }
+  .btn-request {
+    background: #FFFFFF;
+    height: 56px;
+    border-radius: 16px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+  }
+  .btn-request .label {
+    flex: 1;
+    text-align: left;
+    font: 600 14px/1 'Manrope', sans-serif;
+    color: #54545B;
+  }
+  .btn-request .chev { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .btn-request .chev img { width: 8px; height: 14px; opacity: .5; }
+
+  .btn-submit {
+    background: #E7E9EC;
+    color: #C1C1C1;
+    height: 56px;
+    border-radius: 16px;
+    border: none;
+    font: 600 14px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    transition: filter .15s ease;
+  }
+  .btn-submit.enabled {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    font: 600 16px/1 'Manrope', sans-serif;
+  }
+  .btn-submit.enabled:active { filter: brightness(.93); }
+
+  .home-indicator-abs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 34px;
+    background: #F6F8F9;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+  .home-indicator-abs::after {
+    content: '';
+    display: block;
+    width: 144px;
+    height: 5px;
+    background: #000;
+    border-radius: 100px;
+  }
+
+  .hint {
+    text-align: center;
+    font: 400 12px/1.4 'Manrope', sans-serif;
+    color: #A1A1AA;
+    padding-top: 4px;
+  }
+  .hint b { color: #54545B; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="status-bar-abs">
+    <div class="ios-status on-gradient">
+      <div class="time">9:41</div>
+      <div class="dynamic-island"></div>
+      <div class="levels">
+        <img class="cellular" src="../assets/ic-cellular.svg" alt="">
+        <img class="wifi" src="../assets/ic-wifi.svg" alt="">
+        <img class="battery" src="../assets/ic-battery.svg" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="brand-container">
+    <div class="unired"><img src="../assets/logo-unired.svg" alt="Unired"></div>
+    <div class="business"><img src="../assets/logo-business.svg" alt="business"></div>
+  </div>
+
+  <div class="login-sheet">
+    <div class="content">
+      <div class="header">
+        <div class="title">Добро пожаловать!</div>
+        <div class="sub">Войдите систему</div>
+      </div>
+
+      <div class="fields">
+        <div class="field">
+          <label for="phone">Номер телефона</label>
+          <div class="input-group">
+            <input id="phone" type="tel" placeholder="Введите ваш номер телефона" inputmode="tel">
+          </div>
+        </div>
+        <div class="field">
+          <label for="pwd">Пароль</label>
+          <div class="input-group">
+            <input id="pwd" type="password" placeholder="Введите ваш пароль">
+            <button class="right-icon" id="togglePwd" type="button" aria-label="Show password">
+              <img src="../assets/ic-eye.svg" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="hint">Подсказка: введите телефон <b>+998901234567</b> и пароль <b>0000</b></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-request" type="button" onclick="MSB.toast('Заявка на открытие счёта · скоро')">
+        <span class="label">Запрос на открытие счета</span>
+        <span class="chev"><img src="../assets/ic-chevron-right.svg" alt=""></span>
+      </button>
+      <button class="btn-submit" id="submitBtn" type="button" disabled>Войти</button>
+    </div>
+  </div>
+
+  <div class="home-indicator-abs"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const phone = document.getElementById('phone');
+  const pwd = document.getElementById('pwd');
+  const submit = document.getElementById('submitBtn');
+  const togglePwd = document.getElementById('togglePwd');
+
+  function updateBtn() {
+    const ok = phone.value.replace(/\D/g, '').length >= 9 && pwd.value.length >= 4;
+    submit.disabled = !ok;
+    submit.classList.toggle('enabled', ok);
+  }
+  phone.addEventListener('input', updateBtn);
+  pwd.addEventListener('input', updateBtn);
+
+  togglePwd.addEventListener('click', () => {
+    pwd.type = pwd.type === 'password' ? 'text' : 'password';
+  });
+
+  submit.addEventListener('click', () => {
+    if (submit.disabled) return;
+    if (pwd.value === '0000') {
+      MSB.login();
+      location.href = 'home.html';
+    } else {
+      MSB.toast('Неверный пароль. Попробуйте 0000');
+    }
+  });
+
+  // Allow Enter to submit
+  pwd.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !submit.disabled) submit.click();
+  });
+</script>
+</body>
+</html>

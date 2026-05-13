@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Шаблоны документов</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div style="padding: 12px 16px;">
+    <div class="search">
+      <span class="ico">⌕</span>
+      <input id="q" placeholder="Поиск шаблона">
+    </div>
+
+    <div id="groups"></div>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  document.getElementById('topBar').innerHTML = MSB.topBar({ title: 'Шаблоны документов', back: true });
+
+  let query = '';
+
+  function render() {
+    const list = MSB_DATA.templates.filter(t => !query || t.title.toLowerCase().includes(query));
+    const byCat = {};
+    list.forEach(t => { (byCat[t.category] = byCat[t.category] || []).push(t); });
+
+    if (!list.length) {
+      document.getElementById('groups').innerHTML = `<div class="empty"><div class="ico">📋</div><div>Шаблонов не найдено</div></div>`;
+      return;
+    }
+
+    document.getElementById('groups').innerHTML = Object.entries(byCat).map(([cat, items]) => `
+      <div class="section-title">${cat}</div>
+      ${items.map(t => `
+        <div class="card-row" onclick="useTemplate('${t.id}')">
+          <div class="avatar">📋</div>
+          <div class="meta">
+            <div class="title">${t.title}</div>
+            <div class="sub">Использован ${t.usageCount} раз</div>
+          </div>
+          <span class="chevron">›</span>
+        </div>
+      `).join('')}
+    `).join('');
+  }
+
+  window.useTemplate = (id) => {
+    const t = MSB_DATA.templates.find(x => x.id === id);
+    MSB.toast(`Создание документа: ${t.title}`);
+  };
+
+  render();
+  document.getElementById('q').addEventListener('input', e => { query = e.target.value.toLowerCase(); render(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MyID · Face ID</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 110px;
+  }
+
+  .form-intro { padding: 8px 16px 4px; text-align: center; }
+  .form-intro .title {
+    font: 700 22px/1.3 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 6px;
+  }
+  .form-intro .sub {
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .face-frame-wrap {
+    margin: 32px auto;
+    width: 260px;
+    height: 260px;
+    position: relative;
+  }
+  .face-frame {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FCE7EE 0%, #FFD5DD 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .face-frame .silhouette {
+    position: absolute;
+    inset: 18%;
+    color: #E6303A;
+    opacity: .35;
+  }
+  .face-frame .silhouette svg { width: 100%; height: 100%; }
+  .face-frame .scan-ring {
+    position: absolute;
+    inset: -8px;
+    border: 4px solid #DFDFE4;
+    border-top-color: #E6303A;
+    border-right-color: #F93C65;
+    border-radius: 50%;
+    animation: spin 1.4s linear infinite;
+    display: none;
+  }
+  .face-frame.scanning .scan-ring { display: block; }
+  .face-frame.done .scan-ring { display: none; }
+  .face-frame.done {
+    background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+  }
+  .face-frame.done .silhouette { color: #16A34A; opacity: 1; }
+  .face-frame.done::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #16A34A;
+    border-radius: 50%;
+    bottom: 10px;
+    right: 10px;
+    box-shadow: 0 0 0 4px #FFFFFF, 0 0 0 6px #16A34A;
+  }
+  .face-frame.done::before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 14px;
+    border-left: 4px solid #fff;
+    border-bottom: 4px solid #fff;
+    transform: rotate(-45deg);
+    bottom: 30px;
+    right: 26px;
+    z-index: 2;
+  }
+
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+  .scan-status {
+    text-align: center;
+    padding: 16px;
+    font: 600 16px/1.4 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .scan-status.done { color: #16A34A; }
+
+  .hints-grid {
+    margin: 0 16px 16px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hint-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 500 13px/1.3 'Manrope', sans-serif;
+    color: #54545B;
+  }
+  .hint-row .check {
+    width: 18px; height: 18px;
+    background: #DCFCE7;
+    color: #16A34A;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font: 700 11px/1 sans-serif;
+  }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .cta-btn-pink[disabled] { opacity: .4; cursor: not-allowed; }
+  .cta-btn-pink.scanning { opacity: .7; cursor: progress; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div class="kyc-steps">
+    <div class="kyc-step-bar done"></div>
+    <div class="kyc-step-bar done"></div>
+    <div class="kyc-step-bar"></div>
+  </div>
+  <div class="kyc-step-label"><span class="current">Шаг 2 из 3</span> · Face ID</div>
+
+  <div class="form-intro">
+    <div class="title">Подтвердите личность</div>
+    <div class="sub">Посмотрите в камеру и держите телефон на расстоянии 30 см. Камера автоматически снимет фото.</div>
+  </div>
+
+  <div class="face-frame-wrap">
+    <div class="face-frame" id="faceFrame">
+      <div class="scan-ring"></div>
+      <div class="silhouette">
+        <svg viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="42" rx="22" ry="26" fill="currentColor"/>
+          <path d="M14 100c0-22 16-32 36-32s36 10 36 32" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="scan-status" id="status">Нажмите «Начать сканирование»</div>
+
+  <div class="hints-grid">
+    <div class="hint-row"><span class="check">✓</span> Снимите очки и головной убор</div>
+    <div class="hint-row"><span class="check">✓</span> Найдите место с хорошим освещением</div>
+    <div class="hint-row"><span class="check">✓</span> Смотрите прямо в камеру</div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" id="scanBtn">Начать сканирование</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const token = MSB.qsParam('token');
+  if (!MSB.getInvite(token)) location.replace('kyc-welcome.html');
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Подтверждение личности', back: true, showActions: false });
+
+  const frame = document.getElementById('faceFrame');
+  const status = document.getElementById('status');
+  const btn = document.getElementById('scanBtn');
+
+  let phase = 'idle';
+
+  btn.addEventListener('click', () => {
+    if (phase === 'idle') {
+      phase = 'scanning';
+      frame.classList.add('scanning');
+      btn.classList.add('scanning');
+      btn.disabled = true;
+      btn.textContent = 'Сканирование...';
+
+      const messages = [
+        'Найдите лицо в кадре...',
+        'Поверните голову влево...',
+        'Поверните голову вправо...',
+        'Моргните дважды...',
+        'Проверка биометрии...',
+      ];
+      let i = 0;
+      status.textContent = messages[0];
+      const interval = setInterval(() => {
+        i++;
+        if (i < messages.length) status.textContent = messages[i];
+      }, 900);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        phase = 'done';
+        frame.classList.remove('scanning');
+        frame.classList.add('done');
+        status.classList.add('done');
+        status.textContent = 'Личность подтверждена';
+        btn.classList.remove('scanning');
+        btn.disabled = false;
+        btn.textContent = 'Продолжить';
+      }, 4500);
+    } else if (phase === 'done') {
+      location.href = 'kyc-agreement.html?token=' + token;
+    }
+  });
+</script>
+</body>
+</html>

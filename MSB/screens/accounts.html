@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Мои счета</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 120px;
+  }
+
+  .content-container { padding: 8px 0; }
+  .accounts-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div id="topBar"></div>
+
+  <div class="content-container">
+    <div class="accounts-card">
+      <div class="beta-ribbon"><span>Beta</span></div>
+      <div id="accList"></div>
+    </div>
+  </div>
+
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Мои счета', back: true });
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('menu');
+
+  const accList = document.getElementById('accList');
+  accList.innerHTML = MSB_DATA.accounts.map(a => {
+    const st = MSB_DATA.accountStatus[a.status];
+    // Figma uses period for decimal + space for thousands (en-style but with space)
+    const balParts = a.balance.toFixed(2).split('.');
+    const balInt = balParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const bal = `${balInt}.${balParts[1]}`;
+    return `
+      <a class="acc-row" href="account-detail.html?id=${a.id}">
+        <div class="top-row">
+          <span class="number">${a.number}</span>
+          <span class="code">${a.code}</span>
+        </div>
+        <div class="bottom-row">
+          <span class="status" style="color: ${st.color};">${st.label}</span>
+          <span class="balance">Баланс: ${bal}</span>
+        </div>
+      </a>`;
+  }).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Перевод</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .stepper { display: flex; gap: 4px; padding: 12px 16px 0; }
+  .stepper .step {
+    flex: 1; height: 4px; border-radius: 4px;
+    background: var(--msb-border);
+  }
+  .stepper .step.active { background: var(--msb-red); }
+
+  .acc-pick {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    border: 1px solid var(--msb-border);
+  }
+  .acc-pick .l { font-size: 12px; color: var(--msb-text-muted); }
+  .acc-pick .n { font-weight: 600; margin-top: 2px; }
+  .acc-pick .b { color: var(--msb-text-muted); font-size: 13px; margin-top: 2px; }
+
+  .amount-input {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    border: none;
+    width: 100%;
+    background: transparent;
+    color: var(--msb-text);
+    font-family: inherit;
+    padding: 24px 0;
+    outline: none;
+  }
+
+  .preset-amounts { display: flex; gap: 8px; padding: 0 0 16px; flex-wrap: wrap; }
+  .preset-amounts button {
+    background: var(--msb-bg);
+    border: 1px solid var(--msb-border);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .success-screen {
+    text-align: center;
+    padding: 60px 24px;
+  }
+  .success-icon {
+    width: 80px; height: 80px;
+    background: #DCFCE7;
+    color: #15803D;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div class="stepper" id="stepper">
+    <div class="step active"></div><div class="step"></div><div class="step"></div>
+  </div>
+
+  <div id="screen"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+
+  const fromId = MSB.qsParam('from') || 'acc-main';
+  let step = 1;
+  let form = {
+    fromAccount: fromId,
+    toCounterparty: '',
+    toAccount: '',
+    amount: '',
+    description: '',
+  };
+
+  function topbarTitle() {
+    if (step === 1) return 'Получатель';
+    if (step === 2) return 'Сумма';
+    return 'Готово';
+  }
+
+  function rerender() {
+    document.getElementById('topBar').innerHTML = MSB.topBar({ title: topbarTitle(), back: true });
+    document.getElementById('stepper').innerHTML = [1,2,3].map(s =>
+      `<div class="step ${step >= s ? 'active' : ''}"></div>`).join('');
+
+    if (step === 1) renderStep1();
+    else if (step === 2) renderStep2();
+    else renderStep3();
+  }
+
+  function renderStep1() {
+    const acc = MSB_DATA.accounts.find(a => a.id === form.fromAccount);
+    document.getElementById('screen').innerHTML = `
+      <div style="padding: 16px;">
+        <div class="section-title flush">Откуда</div>
+        <div class="acc-pick" id="fromPick">
+          <div class="l">Счёт списания</div>
+          <div class="n">${acc.label}</div>
+          <div class="b">${MSB.fmtMoney(acc.balance, acc.currency)} · ·· ${acc.number.slice(-4)}</div>
+        </div>
+
+        <div class="section-title">Куда</div>
+        <div class="search">
+          <span class="ico">⌕</span>
+          <input id="cpSearch" placeholder="Поиск контрагента или счёта">
+        </div>
+        <div id="cpList"></div>
+      </div>`;
+
+    document.getElementById('cpSearch').addEventListener('input', e => filterCounterparties(e.target.value));
+    filterCounterparties('');
+  }
+
+  function filterCounterparties(q) {
+    const list = MSB_DATA.counterparties.filter(c =>
+      !q || c.name.toLowerCase().includes(q.toLowerCase()) || c.inn.includes(q));
+    document.getElementById('cpList').innerHTML = list.map(c => `
+      <div class="card-row" onclick="pickCounterparty('${c.id}')">
+        <div class="avatar">${MSB.initials(c.name)}</div>
+        <div class="meta">
+          <div class="title">${c.name}</div>
+          <div class="sub">ИНН ${c.inn}</div>
+        </div>
+        <span class="chevron">›</span>
+      </div>
+    `).join('');
+  }
+
+  function pickCounterparty(id) {
+    const c = MSB_DATA.counterparties.find(x => x.id === id);
+    form.toCounterparty = c.name;
+    form.toAccount = '2020 8XXX XXXX XXXX ' + (1000 + Math.floor(Math.random() * 9000));
+    step = 2;
+    rerender();
+  }
+  window.pickCounterparty = pickCounterparty;
+
+  function renderStep2() {
+    const acc = MSB_DATA.accounts.find(a => a.id === form.fromAccount);
+    document.getElementById('screen').innerHTML = `
+      <div style="padding: 16px;">
+        <div class="card-row" style="cursor: default;">
+          <div class="avatar">${MSB.initials(form.toCounterparty)}</div>
+          <div class="meta">
+            <div class="title">${form.toCounterparty}</div>
+            <div class="sub">${form.toAccount}</div>
+          </div>
+        </div>
+
+        <div style="text-align:center; padding: 16px 0 0; color: var(--msb-text-muted); font-size: 13px;">
+          Доступно: <b>${MSB.fmtMoney(acc.balance, acc.currency)}</b>
+        </div>
+        <input id="amt" class="amount-input" type="text" inputmode="numeric" placeholder="0 ${acc.currency === 'USD' ? '$' : 'сум'}" value="${form.amount}">
+
+        <div class="preset-amounts">
+          <button data-v="1000000">1 млн</button>
+          <button data-v="5000000">5 млн</button>
+          <button data-v="10000000">10 млн</button>
+          <button data-v="${acc.balance}">Всё</button>
+        </div>
+
+        <div class="input-group">
+          <label>Назначение платежа</label>
+          <textarea class="textarea" id="desc" placeholder="Например: Оплата по договору №24">${form.description}</textarea>
+        </div>
+
+        <button class="btn btn-primary" id="payBtn">Отправить</button>
+      </div>`;
+
+    document.getElementById('amt').addEventListener('input', e => {
+      form.amount = e.target.value;
+    });
+    document.querySelectorAll('.preset-amounts button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.getElementById('amt').value = b.dataset.v;
+        form.amount = b.dataset.v;
+      });
+    });
+    document.getElementById('desc').addEventListener('input', e => {
+      form.description = e.target.value;
+    });
+    document.getElementById('payBtn').addEventListener('click', () => {
+      const n = parseFloat(String(form.amount).replace(/\s/g, ''));
+      if (!n || n <= 0) { MSB.toast('Введите сумму'); return; }
+      if (n > acc.balance) { MSB.toast('Недостаточно средств'); return; }
+      if (!form.description.trim()) { MSB.toast('Укажите назначение платежа'); return; }
+      step = 3;
+      rerender();
+    });
+  }
+
+  function renderStep3() {
+    const acc = MSB_DATA.accounts.find(a => a.id === form.fromAccount);
+    document.getElementById('screen').innerHTML = `
+      <div class="success-screen">
+        <div class="success-icon">✓</div>
+        <h2 style="margin: 0 0 8px; font-size: 20px;">Перевод отправлен</h2>
+        <p style="color: var(--msb-text-muted); margin: 0 0 24px;">Платёж принят к исполнению</p>
+
+        <div class="card" style="text-align: left;">
+          <div class="kv-row"><div class="k">Сумма</div><div class="v">${MSB.fmtMoney(parseFloat(form.amount), acc.currency)}</div></div>
+          <div class="kv-row"><div class="k">Получатель</div><div class="v">${form.toCounterparty}</div></div>
+          <div class="kv-row"><div class="k">Счёт получателя</div><div class="v" style="font-family: monospace; font-size: 12px;">${form.toAccount}</div></div>
+          <div class="kv-row"><div class="k">Назначение</div><div class="v">${form.description}</div></div>
+          <div class="kv-row"><div class="k">Дата</div><div class="v">${MSB.fmtDate('2026-05-13')}</div></div>
+          <div class="kv-row"><div class="k">Документ №</div><div class="v">PP-${Math.floor(100000 + Math.random() * 900000)}</div></div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline" onclick="MSB.toast('Чек сохранён в PDF')">📥 Чек</button>
+          <button class="btn btn-primary" onclick="location.href='home.html'">Готово</button>
+        </div>
+      </div>`;
+  }
+
+  rerender();
+</script>
+</body>
+</html>

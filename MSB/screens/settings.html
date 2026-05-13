@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Настройки</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--msb-border);
+  }
+  .switch-row:first-child { border-radius: 14px 14px 0 0; }
+  .switch-row:last-child { border-radius: 0 0 14px 14px; border-bottom: none; }
+  .switch-row .lbl { font-weight: 500; font-size: 14px; }
+  .switch-row .desc { color: var(--msb-text-muted); font-size: 12px; margin-top: 2px; }
+  .switch {
+    width: 44px; height: 26px;
+    background: var(--msb-border);
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s ease;
+  }
+  .switch.on { background: var(--msb-red); }
+  .switch::after {
+    content: '';
+    position: absolute;
+    width: 22px; height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: transform .2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .switch.on::after { transform: translateX(18px); }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div style="padding: 12px 16px;">
+    <div class="section-title flush">Безопасность</div>
+    <div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Вход по Face ID</div>
+          <div class="desc">Использовать биометрию вместо PIN</div>
+        </div>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Подтверждение операций</div>
+          <div class="desc">Подтверждать платежи биометрией</div>
+        </div>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="switch-row" onclick="MSB.toast('Изменение PIN · скоро')" style="cursor: pointer;">
+        <div>
+          <div class="lbl">Изменить PIN-код</div>
+          <div class="desc">Последнее изменение: 15 марта 2026</div>
+        </div>
+        <span class="chevron" style="color: var(--msb-text-faint); font-size: 18px;">›</span>
+      </div>
+    </div>
+
+    <div class="section-title">Уведомления</div>
+    <div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Push-уведомления</div>
+          <div class="desc">Все события</div>
+        </div>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Поступления на счёт</div>
+          <div class="desc">При любой сумме</div>
+        </div>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Налоговые напоминания</div>
+          <div class="desc">За 5 дней до срока</div>
+        </div>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Маркетинговые рассылки</div>
+          <div class="desc">Новости и акции</div>
+        </div>
+        <div class="switch" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Приложение</div>
+    <div>
+      <a href="intro.html" style="text-decoration:none; color:inherit;">
+        <div class="switch-row" style="cursor: pointer;">
+          <div>
+            <div class="lbl">Язык приложения</div>
+            <div class="desc">Русский</div>
+          </div>
+          <span class="chevron" style="color: var(--msb-text-faint); font-size: 18px;">›</span>
+        </div>
+      </a>
+      <div class="switch-row">
+        <div>
+          <div class="lbl">Тёмная тема</div>
+          <div class="desc">Скоро будет доступна</div>
+        </div>
+        <div class="switch" style="opacity: .5;" onclick="MSB.toast('Тёмная тема · в разработке')"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Поддержка</div>
+    <div>
+      <div class="switch-row" onclick="MSB.toast('Чат с поддержкой · скоро')" style="cursor: pointer;">
+        <div>
+          <div class="lbl">Связаться с банком</div>
+          <div class="desc">Чат · звонок · email</div>
+        </div>
+        <span class="chevron" style="color: var(--msb-text-faint); font-size: 18px;">›</span>
+      </div>
+      <div class="switch-row" onclick="MSB.toast('Документы и FAQ · скоро')" style="cursor: pointer;">
+        <div>
+          <div class="lbl">Помощь и инструкции</div>
+          <div class="desc">FAQ, тарифы, юридические документы</div>
+        </div>
+        <span class="chevron" style="color: var(--msb-text-faint); font-size: 18px;">›</span>
+      </div>
+    </div>
+
+    <div style="text-align:center; padding: 24px 16px; color: var(--msb-text-faint); font-size: 12px;">
+      MSB Business v2.0 · build 2026.05.13<br>
+      © OOO «MSB Bank», 2026
+    </div>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  document.getElementById('topBar').innerHTML = MSB.topBar({ title: 'Настройки', back: true });
+</script>
+</body>
+</html>

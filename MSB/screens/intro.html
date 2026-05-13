@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Выбор языка</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600&display=swap">
+<style>
+  body { background: #E6303A; }
+  .frame-intro {
+    width: 430px;
+    height: 932px;
+    margin: 0 auto;
+    position: relative;
+    background: linear-gradient(114.77deg, #F93C65 23.888%, #E6303A 85.587%);
+    overflow: hidden;
+  }
+  @media (max-width: 430px) {
+    .frame-intro { width: 100%; height: 100vh; }
+  }
+  .status-bar-abs {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+  .brand-container {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .brand-logo {
+    width: 175px;
+    height: 58px;
+    position: relative;
+  }
+  .brand-logo .unired {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 68.7%;
+  }
+  .brand-logo .business {
+    position: absolute;
+    top: 74.98%;
+    left: 52.69%;
+    right: 0.43%;
+    height: 25%;
+  }
+  .brand-logo img { width: 100%; height: 100%; display: block; }
+
+  .lang-card {
+    position: absolute;
+    bottom: 34px;
+    left: 0;
+    width: 100%;
+    height: 700px;
+    background: #FFFFFF;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .lang-card .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    min-height: 0;
+  }
+  .lang-card .heading {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    width: 100%;
+  }
+  .lang-card .heading .title {
+    font: 700 24px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .lang-card .heading .desc {
+    font: 400 16px/1.5 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .lang-item {
+    height: 56px;
+    border-radius: 16px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #DFDFE4;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .lang-item.selected {
+    background: #F0F0F0;
+    border-color: transparent;
+  }
+  .lang-item .flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #E7E7EA;
+    background: #fff;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .lang-item .flag img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .lang-item .label {
+    flex: 1;
+    font: 600 16px/1 'Manrope', 'Noto Sans SC', sans-serif;
+    color: #3F3F46;
+    text-align: left;
+  }
+  .lang-item .radio-slot {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    position: relative;
+    display: none;
+  }
+  .lang-item.selected .radio-slot { display: block; }
+  .lang-item .radio-slot .ring {
+    position: absolute;
+    width: 24px; height: 24px;
+    top: 0; left: 0;
+    border-radius: 50%;
+    border: 1px solid #F93C65;
+    box-sizing: border-box;
+  }
+  .lang-item .radio-slot .dot {
+    position: absolute;
+    width: 18px; height: 18px;
+    top: 3px; left: 3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F93C65 0%, #E6303A 100%);
+    border: 4px solid #FFFFFF;
+    box-sizing: border-box;
+  }
+
+  .cta-btn {
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    font: 600 16px/1 'Manrope', sans-serif;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: filter .15s ease;
+  }
+  .cta-btn:active { filter: brightness(.93); }
+
+  /* Home indicator */
+  .home-indicator-abs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 34px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+  .home-indicator-abs::after {
+    content: '';
+    display: block;
+    width: 144px;
+    height: 5px;
+    background: #000;
+    border-radius: 100px;
+  }
+</style>
+</head>
+<body>
+<div class="frame-intro">
+
+  <!-- iPhone status bar -->
+  <div class="status-bar-abs">
+    <div class="ios-status on-gradient">
+      <div class="time">9:41</div>
+      <div class="dynamic-island"></div>
+      <div class="levels">
+        <img class="cellular" src="../assets/ic-cellular.svg" alt="">
+        <img class="wifi" src="../assets/ic-wifi.svg" alt="">
+        <img class="battery" src="../assets/ic-battery.svg" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand logo -->
+  <div class="brand-container">
+    <div class="brand-logo">
+      <div class="unired"><img src="../assets/logo-unired.svg" alt="Unired"></div>
+      <div class="business"><img src="../assets/logo-business.svg" alt="business"></div>
+    </div>
+  </div>
+
+  <!-- Bottom language sheet -->
+  <div class="lang-card">
+    <div class="content">
+      <div class="heading">
+        <div class="title">Выберите язык</div>
+        <div class="desc">Выберите язык приложения. Вы сможете изменить язык приложения позже в настройках.</div>
+      </div>
+      <div class="lang-list" id="langList"></div>
+    </div>
+
+    <button class="cta-btn" id="nextBtn">Следующий</button>
+  </div>
+
+  <div class="home-indicator-abs"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const languages = [
+    { code: 'uz', label: "O'zbek",   flag: '../assets/flag-uz.png' },
+    { code: 'ru', label: 'Русский',  flag: '../assets/flag-ru.png' },
+    { code: 'en', label: 'English',  flag: '../assets/flag-en.png' },
+    { code: 'cn', label: '中國人',    flag: '../assets/flag-cn.png' },
+  ];
+
+  let selected = (MSB.getState().language) || 'ru';
+
+  function render() {
+    document.getElementById('langList').innerHTML = languages.map(l => `
+      <button class="lang-item ${selected === l.code ? 'selected' : ''}" data-code="${l.code}" type="button">
+        <span class="flag"><img src="${l.flag}" alt=""></span>
+        <span class="label">${l.label}</span>
+        <span class="radio-slot">
+          <span class="ring"></span>
+          <span class="dot"></span>
+        </span>
+      </button>
+    `).join('');
+    document.querySelectorAll('.lang-item').forEach(el => {
+      el.addEventListener('click', () => {
+        selected = el.dataset.code;
+        render();
+      });
+    });
+  }
+  render();
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    MSB.updateState({ language: selected });
+    location.href = 'login.html';
+  });
+</script>
+</body>
+</html>

@@ -234,3 +234,32 @@ Display; the typefaces are not visible to the Plugin API in this env.
 (so the spec is correct), render preview text with Geologica as a
 fallback, and call out in the doc that Clash styles need a manual swap
 in Figma desktop after the file is reopened.
+
+---
+
+## use_figma return values truncate around 20 KB
+**Category:** tooling
+**Discovered:** 2026-05-13 (during full DS re-sync)
+**Symptom:** A single `use_figma` call that returns the entire DS
+inventory — pages + collections + 69 primitives + 65 color tokens (×2
+modes) + 15 text styles + 34 component sets + 47 standalone — comes
+back as truncated JSON, cut mid-string at roughly 20 KB. The Figma
+script ran to completion (no error), but the agent only sees the head
+of the response.
+**Cause:** The `use_figma` MCP tool caps response payload size.
+Pretty-printed JSON with verbose property names blows past the cap
+quickly when iterating every variable in every mode.
+**Fix / Rule:** Split inventory work across multiple narrow calls,
+not one giant one. Concrete pattern:
+- Call 1: pages + collection metadata + primitives only.
+- Call 2: color tokens (compact rows: `[id, name, lightAlias, lightHex,
+  darkAlias, darkHex, scopes]`, sorted, no codeSyntax — that's
+  reconstructable from the name).
+- Call 3: spacing + radius + text styles + effect styles.
+- Call 4: component sets (compact: drop the `variants[]` array, keep
+  variant count + axes + properties).
+- Call 5: standalone components + icons.
+Each call stays well under the cap. For a one-shot dump, prefer
+encoded shorthand (e.g. scopes as `"FSTK"` instead of
+`["FRAME_FILL","SHAPE_FILL","TEXT_FILL","STROKE_COLOR"]`) and array
+tuples over named objects.

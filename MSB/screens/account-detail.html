@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Детали счета</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+  .detail-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .detail-field {
+    background: #F6F8F9;
+    border-radius: 12px;
+    padding: 6px 12px;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+  }
+  .detail-field .lbl {
+    font: 400 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+  .detail-field .val {
+    font: 600 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    word-break: break-word;
+  }
+  .field-row {
+    display: flex;
+    gap: 8px;
+  }
+  .field-row .detail-field { flex: 1; min-width: 0; }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px 16px;
+    background: #F0F0F0;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    transition: filter .15s ease;
+  }
+  .cta-btn-pink:active { filter: brightness(.93); }
+
+  .home-indicator-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    height: 34px;
+    background: #F0F0F0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    z-index: 30;
+  }
+  .home-indicator-fixed::after {
+    content: '';
+    width: 144px; height: 5px;
+    background: #000; border-radius: 100px;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div style="padding: 0 16px;">
+    <div class="detail-card">
+      <div class="detail-field">
+        <div class="lbl">Наименование компании</div>
+        <div class="val" id="fName"></div>
+      </div>
+      <div class="field-row">
+        <div class="detail-field">
+          <div class="lbl">МФО</div>
+          <div class="val" id="fMfo"></div>
+        </div>
+        <div class="detail-field">
+          <div class="lbl">ИНН</div>
+          <div class="val" id="fInn"></div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="detail-field">
+          <div class="lbl">Сальдо входящее</div>
+          <div class="val" id="fSaldoIn"></div>
+        </div>
+        <div class="detail-field">
+          <div class="lbl">Сальдо исходящее</div>
+          <div class="val" id="fSaldoOut"></div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="detail-field">
+          <div class="lbl">Валюта</div>
+          <div class="val">UZS - Сум</div>
+        </div>
+        <div class="detail-field">
+          <div class="lbl">Состояние</div>
+          <div class="val" id="fStatus"></div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="detail-field">
+          <div class="lbl">Дата открытие</div>
+          <div class="val">10.09.2023</div>
+        </div>
+        <div class="detail-field">
+          <div class="lbl">Дата последней операции</div>
+          <div class="val">12.03.2024</div>
+        </div>
+      </div>
+      <div class="detail-field">
+        <div class="lbl">Остаток по счету</div>
+        <div class="val" id="fBalance"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <button class="cta-btn-pink" onclick="location.href='account-statement.html?id=' + accId">Выписка по счету</button>
+  </div>
+  <div class="home-indicator-fixed"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Детали счета', back: true });
+  const accId = MSB.qsParam('id') || 'acc-01187';
+  window.accId = accId;
+  const a = MSB_DATA.accounts.find(x => x.id === accId) || MSB_DATA.accounts[1];
+  const c = MSB_DATA.company;
+  const st = MSB_DATA.accountStatus[a.status];
+
+  const fmt = n => {
+    const parts = n.toFixed(2).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + parts[1];
+  };
+
+  document.getElementById('fName').textContent = c.name;
+  document.getElementById('fMfo').textContent  = c.mfo;
+  document.getElementById('fInn').textContent  = a.number;
+  document.getElementById('fSaldoIn').textContent  = fmt(100000);
+  document.getElementById('fSaldoOut').textContent = fmt(100000);
+  document.getElementById('fStatus').textContent = st.label;
+  document.getElementById('fStatus').style.color = st.color;
+  document.getElementById('fBalance').textContent = fmt(a.balance);
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MyID · Подтверждение личности</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #FFFFFF;
+    position: relative;
+    padding-bottom: 110px;
+  }
+
+  .myid-header {
+    background: linear-gradient(167.16deg, #F93C65 23.888%, #E6303A 85.587%);
+    border-radius: 0 0 24px 24px;
+    padding-bottom: 32px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+  .myid-header .ios-status .time { color: #fff; }
+  .myid-header .ios-status .levels img { filter: brightness(0) invert(1); }
+  .myid-header .branding {
+    padding: 32px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .myid-header .logo-circle {
+    width: 88px;
+    height: 88px;
+    background: rgba(255,255,255,0.20);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .myid-header .logo-circle svg { width: 48px; height: 48px; color: #fff; }
+  .myid-header .powered {
+    font: 500 12px/1 'Manrope', sans-serif;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 4px;
+  }
+  .myid-header .powered strong {
+    font-weight: 700;
+    color: #fff;
+  }
+  .myid-header .h1 {
+    font: 700 24px/1.2 'Manrope', sans-serif;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .myid-header .sub {
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    color: rgba(255,255,255,0.92);
+    max-width: 320px;
+  }
+
+  .invite-info {
+    margin: -16px 16px 16px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(63, 63, 70, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .invite-info .av {
+    width: 48px;
+    height: 48px;
+    background: #FFE5EB;
+    color: #E6303A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 18px/1 'Manrope', sans-serif;
+    flex-shrink: 0;
+  }
+  .invite-info .meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .invite-info .label {
+    font: 400 12px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+    margin-bottom: 4px;
+  }
+  .invite-info .company {
+    font: 700 16px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 2px;
+  }
+  .invite-info .for {
+    font: 400 13px/1.2 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+
+  .steps-card {
+    margin: 12px 16px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 20px 16px;
+    border: 1px solid #DFDFE4;
+  }
+  .steps-card .step-title {
+    font: 600 14px/1 'Manrope', sans-serif;
+    color: #7D7D85;
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .step-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .step-item:last-child { margin-bottom: 0; }
+  .step-item .number {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #F93C65 0%, #E6303A 100%);
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 14px/1 'Manrope', sans-serif;
+    flex-shrink: 0;
+  }
+  .step-item .body {
+    flex: 1;
+    padding-top: 2px;
+  }
+  .step-item .body .name {
+    font: 600 15px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 2px;
+  }
+  .step-item .body .hint {
+    font: 400 13px/1.4 'Manrope', sans-serif;
+    color: #7D7D85;
+  }
+
+  .legal {
+    margin: 12px 16px;
+    font: 400 12px/1.5 'Manrope', sans-serif;
+    color: #7D7D85;
+    text-align: center;
+  }
+  .legal a { color: #E6303A; text-decoration: none; font-weight: 600; }
+
+  .footer-cta {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 0 16px;
+    z-index: 30;
+  }
+  .cta-btn-pink {
+    background: linear-gradient(171.83deg, #F93C65 23.888%, #E6303A 85.587%);
+    color: #FFFFFF;
+    border: none;
+    height: 56px;
+    border-radius: 16px;
+    font: 600 16px/1 'Manrope', sans-serif;
+    cursor: pointer;
+    width: 100%;
+  }
+  .cta-btn-pink:active { filter: brightness(.93); }
+
+  .expired-state {
+    margin: 60px 16px;
+    text-align: center;
+    padding: 32px 20px;
+  }
+  .expired-state .icon {
+    width: 64px; height: 64px;
+    background: #FEF3C7;
+    color: #B45309;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font: 700 28px/1 'Manrope', sans-serif;
+  }
+  .expired-state .title {
+    font: 700 18px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+    margin-bottom: 8px;
+  }
+  .expired-state .sub {
+    font: 400 14px/1.5 'Manrope', sans-serif;
+    color: #54545B;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="myid-header">
+    <div class="ios-status on-gradient">
+      <div class="time">9:41</div>
+      <div class="dynamic-island"></div>
+      <div class="levels">
+        <img class="cellular" src="../assets/ic-cellular.svg" alt="">
+        <img class="wifi" src="../assets/ic-wifi.svg" alt="">
+        <img class="battery" src="../assets/ic-battery.svg" alt="">
+      </div>
+    </div>
+    <div class="branding">
+      <div class="logo-circle">
+        <svg viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="18" r="9" stroke="currentColor" stroke-width="3" fill="none"/>
+          <path d="M9 40c0-8 7-13 15-13s15 5 15 13" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle cx="36" cy="14" r="6" fill="#16A34A"/>
+          <path d="M33 14l2.2 2.2L39 12.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="powered">Powered by <strong>MyID</strong></div>
+      <div class="h1">Подтверждение личности</div>
+      <div class="sub">Пройдите KYC для оформления зарплатной карты Unired Business</div>
+    </div>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="legal" id="legalBlock" style="display:none;">
+    Нажимая «Начать», вы соглашаетесь с <a href="#" onclick="return false;">условиями обработки данных</a> и <a href="#" onclick="return false;">политикой конфиденциальности</a>.
+  </div>
+
+  <div class="footer-cta" id="footerCta" style="display: none;">
+    <button class="cta-btn-pink" id="startBtn">Начать проверку</button>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const token = MSB.qsParam('token');
+  const inv = token ? MSB.getInvite(token) : null;
+  const content = document.getElementById('content');
+
+  if (!inv) {
+    content.innerHTML = `
+      <div class="expired-state">
+        <div class="icon">!</div>
+        <div class="title">Приглашение не найдено</div>
+        <div class="sub">Свяжитесь с вашим работодателем для получения новой ссылки.</div>
+      </div>`;
+  } else if (inv.status === 'completed') {
+    content.innerHTML = `
+      <div class="expired-state">
+        <div class="icon" style="background: #DCFCE7; color: #16A34A;">✓</div>
+        <div class="title">Проверка уже пройдена</div>
+        <div class="sub">Вы уже завершили оформление. Карта активирована, можете пользоваться сервисом Unired Business.</div>
+      </div>`;
+  } else if (new Date(inv.expiresAt) < new Date('2026-05-13T09:41:00')) {
+    content.innerHTML = `
+      <div class="expired-state">
+        <div class="icon">⏱</div>
+        <div class="title">Срок действия ссылки истёк</div>
+        <div class="sub">Попросите работодателя выслать новое приглашение.</div>
+      </div>`;
+  } else {
+    const initials = (inv.firstName.charAt(0) + inv.lastName.charAt(0)).toUpperCase();
+    content.innerHTML = `
+      <div class="invite-info">
+        <div class="av">U</div>
+        <div class="meta">
+          <div class="label">Приглашение от</div>
+          <div class="company">${MSB_DATA.company.name}</div>
+          <div class="for">для ${inv.firstName} ${inv.lastName}</div>
+        </div>
+      </div>
+
+      <div class="steps-card">
+        <div class="step-title">Что нужно сделать</div>
+        <div class="step-item">
+          <div class="number">1</div>
+          <div class="body">
+            <div class="name">Введите паспортные данные</div>
+            <div class="hint">Серия и номер паспорта, дата рождения</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="number">2</div>
+          <div class="body">
+            <div class="name">Пройдите Face ID</div>
+            <div class="hint">Сделайте селфи для подтверждения личности</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="number">3</div>
+          <div class="body">
+            <div class="name">Подпишите согласие</div>
+            <div class="hint">Согласие на оформление зарплатной карты</div>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('legalBlock').style.display = 'block';
+    document.getElementById('footerCta').style.display = 'block';
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      location.href = 'kyc-passport.html?token=' + token;
+    });
+  }
+</script>
+</body>
+</html>

@@ -5,7 +5,10 @@
       "PowerShell($f1 = 'Unired\\\\User_flows\\\\01_Identity_and_Access.md'; $c = [System.IO.File]::ReadAllText\\($f1\\); $c = $c.Replace\\('SS4[Delete \\(Android variant\\)]', 'SS4[\"Delete \\(Android variant\\)\"]'\\); [System.IO.File]::WriteAllText\\($f1, $c\\); $f2 = 'Unired\\\\User_flows\\\\05_Move_Money_Cross_Border.md'; $c = [System.IO.File]::ReadAllText\\($f2\\); $c = $c.Replace\\('Type{phone | card | QR}', 'Type{\"phone / card / QR\"}'\\); [System.IO.File]::WriteAllText\\($f2, $c\\); $f3 = 'Unired\\\\User_flows\\\\06_Pay_Services.md'; $c = [System.IO.File]::ReadAllText\\($f3\\); $c = $c.Replace\\('Cheque[Cheque<br/>\\(WF-only variant\\)]', 'Cheque[\"Cheque<br/>\\(WF-only variant\\)\"]'\\); [System.IO.File]::WriteAllText\\($f3, $c\\); Write-Output 'Done')",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "mcp__plugin_figma_figma__get_metadata",
+      "Read(//c/Users/PC/AppData/Local/Temp/**)",
+      "Bash(node -e ' *)"
     ],
     "additionalDirectories": [
       "d:\\UI Projects\\Unired"

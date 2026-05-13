@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · Операция</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .tx-hero { text-align: center; padding: 32px 16px 12px; }
+  .tx-hero .av {
+    width: 64px; height: 64px;
+    background: var(--msb-red-light);
+    color: var(--msb-red);
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .tx-hero .cp { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .tx-hero .cat { color: var(--msb-text-muted); font-size: 13px; }
+  .tx-hero .amt { font-size: 32px; font-weight: 700; margin-top: 20px; letter-spacing: -.02em; }
+  .tx-hero .amt.income { color: var(--msb-success); }
+  .tx-hero .status-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .tx-hero .status-pill.done { background: #DCFCE7; color: #15803D; }
+  .tx-hero .status-pill.pending { background: #FEF3C7; color: #B45309; }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+  <div id="content"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  document.getElementById('topBar').innerHTML = MSB.topBar({ title: 'Операция', back: true });
+
+  const id = MSB.qsParam('id');
+  const t = MSB_DATA.transactions.find(x => x.id === id);
+  if (!t) { location.href = 'home.html'; }
+
+  const acc = MSB_DATA.accounts.find(a => a.id === t.accountId);
+  const sign = t.type === 'income' ? '+' : '–';
+
+  document.getElementById('content').innerHTML = `
+    <div class="tx-hero">
+      <div class="av">${MSB.initials(t.counterparty)}</div>
+      <div class="cp">${t.counterparty}</div>
+      <div class="cat">${t.category}</div>
+      <div class="amt ${t.type}">${sign} ${MSB.fmtMoney(t.amount, acc.currency)}</div>
+      <div class="status-pill ${t.status}">${t.status === 'done' ? '✓ Исполнено' : '⏳ Ожидает'}</div>
+    </div>
+
+    <div style="padding: 0 16px 24px;">
+      <div class="card">
+        <div class="kv-row"><div class="k">Тип</div><div class="v">${t.type === 'income' ? 'Поступление' : 'Расход'}</div></div>
+        <div class="kv-row"><div class="k">Назначение</div><div class="v">${t.description}</div></div>
+        <div class="kv-row"><div class="k">Дата</div><div class="v">${MSB.fmtDate(t.date)} · ${t.time}</div></div>
+        <div class="kv-row"><div class="k">Счёт</div><div class="v">${acc.label}</div></div>
+        <div class="kv-row"><div class="k">Номер документа</div><div class="v">PP-${id.replace(/\D/g,'').padStart(6,'0')}</div></div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button class="btn btn-outline" onclick="MSB.toast('Чек сохранён')">📥 Чек</button>
+        ${t.type === 'expense' ? `<button class="btn btn-primary" onclick="repeat()">↻ Повторить</button>` : ''}
+        ${t.type === 'income' ? `<button class="btn btn-primary" onclick="receipt()">📄 Квитанция</button>` : ''}
+      </div>
+    </div>`;
+
+  window.repeat = () => location.href = `transfer.html?from=${acc.id}`;
+  window.receipt = () => MSB.toast('Квитанция сформирована');
+</script>
+</body>
+</html>

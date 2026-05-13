@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unired Business · Документы</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  body { background: #F0F0F0; }
+  .frame {
+    width: 430px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F0F0F0;
+    position: relative;
+    padding-bottom: 130px;
+  }
+
+  .section-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 16px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .section-card .title {
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .tile-grid-docs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .doc-tile {
+    background: #F6F8F9;
+    border-radius: 16px;
+    padding: 16px;
+    width: calc(50% - 4px);
+    height: 114px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+  }
+  .doc-tile .icon-box {
+    width: 36px; height: 36px;
+    background: #F6F8F9;
+    border: 0.371px solid #8CC5FF;
+    border-radius: 10px;
+    box-shadow: -3.375px 3.375px 3.375px rgba(10,132,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .doc-tile .icon-box img { width: 24px; height: 24px; }
+  .doc-tile .label {
+    font: 600 14px/1.2 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+
+  .doc-row {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .doc-row .icon-box {
+    width: 36px; height: 36px;
+    background: #FFE5EB;
+    border: 0.371px solid #F93C65;
+    border-radius: 10px;
+    box-shadow: -3.375px 3.375px 3.375px rgba(249, 60, 101, 0.15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .doc-row .icon-box img {
+    width: 24px; height: 24px;
+    filter: brightness(0) saturate(100%) invert(33%) sepia(99%) saturate(2848%) hue-rotate(326deg) brightness(97%) contrast(99%);
+  }
+  .doc-row .label {
+    flex: 1;
+    font: 600 16px/1 'Manrope', sans-serif;
+    color: #3F3F46;
+  }
+  .doc-row .chev {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .doc-row .chev img {
+    width: 8px; height: 14px;
+    opacity: .5;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div id="topBar"></div>
+
+  <div style="padding: 0 16px;">
+    <div class="section-card">
+      <div class="title">Новое платежное поручение</div>
+      <div class="tile-grid-docs">
+        <button class="doc-tile" onclick="location.href='new-payment.html?t=budget'">
+          <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+          <div class="label">Поручение в бюджет</div>
+        </button>
+        <button class="doc-tile" onclick="location.href='new-payment.html?t=treasury'">
+          <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+          <div class="label">Поручение в казначейство</div>
+        </button>
+        <button class="doc-tile" onclick="location.href='new-payment.html?t=card'">
+          <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+          <div class="label">Пополнение пластиковой карты</div>
+        </button>
+        <button class="doc-tile" onclick="location.href='new-payment.html?t=payment'">
+          <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+          <div class="label">Платежное поручение</div>
+        </button>
+      </div>
+    </div>
+
+    <a href="document-list.html" class="doc-row">
+      <div class="icon-box"><img src="../assets/ic-money.svg" alt=""></div>
+      <div class="label">Документы</div>
+      <div class="chev"><img src="../assets/ic-chevron-right.svg" alt=""></div>
+    </a>
+  </div>
+
+  <div id="bottomNav"></div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('topBar').innerHTML = MSB.pinkHeader({ title: 'Документы', back: false });
+  document.getElementById('bottomNav').innerHTML = MSB.bottomNav('docs');
+</script>
+</body>
+</html>

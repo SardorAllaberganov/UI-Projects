@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MSB · QR код</title>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .qr-hero {
+    background: #fff;
+    border-radius: 18px;
+    padding: 20px;
+    margin: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+  }
+  .qr-code-mini {
+    width: 140px; height: 140px;
+    background:
+      linear-gradient(45deg, #000 25%, transparent 25%),
+      linear-gradient(-45deg, #000 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #000 75%),
+      linear-gradient(-45deg, transparent 75%, #000 75%),
+      #fff;
+    background-size: 12px 12px;
+    background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+  .qr-code-mini .c {
+    position: absolute;
+    inset: 38% 38%;
+    background: #fff;
+    border: 3px solid var(--msb-red);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--msb-red);
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 16px;
+  }
+  .stat-cell {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+  }
+  .stat-cell .k { font-size: 11px; color: var(--msb-text-muted); }
+  .stat-cell .v { font-weight: 700; font-size: 16px; margin-top: 4px; letter-spacing: -.01em; }
+</style>
+</head>
+<body>
+<div class="app-frame">
+  <div id="status"></div>
+  <div id="topBar"></div>
+
+  <div id="hero"></div>
+  <div class="stat-grid" id="stats"></div>
+
+  <div style="padding: 0 16px;">
+    <div class="section-title flush">Поступления</div>
+    <div id="payments"></div>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  MSB.init();
+  document.getElementById('status').innerHTML = MSB.statusBar();
+  const id = MSB.qsParam('id') || 'qr1';
+  const qr = MSB_DATA.qrCodes.find(q => q.id === id);
+  if (!qr) location.href = 'qr.html';
+
+  document.getElementById('topBar').innerHTML = MSB.topBar({
+    title: qr.label,
+    back: true,
+    action: `<button class="icon-btn" onclick="toggleActive()">${qr.active ? '⏸' : '▶'}</button>`
+  });
+
+  document.getElementById('hero').innerHTML = `
+    <div class="qr-hero">
+      <div class="qr-code-mini"><div class="c">M</div></div>
+      <div style="font-weight: 600;">${qr.label}</div>
+      <div style="color: var(--msb-text-muted); font-size: 13px; margin-top: 2px;">${qr.address}</div>
+      <div style="display: flex; gap: 8px; margin-top: 14px;">
+        <button class="btn btn-outline" onclick="MSB.toast('QR сохранён в Загрузки')">📥 Скачать</button>
+        <button class="btn btn-secondary" onclick="MSB.toast('Ссылка скопирована')">⤴ Поделиться</button>
+      </div>
+    </div>`;
+
+  const payments = MSB_DATA.qrPayments.filter(p => p.qrId === qr.id);
+  const monthSum = payments.reduce((a, p) => a + p.amount, 0);
+  const avg = payments.length ? Math.round(monthSum / payments.length) : 0;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-cell">
+      <div class="k">Всего получено</div>
+      <div class="v">${MSB.fmtMoneyShort(qr.totalReceived)}</div>
+    </div>
+    <div class="stat-cell">
+      <div class="k">Операций</div>
+      <div class="v">${qr.transactions}</div>
+    </div>
+    <div class="stat-cell">
+      <div class="k">Средний чек</div>
+      <div class="v">${MSB.fmtMoneyShort(avg)}</div>
+    </div>`;
+
+  document.getElementById('payments').innerHTML = payments.length ? payments.map(p => `
+    <div class="card-row">
+      <div class="avatar">${MSB.initials(p.payer)}</div>
+      <div class="meta">
+        <div class="title">${p.payer}</div>
+        <div class="sub">${MSB.relativeDay(p.date)} · ${p.time}</div>
+      </div>
+      <div class="trail">
+        <div class="amount income">+ ${MSB.fmtMoney(p.amount)}</div>
+        <div class="sub">✓</div>
+      </div>
+    </div>`).join('') : `<div class="empty"><div class="ico">📭</div><div>Поступлений пока нет</div></div>`;
+
+  window.toggleActive = () => {
+    qr.active = !qr.active;
+    MSB.toast(qr.active ? 'QR код активирован' : 'QR код отключён');
+    setTimeout(() => location.reload(), 500);
+  };
+</script>
+</body>
+</html>
