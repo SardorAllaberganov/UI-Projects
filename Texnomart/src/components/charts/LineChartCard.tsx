@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import {
   CartesianGrid,
+  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -11,15 +12,25 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface LineSeries {
+  key: string;
+  label: string;
+  color: string;
+}
+
 interface LineChartCardProps<T extends Record<string, unknown>> {
   title: ReactNode;
   description?: ReactNode;
   data: T[] | undefined;
   xKey: keyof T & string;
-  yKey: keyof T & string;
+  yKey?: keyof T & string;
+  series?: LineSeries[];
   xTickFormatter?: (value: string) => string;
+  tooltipValueFormatter?: (value: number, name: string) => [string, string];
+  tooltipLabelFormatter?: (label: string) => string;
   height?: number;
   actions?: ReactNode;
+  ariaLabel?: string;
   className?: string;
 }
 
@@ -29,11 +40,16 @@ export function LineChartCard<T extends Record<string, unknown>>({
   data,
   xKey,
   yKey,
+  series,
   xTickFormatter,
+  tooltipValueFormatter,
+  tooltipLabelFormatter,
   height = 280,
   actions,
+  ariaLabel,
   className,
 }: LineChartCardProps<T>) {
+  const multi = series && series.length > 0;
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
@@ -45,10 +61,17 @@ export function LineChartCard<T extends Record<string, unknown>>({
         </div>
         {actions}
       </CardHeader>
-      <CardContent style={{ height }}>
+      <CardContent
+        style={{ height }}
+        role={ariaLabel ? "img" : undefined}
+        aria-label={ariaLabel}
+      >
         {data ? (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data} margin={{ left: -8, right: 8, top: 8 }}>
+            <LineChart
+              data={data}
+              margin={{ left: -8, right: 8, top: 8, bottom: multi ? 4 : 0 }}
+            >
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
               <XAxis
                 dataKey={xKey as string}
@@ -74,15 +97,41 @@ export function LineChartCard<T extends Record<string, unknown>>({
                   fontSize: 12,
                   padding: "8px 10px",
                 }}
+                formatter={tooltipValueFormatter as never}
+                labelFormatter={tooltipLabelFormatter as never}
               />
-              <Line
-                type="monotone"
-                dataKey={yKey as string}
-                stroke="hsl(var(--brand))"
-                strokeWidth={2.5}
-                dot={false}
-                activeDot={{ r: 4, fill: "hsl(var(--brand))" }}
-              />
+              {multi ? (
+                <>
+                  {series!.map((s) => (
+                    <Line
+                      key={s.key}
+                      type="monotone"
+                      dataKey={s.key}
+                      name={s.label}
+                      stroke={s.color}
+                      strokeWidth={2}
+                      dot={false}
+                      activeDot={{ r: 4, fill: s.color }}
+                      isAnimationActive={false}
+                    />
+                  ))}
+                  <Legend
+                    verticalAlign="bottom"
+                    iconType="circle"
+                    height={28}
+                    wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+                  />
+                </>
+              ) : yKey ? (
+                <Line
+                  type="monotone"
+                  dataKey={yKey as string}
+                  stroke="hsl(var(--brand))"
+                  strokeWidth={2.5}
+                  dot={false}
+                  activeDot={{ r: 4, fill: "hsl(var(--brand))" }}
+                />
+              ) : null}
             </LineChart>
           </ResponsiveContainer>
         ) : (
@@ -92,3 +141,5 @@ export function LineChartCard<T extends Record<string, unknown>>({
     </Card>
   );
 }
+
+export type { LineSeries };

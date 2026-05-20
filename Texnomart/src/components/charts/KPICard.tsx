@@ -8,6 +8,7 @@ interface KPICardProps {
   value: ReactNode;
   delta?: number;
   deltaLabel?: ReactNode;
+  deltaText?: ReactNode;
   icon?: ReactNode;
   highlighted?: boolean;
   className?: string;
@@ -18,6 +19,7 @@ export function KPICard({
   value,
   delta,
   deltaLabel,
+  deltaText,
   icon,
   highlighted = false,
   className,
@@ -26,18 +28,20 @@ export function KPICard({
   return (
     <Card
       className={cn(
-        "transition-shadow",
+        "h-full transition-shadow",
         highlighted && "border-l-4 border-l-brand bg-brand-soft/40",
         className,
       )}
     >
-      <CardContent className="flex items-start justify-between p-5">
+      <CardContent className="flex h-full items-start justify-between gap-3 p-5">
         <div className="space-y-1.5">
           <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="text-2xl font-semibold tracking-tight tabular-nums">
+          <p className="text-3xl font-semibold tracking-tight tabular-nums">
             {value}
           </p>
-          {delta !== undefined ? (
+          {deltaText !== undefined ? (
+            <p className="text-xs text-muted-foreground">{deltaText}</p>
+          ) : delta !== undefined ? (
             <p
               className={cn(
                 "inline-flex items-center gap-1 text-xs font-medium",
@@ -59,7 +63,7 @@ export function KPICard({
           ) : null}
         </div>
         {icon ? (
-          <div className="rounded-md border bg-background/60 p-2 text-muted-foreground">
+          <div className="shrink-0 rounded-md border bg-background/60 p-2 text-muted-foreground">
             {icon}
           </div>
         ) : null}
