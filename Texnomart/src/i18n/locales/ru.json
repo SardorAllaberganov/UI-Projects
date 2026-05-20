@@ -73,21 +73,54 @@
   "dashboard": {
     "title": "Дашборд",
     "subtitle": "Сводка по работе кредитного брокера",
+    "period": {
+      "today": "Сегодня",
+      "7d": "7 дней",
+      "30d": "30 дней",
+      "90d": "90 дней",
+      "ariaLabel": "Период"
+    },
     "kpi": {
+      "totalUsers": "Всего пользователей",
+      "totalUsersDelta": "+342 за неделю",
       "applicationsLast3h": "Заявки за 3 часа",
-      "applicationsToday": "Заявки за сегодня",
+      "applicationsLast3hDelta": "требуют обработки",
+      "applicationsToday": "Заявок сегодня",
+      "applicationsTodayDelta": "+12% vs вчера",
+      "approved": "Одобрено",
+      "approvedDelta": "+4.2 п.п. за месяц",
       "approvalRate": "% одобрения",
       "disbursedToday": "Выдано сегодня",
       "activeAgents": "Активные агенты"
     },
     "charts": {
       "applicationsTrend": "Динамика заявок",
+      "applicationsTrendDescription": "Последние 7 дней",
       "statusBreakdown": "Распределение по статусам",
       "topPartners": "Топ партнёров",
-      "topBranches": "Топ филиалов"
+      "topBranches": "Топ филиалов",
+      "ariaTrend": "График заявок за последние 7 дней: создано, одобрено, отказано",
+      "ariaStatusBreakdown": "Распределение заявок по статусам"
+    },
+    "trendSeries": {
+      "created": "Создано",
+      "approved": "Одобрено",
+      "rejected": "Отказано"
+    },
+    "recent": {
+      "title": "Последние заявки",
+      "time": "Время"
+    },
+    "topPartners": {
+      "approvalRate": "одобрение",
+      "applications": "заявок"
+    },
+    "empty": {
+      "title": "Нет заявок за выбранный период",
+      "description": "Попробуйте расширить диапазон или зайти позже."
     },
     "recentApplications": "Последние заявки",
-    "viewAll": "Смотреть все",
+    "viewAll": "Все заявки",
     "viewApplication": "Открыть заявку"
   },
   "analytics": {
