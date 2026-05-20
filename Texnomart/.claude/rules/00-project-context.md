@@ -21,7 +21,7 @@ See [`src/lib/constants/enums.ts`](../../src/lib/constants/enums.ts) for the can
 
 ## Status
 - Layout shell, sidebar, topbar, all 11 routes wired
-- Dashboard fully implemented (KPIs + 4 charts + recent table)
+- Dashboard fully implemented (period filter + refresh, 4 KPIs, multi-series trend line + status donut, recent applications with desktop table + mobile card list, top partners with inline progress bars)
 - 10 other pages render `<Placeholder>` ("Раздел в разработке") — each subsequent prompt fills one in
 - Mock data covers 200 applications, 50 clients, 30 system users, 8 partners, 12 branches, 15 notifications, 10 reports
 

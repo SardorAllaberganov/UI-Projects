@@ -4,6 +4,45 @@
 
 ---
 
+## 2026-05-20 — Dashboard rebuild (period filter, multi-series trend, mobile cards)
+
+**Module:** dashboard
+**Commits:** (uncommitted, working tree)
+**Files touched:** 5 — see list below
+**What changed:**
+- **Dashboard rebuilt end-to-end** ([src/pages/Dashboard.tsx](../src/pages/Dashboard.tsx)) to serve both operator (operational queue) and admin (strategic KPIs) on one screen:
+  - `PageHeader` now has a period `Select` (Сегодня / 7 / 30 / 90 дней) and a refresh icon button that rotates 360° once over 600 ms via `animate-[spin_600ms_linear_1]`. Subtitle is the current date in `EEEE, d MMMM yyyy` Russian format (capitalised first letter)
+  - 4 KPI tiles: Всего пользователей, Заявок сегодня, **Заявки за 3 часа (highlighted brand-bar + brand clock icon, click → `/applications?period=3h`)**, Одобрено. Single source of truth memoized from `applicationsApi.list()` + `clientsApi.list()`; period select filters the dataset
+  - Two-column row 1 (60/40 on `lg`): multi-series LineChart (Создано / Одобрено / Отказано, slate-700 / emerald-600 / rose-500, fixed last-7-days window, formatted tooltip + bottom legend) + Donut (top 5 statuses, custom right-side legend `dot · label · count · %`)
+  - Two-column row 2 (65/35 on `lg`): recent applications card (6 rows on desktop / tablet as `<Table>`, **on mobile (`<sm`) renders as a vertical card list** — bordered surfaces, name + status badge, partner · time, amount) + top partners card (5 rows with hue-ramped inline progress bar; click → `/partners?focus={id}`)
+  - Loading: per-section `Skeleton` placeholders matching each card outline
+  - Empty: `EmptyState` with `Inbox` icon + "Нет заявок за выбранный период"
+  - Accessibility: chart `role="img" + aria-label`, progress bars with `role="progressbar"` + `aria-value*`, period select + refresh button labelled
+- **Chart wrappers extended** to support multi-series and custom legends without forcing pages to use Recharts directly:
+  - `KPICard` ([charts/KPICard.tsx](../src/components/charts/KPICard.tsx)) — added `deltaText?: ReactNode` for plain muted text below value (free-form, no arrow/colour). Value bumped to `text-3xl`
+  - `LineChartCard` ([charts/LineChartCard.tsx](../src/components/charts/LineChartCard.tsx)) — added `series?: LineSeries[]` (multi-line + bottom Legend), `tooltipValueFormatter`, `tooltipLabelFormatter`, `ariaLabel`. `yKey` is now optional (single-line legacy mode)
+  - `DonutChartCard` ([charts/DonutChartCard.tsx](../src/components/charts/DonutChartCard.tsx)) — added `legendFormatter?: (slice, percent) => ReactNode` (custom 50/50 grid layout when set; falls back to Recharts default right-side legend when omitted) and `ariaLabel`
+- **i18n keys added** under `dashboard.*` ([i18n/locales/ru.json](../src/i18n/locales/ru.json)): `period.{today,7d,30d,90d,ariaLabel}`, `kpi.{totalUsers,totalUsersDelta,applicationsTodayDelta,applicationsLast3hDelta,approved,approvedDelta}`, `charts.{applicationsTrendDescription,ariaTrend,ariaStatusBreakdown}`, `trendSeries.{created,approved,rejected}`, `recent.{title,time}`, `topPartners.{approvalRate,applications}`, `empty.{title,description}`. `viewAll` reworded to "Все заявки"
+
+**Compatibility / non-obvious fixes captured**
+- `react-hooks/purity` (React Compiler) treats `Date.now()` and `new Date()` as impure → flagged inside `useMemo`. Lifted `now` to a `useState<number>(() => Date.now())` initialized once, updated by the refresh button. All time-dependent memos depend on `nowTs` for deterministic deps. → Lesson [08-date-now-purity-in-usememo.md](./lessons/08-date-now-purity-in-usememo.md)
+- Recharts v3 `Tooltip` typing: `formatter` and `labelFormatter` accept `ReactNode` labels with a payload arg. Generic callers want `(value, name) => [string, string]` and `(label: string) => string`. Solved with `as never` cast at the call site inside `LineChartCard` so consumers stay ergonomic
+- Mobile cards vs desktop table: dual-render with `hidden sm:block` + `sm:hidden` containers, both fed the same data. Will repeat for every page that ships a list view. → Lesson [09-mobile-card-vs-desktop-table.md](./lessons/09-mobile-card-vs-desktop-table.md)
+
+**Docs synced this pass**
+- [.claude/rules/00-project-context.md](../.claude/rules/00-project-context.md) — Dashboard status line updated
+- [docs/ROUTES.md](./ROUTES.md) — KPICard, LineChartCard, DonutChartCard prop contracts extended; Dashboard route's i18n key list refreshed
+- [docs/lessons/08-date-now-purity-in-usememo.md](./lessons/08-date-now-purity-in-usememo.md) — new lesson
+- [docs/lessons/09-mobile-card-vs-desktop-table.md](./lessons/09-mobile-card-vs-desktop-table.md) — new lesson
+- [docs/lessons/README.md](./lessons/README.md) — index updated
+
+**Follow-ups**
+- `dashboard.subtitle` in `ru.json` is now orphaned (Dashboard renders a computed date instead). Leaving the key for now; can be removed in a future i18n cleanup pass
+- Period filter widens correctly but mock `createdAt` spans only ~6.5 days, so 30 / 90-day periods currently render the same data as 7d. Will resolve when the mock is regenerated or the real backend lands
+- `"Всего пользователей"` KPI is bound to `clients.length` (broker client base, 50 in mock). If the intended source is the internal `users.length`, swap the binding in `Dashboard.tsx`
+
+---
+
 ## 2026-05-20 — Initial scaffold, layout, lessons, project context
 
 **Module:** all

@@ -11,3 +11,5 @@
 5. [05-sidebar-active-item-accent.md](./05-sidebar-active-item-accent.md) — Усиление акцента на активном пункте меню
 6. [06-main-content-full-width.md](./06-main-content-full-width.md) — Контент во всю ширину
 7. [07-phosphor-icons-for-nav.md](./07-phosphor-icons-for-nav.md) — Phosphor Icons для navigation (filled bold)
+8. [08-date-now-purity-in-usememo.md](./08-date-now-purity-in-usememo.md) — `Date.now()` и `new Date()` внутри `useMemo` (правило `react-hooks/purity`)
+9. [09-mobile-card-vs-desktop-table.md](./09-mobile-card-vs-desktop-table.md) — Таблица на десктопе, карточки на мобильном (dual-render через Tailwind)

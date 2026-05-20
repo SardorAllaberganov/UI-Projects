@@ -1,6 +1,6 @@
 # ROUTES.md
 
-> Last synced: 2026-05-20
+> Last synced: 2026-05-20 (Dashboard rebuild — chart card contracts extended)
 
 This project has no REST API. This file documents the react-router paths and the prop contracts of shared components — what other pages can expect when composing the shell.
 
@@ -14,7 +14,7 @@ This project has no REST API. This file documents the react-router paths and the
 
 | Path | Page | Status | Nav entry | Required i18n keys |
 |------|------|--------|-----------|---------------------|
-| `/` | [Dashboard.tsx](../src/pages/Dashboard.tsx) | **full** | `NAV_ITEMS[0]` | `dashboard.title`, `dashboard.subtitle`, `dashboard.kpi.*`, `dashboard.charts.*`, `dashboard.recentApplications`, `dashboard.viewAll` |
+| `/` | [Dashboard.tsx](../src/pages/Dashboard.tsx) | **full** | `NAV_ITEMS[0]` | `dashboard.title`, `dashboard.period.{today,7d,30d,90d,ariaLabel}`, `dashboard.kpi.{totalUsers,totalUsersDelta,applicationsToday,applicationsTodayDelta,applicationsLast3h,applicationsLast3hDelta,approved,approvedDelta}`, `dashboard.charts.{applicationsTrend,applicationsTrendDescription,statusBreakdown,topPartners,ariaTrend,ariaStatusBreakdown}`, `dashboard.trendSeries.{created,approved,rejected}`, `dashboard.recent.{title,time}`, `dashboard.topPartners.approvalRate`, `dashboard.empty.{title,description}`, `dashboard.recentApplications`, `dashboard.viewAll`, `actions.refresh`, `table.{id,client,amount,partner,status}` |
 | `/analytics` | [Analytics.tsx](../src/pages/Analytics.tsx) | placeholder | `NAV_ITEMS[1]` | `analytics.title`, `analytics.subtitle` |
 | `/applications` | [Applications.tsx](../src/pages/Applications.tsx) | placeholder | `NAV_ITEMS[2]` (with `badge: "unreadApplications"`) | `applications.title`, `applications.subtitle` |
 | `/applications/:id` | [ApplicationDetail.tsx](../src/pages/ApplicationDetail.tsx) | placeholder | (none) | `applicationDetail.title`, `applicationDetail.subtitle` |
@@ -217,31 +217,48 @@ interface KPICardProps {
   label: ReactNode;
   value: ReactNode;
   delta?: number;             // +ve → green arrow up, -ve → red arrow down
-  deltaLabel?: ReactNode;     // suffix after the percentage
+  deltaLabel?: ReactNode;     // suffix after the percentage (used with `delta`)
+  deltaText?: ReactNode;      // free-form muted text below value (e.g. "+342 за неделю")
   icon?: ReactNode;
   highlighted?: boolean;      // adds border-l-4 border-l-brand + bg-brand-soft/40
   className?: string;
 }
 ```
 
-`highlighted` is the brand-emphasis treatment — at most one per page.
+**Delta rendering precedence:** `deltaText` wins if defined → renders as plain `text-xs text-muted-foreground`, no arrow, no colour. Else if `delta` is defined → numeric mode with up/down arrow and emerald/rose colour. Use `deltaText` when the change is non-percentage (counts, absolute deltas, free-form notes) and `delta` when it's a real percentage signal.
+
+**Value styling:** `text-3xl font-semibold tabular-nums tracking-tight`. `highlighted` is the brand-emphasis treatment — at most one per page.
 
 ---
 
 ### `<LineChartCard<T>>` — [charts/LineChartCard.tsx](../src/components/charts/LineChartCard.tsx)
 ```ts
+interface LineSeries {
+  key: string;
+  label: string;
+  color: string;
+}
+
 interface LineChartCardProps<T extends Record<string, unknown>> {
   title: ReactNode;
   description?: ReactNode;
-  data: T[] | undefined;       // undefined → renders Skeleton
+  data: T[] | undefined;                            // undefined → renders Skeleton
   xKey: keyof T & string;
-  yKey: keyof T & string;
+  yKey?: keyof T & string;                          // single-series mode
+  series?: LineSeries[];                            // multi-series mode (one <Line> per entry + bottom Legend)
   xTickFormatter?: (value: string) => string;
+  tooltipValueFormatter?: (value: number, name: string) => [string, string];
+  tooltipLabelFormatter?: (label: string) => string;
   height?: number;             // default 280
   actions?: ReactNode;         // right slot in header
+  ariaLabel?: string;          // adds role="img" + aria-label on the chart container
   className?: string;
 }
 ```
+
+**Mode selection:** pass `series` for multi-line + bottom legend (line colour comes from each series's `color`). Otherwise pass `yKey` for a single brand-coloured line (legacy mode, no legend). If both are passed, `series` wins.
+
+**Tooltip formatters:** typed loosely because Recharts' `Tooltip` accepts `ReactNode` labels — implementation casts to `never` internally to keep callers ergonomic.
 
 ---
 
@@ -277,8 +294,14 @@ interface DonutChartCardProps {
   height?: number;
   centerValue?: ReactNode;     // big number in the donut hole
   centerLabel?: ReactNode;     // small label under centerValue
+  legendFormatter?: (slice: DonutSlice, percent: number) => ReactNode;
+  ariaLabel?: string;          // adds role="img" + aria-label on the chart container
 }
 ```
+
+**Legend modes:**
+- No `legendFormatter` → Recharts default vertical legend on the right (just label + colour dot)
+- With `legendFormatter` → custom `<ul>` legend rendered next to the pie in a 50/50 grid. Each entry is whatever the formatter returns (typical pattern: dot + label + `count · NN%`). `percent` is calculated from `slice.value / total`, where `total` is summed once across all slices
 
 ---
 
