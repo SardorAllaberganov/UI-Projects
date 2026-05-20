@@ -1,0 +1,177 @@
+{
+  "app": {
+    "name": "Texnomart Credit Broker",
+    "shortName": "Texnomart"
+  },
+  "nav": {
+    "dashboard": "Дашборд",
+    "analytics": "Аналитика",
+    "applications": "Заявки",
+    "users": "Пользователи",
+    "userStatuses": "Статусы",
+    "roles": "Роли",
+    "clients": "Клиенты",
+    "partners": "Партнёры",
+    "branches": "Филиалы",
+    "telegram": "Telegram",
+    "settings": "Настройки",
+    "collapse": "Свернуть меню",
+    "expand": "Развернуть меню"
+  },
+  "actions": {
+    "create": "Создать",
+    "edit": "Изменить",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "search": "Поиск",
+    "filter": "Фильтр",
+    "resetFilters": "Сбросить фильтры",
+    "export": "Экспорт",
+    "import": "Импорт",
+    "refresh": "Обновить",
+    "view": "Просмотр",
+    "back": "Назад",
+    "newApplication": "Новая заявка",
+    "newUser": "Новый пользователь",
+    "newClient": "Новый клиент",
+    "newPartner": "Новый партнёр",
+    "newBranch": "Новый филиал"
+  },
+  "common": {
+    "loading": "Загрузка…",
+    "empty": "Нет данных",
+    "error": "Произошла ошибка",
+    "all": "Все",
+    "from": "С",
+    "to": "По",
+    "yes": "Да",
+    "no": "Нет",
+    "comingSoon": "Раздел в разработке",
+    "comingSoonDescription": "Этот раздел появится в одном из ближайших обновлений.",
+    "openMenu": "Открыть меню",
+    "notifications": "Уведомления",
+    "search": "Поиск (Ctrl+K)",
+    "noResults": "Ничего не найдено"
+  },
+  "theme": {
+    "light": "Светлая",
+    "dark": "Тёмная",
+    "system": "Системная"
+  },
+  "locale": {
+    "ru": "Русский",
+    "uz": "Oʻzbek",
+    "title": "Язык"
+  },
+  "user": {
+    "profile": "Профиль",
+    "signOut": "Выйти",
+    "settings": "Настройки"
+  },
+  "dashboard": {
+    "title": "Дашборд",
+    "subtitle": "Сводка по работе кредитного брокера",
+    "kpi": {
+      "applicationsLast3h": "Заявки за 3 часа",
+      "applicationsToday": "Заявки за сегодня",
+      "approvalRate": "% одобрения",
+      "disbursedToday": "Выдано сегодня",
+      "activeAgents": "Активные агенты"
+    },
+    "charts": {
+      "applicationsTrend": "Динамика заявок",
+      "statusBreakdown": "Распределение по статусам",
+      "topPartners": "Топ партнёров",
+      "topBranches": "Топ филиалов"
+    },
+    "recentApplications": "Последние заявки",
+    "viewAll": "Смотреть все",
+    "viewApplication": "Открыть заявку"
+  },
+  "analytics": {
+    "title": "Аналитика",
+    "subtitle": "Глубокая аналитика по заявкам, партнёрам и филиалам"
+  },
+  "applications": {
+    "title": "Заявки",
+    "subtitle": "Управление кредитными заявками"
+  },
+  "applicationDetail": {
+    "title": "Заявка",
+    "subtitle": "Детальная информация по заявке"
+  },
+  "users": {
+    "title": "Пользователи",
+    "subtitle": "Сотрудники системы и их роли"
+  },
+  "userStatuses": {
+    "title": "Статусы пользователей",
+    "subtitle": "Активные, приостановленные и приглашённые сотрудники"
+  },
+  "roles": {
+    "title": "Роли",
+    "subtitle": "Управление ролями и правами доступа"
+  },
+  "clients": {
+    "title": "Клиенты",
+    "subtitle": "База клиентов кредитного брокера"
+  },
+  "partners": {
+    "title": "Партнёры",
+    "subtitle": "Банки-партнёры и их условия"
+  },
+  "branches": {
+    "title": "Филиалы",
+    "subtitle": "Розничная сеть Texnomart и приоритеты партнёров"
+  },
+  "telegram": {
+    "title": "Telegram-бот",
+    "subtitle": "Управление клиентским Telegram-ботом"
+  },
+  "notFound": {
+    "title": "Страница не найдена",
+    "description": "Запрошенный адрес не существует или был перемещён.",
+    "back": "Вернуться на главную"
+  },
+  "status": {
+    "draft": "Черновик",
+    "submitted": "Отправлена",
+    "scoring": "Скоринг",
+    "partner_review": "У партнёра",
+    "approved": "Одобрена",
+    "contract_signed": "Договор",
+    "disbursed": "Выдана",
+    "closed": "Закрыта",
+    "rejected": "Отказ",
+    "cancelled": "Отменена"
+  },
+  "userStatus": {
+    "active": "Активен",
+    "suspended": "Приостановлен",
+    "invited": "Приглашён"
+  },
+  "role": {
+    "superadmin": "Супер-админ",
+    "admin": "Администратор",
+    "operator": "Оператор",
+    "agent": "Агент"
+  },
+  "table": {
+    "id": "№",
+    "client": "Клиент",
+    "amount": "Сумма",
+    "term": "Срок",
+    "partner": "Партнёр",
+    "branch": "Филиал",
+    "agent": "Агент",
+    "status": "Статус",
+    "createdAt": "Создана",
+    "actions": "Действия",
+    "showing": "Показано {{from}}–{{to}} из {{total}}",
+    "rowsPerPage": "Строк на странице",
+    "page": "Стр. {{page}} из {{pages}}",
+    "term_months": "{{count}} мес."
+  }
+}
