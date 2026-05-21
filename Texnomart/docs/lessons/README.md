@@ -13,3 +13,4 @@
 7. [07-phosphor-icons-for-nav.md](./07-phosphor-icons-for-nav.md) — Phosphor Icons для navigation (filled bold)
 8. [08-date-now-purity-in-usememo.md](./08-date-now-purity-in-usememo.md) — `Date.now()` и `new Date()` внутри `useMemo` (правило `react-hooks/purity`)
 9. [09-mobile-card-vs-desktop-table.md](./09-mobile-card-vs-desktop-table.md) — Таблица на десктопе, карточки на мобильном (dual-render через Tailwind)
+10. [10-utf8-bom-for-cyrillic-csv-export.md](./10-utf8-bom-for-cyrillic-csv-export.md) — UTF-8 BOM в CSV-экспорте для корректной кириллицы в Windows Excel

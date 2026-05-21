@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-> Last synced: 2026-05-20
+> Last synced: 2026-05-20 (Analytics page — added `xlsx` dep, `components/analytics/` namespace, `xlsxExport` util)
 
 ## Stack
 
@@ -21,6 +21,7 @@
 | i18n | react-i18next + i18next + i18next-browser-languagedetector | 17.x / 26.x | [src/i18n/index.ts](../src/i18n/index.ts) |
 | Dates | date-fns (RU locale only for now) | 4.x | [src/lib/utils/formatters.ts](../src/lib/utils/formatters.ts) |
 | Toasts | sonner | 2.x | [src/components/ui/sonner.tsx](../src/components/ui/sonner.tsx) |
+| Spreadsheets (export) | xlsx (SheetJS Community) | 0.18.x | [src/lib/utils/xlsxExport.ts](../src/lib/utils/xlsxExport.ts) |
 
 ## Folder layout (canonical)
 
@@ -51,7 +52,9 @@
 │   │   ├── layout/            ← AppLayout, AppSidebar, TopBar, PageHeader, Logo
 │   │   ├── shared/            ← DataTable, badges, states, switchers, menus
 │   │   ├── charts/            ← KPICard, LineChartCard, BarChartCard, DonutChartCard
-│   │   └── ui/                ← shadcn primitives (28+)
+│   │   ├── analytics/         ← Analytics-specific: AnalyticsFilters, MultiSelectPopover,
+│   │   │                        GenerateReportDialog, ReportsHistoryCard
+│   │   └── ui/                ← shadcn primitives (30+ — added toggle, toggle-group)
 │   ├── api/                   ← *.api.ts fetchers + *Keys factories + _client.ts
 │   ├── mock/                  ← seed data + _helpers.ts
 │   ├── stores/                ← ui.store.ts, auth.store.ts
@@ -130,7 +133,7 @@ Lesson catalogue under [docs/lessons/](./lessons/) — each "why" decision docum
 | Shared | `DataTable`, `StatusBadge`, `VariantBadge`, `RoleBadge`, `EmptyState`, `LoadingState`, `ErrorState`, `ConfirmDialog`, `LanguageSwitcher`, `ThemeToggle`, `UserMenu`, `NotificationsMenu` |
 | Charts | `KPICard`, `LineChartCard`, `BarChartCard`, `DonutChartCard` |
 | Hooks | `useTheme`, `useThemeSync`, `useLocale`, `useLocaleSync`, `useAuth`, `useIsMobile` (shadcn) |
-| Utils | `cn`, `formatUZS`, `formatNumber`, `formatPercent`, `formatPhone`, `formatPinfl`, `formatDate`, `formatRelative` |
+| Utils | `cn`, `formatUZS`, `formatNumber`, `formatPercent`, `formatPhone`, `formatPinfl`, `formatDate`, `formatRelative`, `downloadReport` (xlsx/csv export) |
 
 Prop contracts for each shared/charts component in [docs/ROUTES.md](./ROUTES.md#shared-component-prop-contracts). Type catalogue in [docs/DATA_MODELS.md](./DATA_MODELS.md).
 

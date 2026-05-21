@@ -1,6 +1,6 @@
 # DATA_MODELS.md
 
-> Last synced: 2026-05-20
+> Last synced: 2026-05-20 (Analytics page — ReportItem extended with status/format/breakdown)
 
 This project has no real backend. The TypeScript interfaces and mock-data arrays catalogued here play the backend role until one lands. Each `*.api.ts` fetcher (under [src/api/](../src/api/)) returns these shapes — when the real backend is wired up, fetcher bodies change, types and consumers stay.
 
@@ -148,20 +148,30 @@ interface NotificationItem {
 
 ### `ReportItem`
 ```ts
+type ReportKind = "applications" | "partners" | "agents" | "branches";
+type ReportBreakdown = "applications" | "users" | "partners" | "statuses";
+type ReportStatus = "ready" | "processing";
+type ReportFormat = "xlsx" | "csv";
+
 interface ReportItem {
   id: string;
   name: string;
-  kind: "applications" | "partners" | "agents" | "branches";
+  kind: ReportKind;
+  status: ReportStatus;
+  format: ReportFormat;
+  breakdown: ReportBreakdown[];
   rangeFrom: string;
   rangeTo: string;
   generatedAt: string;
   generatedBy: string;   // user's fullName
-  fileSize: number;      // bytes
+  fileSize: number;      // bytes (0 while status === "processing")
 }
 ```
-**Seed**: [src/mock/reports.ts](../src/mock/reports.ts) — 10 records.
-**Fetcher**: [src/api/reports.api.ts](../src/api/reports.api.ts) — `list()`.
-**Consumed by**: future `/analytics` reports panel.
+**Seed**: [src/mock/reports.ts](../src/mock/reports.ts) — 10 records, all `status: "ready"`.
+**Fetcher**: [src/api/reports.api.ts](../src/api/reports.api.ts) — `list()`, `create(input)` (returns a `processing` record + pushes onto the mock array), `markReady(id)` (flips status + recalculates `fileSize` from `breakdown.length`), `remove(id)`.
+**Consumed by**: [src/pages/Analytics.tsx](../src/pages/Analytics.tsx) — reports history table + generate dialog. `create` is invoked from `GenerateReportDialog`'s onSubmit; `markReady` is fired by a 2-second `setTimeout` to simulate backend processing.
+
+`CreateReportInput` (the `create` argument) is the same shape minus `id`, `status`, `generatedAt`, `fileSize`.
 
 ---
 

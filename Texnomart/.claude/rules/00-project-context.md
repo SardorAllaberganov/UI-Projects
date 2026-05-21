@@ -21,8 +21,9 @@ See [`src/lib/constants/enums.ts`](../../src/lib/constants/enums.ts) for the can
 
 ## Status
 - Layout shell, sidebar, topbar, all 11 routes wired
-- Dashboard fully implemented (period filter + refresh, 4 KPIs, multi-series trend line + status donut, recent applications with desktop table + mobile card list, top partners with inline progress bars)
-- 10 other pages render `<Placeholder>` ("Раздел в разработке") — each subsequent prompt fills one in
+- **Dashboard** fully implemented (period filter + refresh, 4 KPIs, multi-series trend line + status donut, recent applications with desktop table + mobile card list, top partners with inline progress bars)
+- **Analytics** fully implemented (ToggleGroup period + custom date-range Popover + multi-select Партнёры/Статусы; 4 reactive KPIs; horizontal-by-day + vertical-by-partner bar charts; reports history Card with sortable date column and DropdownMenu row actions; Generate dialog with RHF + zod + breakdown checkboxes + XLSX/CSV radio; real `xlsx` exporter producing valid `.xlsx` and CSV with UTF-8 BOM)
+- 9 other pages render `<Placeholder>` ("Раздел в разработке") — each subsequent prompt fills one in
 - Mock data covers 200 applications, 50 clients, 30 system users, 8 partners, 12 branches, 15 notifications, 10 reports
 
 ## Out of scope (today)

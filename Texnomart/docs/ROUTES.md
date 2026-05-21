@@ -1,6 +1,6 @@
 # ROUTES.md
 
-> Last synced: 2026-05-20 (Dashboard rebuild — chart card contracts extended)
+> Last synced: 2026-05-20 (Analytics page — full implementation: filters, KPIs, charts, reports history)
 
 This project has no REST API. This file documents the react-router paths and the prop contracts of shared components — what other pages can expect when composing the shell.
 
@@ -15,7 +15,7 @@ This project has no REST API. This file documents the react-router paths and the
 | Path | Page | Status | Nav entry | Required i18n keys |
 |------|------|--------|-----------|---------------------|
 | `/` | [Dashboard.tsx](../src/pages/Dashboard.tsx) | **full** | `NAV_ITEMS[0]` | `dashboard.title`, `dashboard.period.{today,7d,30d,90d,ariaLabel}`, `dashboard.kpi.{totalUsers,totalUsersDelta,applicationsToday,applicationsTodayDelta,applicationsLast3h,applicationsLast3hDelta,approved,approvedDelta}`, `dashboard.charts.{applicationsTrend,applicationsTrendDescription,statusBreakdown,topPartners,ariaTrend,ariaStatusBreakdown}`, `dashboard.trendSeries.{created,approved,rejected}`, `dashboard.recent.{title,time}`, `dashboard.topPartners.approvalRate`, `dashboard.empty.{title,description}`, `dashboard.recentApplications`, `dashboard.viewAll`, `actions.refresh`, `table.{id,client,amount,partner,status}` |
-| `/analytics` | [Analytics.tsx](../src/pages/Analytics.tsx) | placeholder | `NAV_ITEMS[1]` | `analytics.title`, `analytics.subtitle` |
+| `/analytics` | [Analytics.tsx](../src/pages/Analytics.tsx) | **full** | `NAV_ITEMS[1]` | `analytics.{title,subtitle,actions.{generate,exportAll},filters.{period.{label,1d,1w,1m,1y,custom,customRange},partners,statuses,allSelected,selectedCount,search,noResults,clear},summary.{totalApplications,disbursedAmount,avgCheck,conversion},charts.{byDay,byDayDescription,byPartner,byPartnerDescription},history.{title,empty,table.{createdAt,kind,range,author,status,actions},status.{ready,processing},action.{downloadXlsx,downloadCsv,delete},deleteConfirmTitle,deleteConfirmDescription},kind.{applications,partners,agents,branches},generate.{title,description,field.{kind,period,breakdown,format},kind.detailed,breakdown.{applications,users,partners,statuses},format.{xlsx,csv},submit,toastQueued,toastReady,toastReadyName,toastDeleted,validation.{rangeRequired,breakdownRequired},pickRange},exportDefaultName}`, `actions.{cancel,delete}` |
 | `/applications` | [Applications.tsx](../src/pages/Applications.tsx) | placeholder | `NAV_ITEMS[2]` (with `badge: "unreadApplications"`) | `applications.title`, `applications.subtitle` |
 | `/applications/:id` | [ApplicationDetail.tsx](../src/pages/ApplicationDetail.tsx) | placeholder | (none) | `applicationDetail.title`, `applicationDetail.subtitle` |
 | `/users` | [Users.tsx](../src/pages/Users.tsx) | placeholder | `NAV_ITEMS[3]` | `users.title`, `users.subtitle` |
@@ -314,6 +314,70 @@ interface PlaceholderProps {
 }
 ```
 Used by all 10 non-Dashboard pages. Renders `<PageHeader>` + `<EmptyState>` with the "Раздел в разработке" copy.
+
+---
+
+## Feature components (page-scoped, not shared)
+
+Lives under [`src/components/<feature>/`](../src/components/). Reusable across pages within a single feature; lifted into [`shared/`](../src/components/shared/) once a second consumer appears.
+
+### Analytics — [src/components/analytics/](../src/components/analytics/)
+
+```ts
+// AnalyticsFilters — sticky-style filter Card (period + custom range + multi-selects)
+type AnalyticsPeriod = "1d" | "1w" | "1m" | "1y" | "custom";
+interface AnalyticsFiltersValue {
+  period: AnalyticsPeriod;
+  customRange: DateRange | null;      // from react-day-picker
+  partnerIds: string[];                // [] === all
+  statuses: ApplicationStatus[];       // [] === all
+}
+interface AnalyticsFiltersProps {
+  value: AnalyticsFiltersValue;
+  onChange: (next: AnalyticsFiltersValue) => void;
+  partners: Partner[];
+}
+
+// MultiSelectPopover — generic Command+Popover multi-select used by AnalyticsFilters
+interface MultiSelectOption { value: string; label: string }
+interface MultiSelectPopoverProps {
+  label: string;
+  options: MultiSelectOption[];
+  value: string[];            // empty array = "Все"
+  onChange: (next: string[]) => void;
+  className?: string;
+  placeholder?: string;
+  width?: number;             // popover width in px, default 280
+}
+
+// GenerateReportDialog — RHF + zod dialog returning a CreateReportInput payload
+interface GenerateReportFormValues {
+  kind: "applications";              // only option exposed today
+  range: { from: Date; to: Date };
+  breakdown: ReportBreakdown[];      // ≥1 required
+  format: ReportFormat;
+}
+interface GenerateReportDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  defaultRange: { from: Date; to: Date };
+  onSubmit: (values: GenerateReportFormValues) => void;
+}
+
+// ReportsHistoryCard — sortable shadcn Table with DropdownMenu row actions + ConfirmDialog
+interface ReportsHistoryCardProps {
+  reports: ReportItem[] | undefined;
+  onDownload: (report: ReportItem) => void;
+  onDelete: (report: ReportItem) => void;
+  onExportAll: () => void;
+}
+```
+
+**Notes**
+- `MultiSelectPopover` is a candidate for promotion to `shared/` if any other feature needs the same UX
+- `AnalyticsFilters` and `ReportsHistoryCard` are coupled to the Analytics domain (`Partner` / `ApplicationStatus` / `ReportItem`) — keep them in `analytics/`
+- All four components are imported only by [src/pages/Analytics.tsx](../src/pages/Analytics.tsx)
+- XLSX/CSV export is delegated to [`@/lib/utils/xlsxExport`](../src/lib/utils/xlsxExport.ts) — `downloadReport(fileName, format, { applications, partners, users, breakdown })`. SheetJS builds one sheet per breakdown dimension; CSV mode emits the first sheet via `XLSX.utils.sheet_to_csv` + Blob with UTF-8 BOM
 
 ---
 

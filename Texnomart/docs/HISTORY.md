@@ -4,6 +4,45 @@
 
 ---
 
+## 2026-05-20 — Analytics page (filters, KPIs, charts, reports history + XLSX export)
+
+**Module:** analytics
+**Commits:** (uncommitted, working tree)
+**Files touched:** 13 — see list below
+**What changed:**
+- **Analytics page** ([src/pages/Analytics.tsx](../src/pages/Analytics.tsx)) replaced the placeholder. Layout: `PageHeader` + brand-CTA "Сгенерировать отчёт" → filters Card → 4 KPI cards → 2-column charts row → reports history Card → Generate dialog
+- **AnalyticsFilters** ([components/analytics/AnalyticsFilters.tsx](../src/components/analytics/AnalyticsFilters.tsx)) — shadcn `ToggleGroup` segmented control (1 день / 1 неделя / 1 месяц / 1 год) + separate "Свой период" outline button that opens a 2-month range Calendar in a Popover (sets `period="custom"`). Tapping a preset clears the custom range. Right side: two `MultiSelectPopover` instances for Партнёры + Статусы заявок. Empty array = "Все" (no filtering)
+- **MultiSelectPopover** ([components/analytics/MultiSelectPopover.tsx](../src/components/analytics/MultiSelectPopover.tsx)) — generic Command+Popover with checkmark icons + "Очистить" footer when selections exist. Reusable primitive; candidate for promotion to `shared/` once a second consumer appears
+- **GenerateReportDialog** ([components/analytics/GenerateReportDialog.tsx](../src/components/analytics/GenerateReportDialog.tsx)) — shadcn Dialog with RHF + zod. Fields: kind (Select, only "Детализированный" exposed), period (range Calendar Popover), breakdown (4 Checkboxes in 2×2 grid, all checked by default, ≥1 required), format (Radio: XLSX default / CSV). Footer: Cancel + brand-yellow "Сгенерировать"
+- **ReportsHistoryCard** ([components/analytics/ReportsHistoryCard.tsx](../src/components/analytics/ReportsHistoryCard.tsx)) — plain shadcn `<Table>` + DropdownMenu row actions (Скачать XLSX/CSV / Удалить). Date column header is a click-to-sort button (asc/desc). Embedded ConfirmDialog for destructive delete. Animated `Loader2` for in-progress status, emerald outline badge for ready
+- **`ReportItem` extended** ([src/types/index.ts](../src/types/index.ts)) with `status: "ready" | "processing"`, `format: "xlsx" | "csv"`, `breakdown: ReportBreakdown[]`. New type aliases exported: `ReportKind`, `ReportBreakdown`, `ReportStatus`, `ReportFormat`
+- **`reportsApi`** ([src/api/reports.api.ts](../src/api/reports.api.ts)) gained `create(input)` (pushes new `processing` record to the front of the mock array), `markReady(id)` (flips status + recalculates `fileSize` from `breakdown.length`), `remove(id)`. `CreateReportInput` exported for the dialog payload
+- **`downloadReport`** ([src/lib/utils/xlsxExport.ts](../src/lib/utils/xlsxExport.ts)) — SheetJS-based exporter. Builds one sheet per breakdown dimension (applications: full denormalised app rows; users: aggregated per-agent with approval rate; partners: aggregated per-partner with factual + baseline rates; statuses: counts per `ApplicationStatus`). XLSX path uses `XLSX.writeFile`; CSV path emits first sheet via `sheet_to_csv` + Blob with UTF-8 BOM so Cyrillic opens correctly in Excel
+- **i18n keys added** under `analytics.*` ([i18n/locales/ru.json](../src/i18n/locales/ru.json)) — ~50 keys covering filters, summary, charts, history (table + status + action), generate (field + breakdown + format + kind + validation), `exportDefaultName`. Replaced the 2-key placeholder block. Title + subtitle rephrased to "Аналитика брокера" / "Генерация отчётов и экспорт данных"
+- **Mock reports backfilled** ([src/mock/reports.ts](../src/mock/reports.ts)) with `status: "ready"`, realistic `format` + `breakdown` arrays per kind
+- **Mutation flow**: Generate submit → `reportsApi.create` → `toast.message("...поставлен в очередь")` → invalidate `reportsKeys.list()` → `setTimeout(2000)` → `reportsApi.markReady` → invalidate again → `toast.success("...готов")`
+- **New shadcn primitives**: `toggle`, `toggle-group` (installed via CLI to support the period segmented control)
+- **New runtime dep**: `xlsx@^0.18.x` (SheetJS Community Edition). 1 high-severity npm audit notice — known SheetJS CVE in unused server-side code paths, acceptable for a frontend-only mock export
+
+**Compatibility / non-obvious fixes captured**
+- Re-applied lesson [08-date-now-purity-in-usememo.md](./lessons/08-date-now-purity-in-usememo.md) — both `Analytics.tsx` and `GenerateReportDialog.tsx` initially called `Date.now()` / `new Date()` in render bodies. `Analytics.tsx` hoisted `nowTs` to `useState`; `GenerateReportDialog.tsx` now requires a non-nullable `defaultRange: { from: Date; to: Date }` from the parent so the dialog never needs to invent dates
+- `AnalyticsFilters.tsx` — Calendar `defaultMonth={undefined}` falls back to current month internally; do not write `new Date()` as a "default" since react-day-picker already handles it
+- zod v4 `z.date({ error: "..." })` syntax works; `kind` field narrowed to literal `"applications"` (the only option exposed today) to keep `zodResolver` happy with the form-values type
+- `RHFRecharts ResponsiveContainer` warnings on initial mobile mount are pre-existing — identical to Dashboard's behaviour, not a regression
+
+**Docs synced this pass**
+- [docs/DATA_MODELS.md](./DATA_MODELS.md) — `ReportItem` block rewritten, new type aliases added, fetcher methods listed, consumed-by points to the real Analytics page
+- [docs/ROUTES.md](./ROUTES.md) — analytics route flipped to `full` with full i18n key list; new "Feature components (page-scoped)" section documenting AnalyticsFilters / MultiSelectPopover / GenerateReportDialog / ReportsHistoryCard prop contracts
+- [docs/ARCHITECTURE.md](./ARCHITECTURE.md) — `xlsx` added to stack table; `components/analytics/` added to folder layout; `downloadReport` added to utils registry
+
+**Follow-ups**
+- `MultiSelectPopover` is a good promotion candidate to `shared/` — wait for the second consumer (likely Applications or Users filters) before lifting it
+- The "1 день" period currently passes an exact 24-hour window from now; partial-day semantics ("today midnight onwards") could be a future refinement
+- CSV export currently emits only the first selected breakdown sheet — multi-sheet CSV is non-standard. Could be split into multiple files or zipped if multi-dimension CSV is requested
+- New lesson [10-utf8-bom-for-cyrillic-csv-export.md](./lessons/10-utf8-bom-for-cyrillic-csv-export.md) — UTF-8 BOM is required when emitting CSV with Cyrillic for Windows Excel users; non-obvious enough to be worth a permanent note. Lesson 08 (`Date.now()` purity) was re-applied without surprises
+
+---
+
 ## 2026-05-20 — Dashboard rebuild (period filter, multi-series trend, mobile cards)
 
 **Module:** dashboard
