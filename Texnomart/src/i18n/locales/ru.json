@@ -124,8 +124,106 @@
     "viewApplication": "Открыть заявку"
   },
   "analytics": {
-    "title": "Аналитика",
-    "subtitle": "Глубокая аналитика по заявкам, партнёрам и филиалам"
+    "title": "Аналитика брокера",
+    "subtitle": "Генерация отчётов и экспорт данных",
+    "actions": {
+      "generate": "Сгенерировать отчёт",
+      "exportAll": "Экспорт всех в Excel"
+    },
+    "filters": {
+      "period": {
+        "label": "Период",
+        "1d": "1 день",
+        "1w": "1 неделя",
+        "1m": "1 месяц",
+        "1y": "1 год",
+        "custom": "Свой период",
+        "customRange": "{{from}} – {{to}}"
+      },
+      "partners": "Партнёры",
+      "statuses": "Статусы заявок",
+      "allSelected": "Все",
+      "selectedCount": "{{count}} выбрано",
+      "search": "Поиск…",
+      "noResults": "Ничего не найдено",
+      "selectAll": "Выбрать все",
+      "clear": "Очистить"
+    },
+    "summary": {
+      "totalApplications": "Всего заявок",
+      "disbursedAmount": "Сумма выдач",
+      "avgCheck": "Средний чек",
+      "conversion": "Конверсия"
+    },
+    "charts": {
+      "byDay": "Заявки по дням",
+      "byDayDescription": "Количество поступлений за выбранный период",
+      "byPartner": "Заявки по партнёрам",
+      "byPartnerDescription": "Топ банков-партнёров по объёму"
+    },
+    "history": {
+      "title": "История отчётов",
+      "empty": "Сгенерированных отчётов пока нет",
+      "table": {
+        "createdAt": "Дата создания",
+        "kind": "Тип отчёта",
+        "range": "Период",
+        "author": "Автор",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "status": {
+        "ready": "Готов",
+        "processing": "В процессе"
+      },
+      "action": {
+        "downloadXlsx": "Скачать XLSX",
+        "downloadCsv": "Скачать CSV",
+        "delete": "Удалить"
+      },
+      "deleteConfirmTitle": "Удалить отчёт?",
+      "deleteConfirmDescription": "Действие необратимо. Отчёт «{{name}}» будет удалён."
+    },
+    "kind": {
+      "applications": "Заявки",
+      "partners": "Партнёры",
+      "agents": "Агенты",
+      "branches": "Филиалы"
+    },
+    "generate": {
+      "title": "Сгенерировать отчёт",
+      "description": "Настройте параметры — отчёт появится в истории и будет готов к скачиванию через несколько секунд.",
+      "field": {
+        "kind": "Тип отчёта",
+        "period": "Период",
+        "breakdown": "Разбивка по",
+        "format": "Формат"
+      },
+      "kind": {
+        "detailed": "Детализированный"
+      },
+      "breakdown": {
+        "applications": "Заявки",
+        "users": "Пользователи",
+        "partners": "Партнёры",
+        "statuses": "Статусы"
+      },
+      "format": {
+        "xlsx": "Excel (XLSX)",
+        "csv": "CSV"
+      },
+      "submit": "Сгенерировать",
+      "toastQueued": "Отчёт поставлен в очередь",
+      "toastReady": "Отчёт готов к скачиванию",
+      "toastReadyName": "Отчёт «{{name}}» готов",
+      "toastDeleted": "Отчёт удалён",
+      "validation": {
+        "rangeRequired": "Выберите период",
+        "breakdownRequired": "Выберите хотя бы одну разбивку"
+      },
+      "pickRange": "Выберите даты"
+    },
+    "exportDefaultName": "Аналитика {{date}}"
   },
   "applications": {
     "title": "Заявки",

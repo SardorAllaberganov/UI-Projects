@@ -91,10 +91,22 @@ export interface NotificationItem {
   href?: string;
 }
 
+export type ReportKind = "applications" | "partners" | "agents" | "branches";
+export type ReportBreakdown =
+  | "applications"
+  | "users"
+  | "partners"
+  | "statuses";
+export type ReportStatus = "ready" | "processing";
+export type ReportFormat = "xlsx" | "csv";
+
 export interface ReportItem {
   id: string;
   name: string;
-  kind: "applications" | "partners" | "agents" | "branches";
+  kind: ReportKind;
+  status: ReportStatus;
+  format: ReportFormat;
+  breakdown: ReportBreakdown[];
   rangeFrom: string;
   rangeTo: string;
   generatedAt: string;
