@@ -1,25 +1,28 @@
-name: Deploy MSB-V2 UX audit to GitHub Pages
+name: Deploy projects to GitHub Pages
 
-# Publishes the MSB-V2/ folder to GitHub Pages.
-# Because the artifact path is "MSB-V2", that folder's contents become the site ROOT,
-# so MSB-V2/index.html opens at the Pages URL:
-#   https://sardorallaberganov.github.io/UI-Projects/
+# Assembles a multi-project site under _site/ and publishes it to GitHub Pages.
+# Each project is copied into its own subfolder, so it gets a clean URL:
+#   MSB-V2/  -> _site/msb-v2-audit/  -> https://sardorallaberganov.github.io/UI-Projects/msb-v2-audit/
+# The repo root is NOT published as-is (it contains other code / node_modules),
+# only the folders explicitly copied below are deployed.
+#
+# To add another project later: drop a "cp" block in the "Assemble site" step
+# (and add its source folder to the `paths:` filter so pushes trigger a deploy).
 
 on:
   push:
     branches: [main]
     paths:
       - "MSB-V2/**"
+      - "pages-root/**"
       - ".github/workflows/deploy-pages.yml"
-  workflow_dispatch: # allows manual runs from the Actions tab
+  workflow_dispatch: # allow manual runs from the Actions tab
 
-# Permissions required by the official Pages deployment actions
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment; don't cancel an in-progress production deploy
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -34,14 +37,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Assemble site
+        run: |
+          set -e
+          mkdir -p _site
+
+          # Root hub page (lists projects) -> served at the bare Pages URL
+          cp pages-root/index.html _site/index.html
+
+          # --- MSB-V2 UX audit -> /msb-v2-audit/ ---
+          mkdir -p _site/msb-v2-audit
+          cp -r MSB-V2/. _site/msb-v2-audit/
+
+          # --- add more projects below, one block each: ---
+          # mkdir -p _site/<slug>
+          # cp -r <source-folder>/. _site/<slug>/
+
+          echo "Assembled site:" && find _site -maxdepth 2 -type f | sort
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload audit folder as Pages artifact
+      - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Only the audit folder is published — its contents become the site root.
-          path: MSB-V2
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
