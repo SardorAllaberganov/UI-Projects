@@ -1,0 +1,48 @@
+name: Deploy MSB-V2 UX audit to GitHub Pages
+
+# Publishes the MSB-V2/ folder to GitHub Pages.
+# Because the artifact path is "MSB-V2", that folder's contents become the site ROOT,
+# so MSB-V2/index.html opens at the Pages URL:
+#   https://sardorallaberganov.github.io/UI-Projects/
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "MSB-V2/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch: # allows manual runs from the Actions tab
+
+# Permissions required by the official Pages deployment actions
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel an in-progress production deploy
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload audit folder as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Only the audit folder is published — its contents become the site root.
+          path: MSB-V2
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
