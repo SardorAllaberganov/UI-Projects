@@ -387,3 +387,26 @@ From `Unired_library_audit.md`:
 - **Action Buttons Section** — final cheque CTA rail
 - **Modal - status** — Visa Alias Confirmation modal
 - **Button Group** — Visa alias action chooser
+
+---
+
+## E.8 · Unified International P2P flow (Schema v1) — 2026-06-10
+
+The per-corridor flows above are superseded by a **unified generic flow**
+built to match the FigJam schema "International P2P flows" (`10831:32916`).
+
+- **Section:** "Intl P2P — Unified Flow (Schema v1)" (`10843:39091`) on the
+  **Transfers** page (`10796:11296`), 30 frames, new 390×844 redesign style.
+- **Flow:** Country (S2) → KYC gate (S3) → Method ×5 (S4) → Amount split by
+  UZB/foreign sender + balance check (S5) → Recipient per method (S6) →
+  unified Pre-check (S7) → OTP / foreign payment Form + switch-method (S8) →
+  Receipt success/error/hold + cash MTCN (S9).
+- **New screens that never existed before:** canonical 5-method selector,
+  insufficient-balance state, sender-card picker, foreign-sender payment form
+  (replaces the "Web View ochiladi" placeholder), switch-payment-method sheet,
+  OTP error state, cash receipt with pickup code, receipt retry CTA.
+- **Docs:** build spec + per-phase logs in
+  `Plans/Intl_P2P_unified_flow_build_spec.md`; screen-level gap analysis of the
+  old corridor screens in `Plans/Intl_P2P_gap_analysis.md`; QA defect register
+  in `Plans/Intl_P2P_qa_defects.md`.
+- Old corridor screens were intentionally left untouched as reference.
